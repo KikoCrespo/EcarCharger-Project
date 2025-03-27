@@ -95,15 +95,15 @@ DATABASES = {
 
             'ENGINE': "django.db.backends.postgresql_psycopg2",
 
-            'NAME': "ecarDB",
+            'NAME': "postgres",
 
-            'USER': "<db_username>",
+            'USER': "postgres.sykfhtjuydhufijedvpr",
 
-            'PASSWORD': "<password>",
+            'PASSWORD': "EcarDb2425@",
 
-            'HOST': "<db_hostname_or_ip>",
+            'HOST': "aws-0-eu-west-2.pooler.supabase.com",
 
-            'PORT': "<db_port>",
+            'PORT': "6543",
         }
 }
 
