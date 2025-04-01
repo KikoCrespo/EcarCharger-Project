@@ -17,19 +17,16 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from myapi.views import LoginView
 from myapi.views import LogoutView
-from myapi.views import GetCSRFTokenView
-from myapi.views import RegistarView
+
+from myapi.views import RegistarUtilizadorView
 from myapi.views import RegistarEntidadeView
-from myapi.views import LoginEntidadeView
+from myapi.views import LoginUtilizadorView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('csrf/', GetCSRFTokenView.as_view(), name='csrf_token'),
-    path('login/', LoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
-    path('registar/', RegistarView.as_view(), name='registar'),
-    path('registarEntidade/', RegistarEntidadeView.as_view(), name='registarEntidade'),
-    path('loginEntidade/', LoginEntidadeView.as_view(), name='loginEntidade'),
+    path('loginUtilizador/', LoginUtilizadorView, name='loginUtilizador'),
+    path('logout/', LogoutView, name='logout'),
+    path('registar/', RegistarUtilizadorView, name='registar'),
+    path('registarEntidade/', RegistarEntidadeView, name='registarEntidade'),
 ]

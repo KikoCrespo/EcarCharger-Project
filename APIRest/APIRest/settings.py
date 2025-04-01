@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'rest_framework',
+    'rest_framework_simplejwt',
     "myapi",
 ]
 
@@ -57,11 +60,18 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-# Configurar autenticação baseada em sessão
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Token expira em 15 min
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Refresh token dura 7 dias
+    'ROTATE_REFRESH_TOKENS': True,  # Gera um novo refresh token quando usado
+    'BLACKLIST_AFTER_ROTATION': True,  # Revoga o antigo refresh token
 }
 
 ROOT_URLCONF = "APIRest.urls"
