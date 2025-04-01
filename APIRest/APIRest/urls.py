@@ -17,16 +17,22 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from myapi.views import LogoutView
 
-from myapi.views import RegistarUtilizadorView
-from myapi.views import RegistarEntidadeView
-from myapi.views import LoginUtilizadorView
+from utilizadores.views import LogoutView
+from utilizadores.views import RegistarUtilizadorView
+from utilizadores.views import LoginUtilizadorView
+
+from automoveis.views import AddCarroEntidadeView
+from automoveis.views import getFrotaEntidade
+
+from entidades.views import RegistarEntidadeView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('loginUtilizador/', LoginUtilizadorView, name='loginUtilizador'),
+    path('login/', LoginUtilizadorView.as_view(), name='loginUtilizador'),
     path('logout/', LogoutView, name='logout'),
-    path('registar/', RegistarUtilizadorView, name='registar'),
-    path('registarEntidade/', RegistarEntidadeView, name='registarEntidade'),
+    path('registar/', RegistarUtilizadorView.as_view(), name='registar'),
+    path('registarEntidade/', RegistarEntidadeView.as_view(), name='registarEntidade'),
+    path('registarCarro/', AddCarroEntidadeView.as_view(), name='addCarroEntidade'),
+    path('Frota/<int:entidade_id>/', getFrotaEntidade.as_view(), name='Frota'),
 ]
