@@ -14,6 +14,9 @@ from rest_framework.views import APIView
 @permission_classes([AllowAny])
 class RegistarEntidadeView(APIView):
     def post(self, request):
+        """
+        regitar uma entidade
+        """
         data = json.loads(request.body)
         
         e_nome = data.get("e_nome")
