@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path
 
 from utilizadores.views import LogoutView
-from utilizadores.views import RegistarUtilizadorView
+from utilizadores.views import UtilizadorView
 from utilizadores.views import LoginUtilizadorView
 
 from automoveis.views import AddCarroEntidadeView
@@ -27,12 +27,18 @@ from automoveis.views import getFrotaEntidade
 
 from entidades.views import RegistarEntidadeView
 
+from carregamentos.views import CarregamentosView
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('api/login/', LoginUtilizadorView.as_view(), name='loginUtilizador'),
     path('logout/', LogoutView, name='logout'),
-    path('registar/', RegistarUtilizadorView.as_view(), name='registar'),
+    path('utilizadores/registar/', UtilizadorView.as_view(), name='registar'),
+    path('utilizadores/editar/<int:id>/', UtilizadorView.as_view(), name='editarUtilizador'),
     path('registarEntidade/', RegistarEntidadeView.as_view(), name='registarEntidade'),
+    path('utilizadores/listar/', UtilizadorView.as_view(), name='listarUtilizadores'),
     path('registarCarro/', AddCarroEntidadeView.as_view(), name='addCarroEntidade'),
     path('Frota/<int:entidade_id>/', getFrotaEntidade.as_view(), name='Frota'),
+    path('carregamentos/iniciar/', CarregamentosView.as_view(), name='carregamentos'),
+    path('carregamentos/editar/<int:id>/', CarregamentosView.as_view(), name='editarCarregamento'),
 ]
