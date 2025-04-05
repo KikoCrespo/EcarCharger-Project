@@ -29,7 +29,7 @@ from entidades.views import RegistarEntidadeView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('login/', LoginUtilizadorView.as_view(), name='loginUtilizador'),
+    path('api/login/', LoginUtilizadorView.as_view(), name='loginUtilizador'),
     path('logout/', LogoutView, name='logout'),
     path('registar/', RegistarUtilizadorView.as_view(), name='registar'),
     path('registarEntidade/', RegistarEntidadeView.as_view(), name='registarEntidade'),

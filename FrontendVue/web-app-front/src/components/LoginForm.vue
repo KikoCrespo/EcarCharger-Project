@@ -1,16 +1,19 @@
 <script setup>
 import { ref } from 'vue';
-
+import {login as loginApi} from '@/api';
 
 const email = ref('');
 const password = ref('');
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const emailError = ref(0);
 const passwordError = ref(0);
+const errorMessage = ref('');
 
-const login = () => {
+const login = async () => {
+    console.log('recebi');
     emailError.value = 0;
     passwordError.value = 0;
+    errorMessage.value = "";
 
     // Validação do email
     if (!email.value) {
@@ -24,13 +27,24 @@ const login = () => {
         passwordError.value = 1; // Senha vazia
     }
 
-    // Se não houver erros, você pode prosseguir com o login
+    // Se não houver erros, prossegue com o login
     if (emailError.value === 0 && passwordError.value === 0) {
-        // Aqui você pode adicionar a lógica para o login
-        // Por exemplo, chamar uma API para autenticação
-        
+        try {
+            const response = await loginAPI(email.value, password.value);
+            console.log(response);
+            
+            if (response.error) {
+                errorMessage.value = response.error;
+            } else {
+                localStorage.setItem("accessToken", response.access);
+                alert("Login realizado com sucesso!");
+                // Aqui você pode redirecionar para outra página
+            }
+        } catch (error) {
+            errorMessage.value = "Erro ao conectar com o servidor.";
+        }
     }
-}
+};
 </script>
 
 
