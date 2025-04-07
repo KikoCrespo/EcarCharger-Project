@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
     "automoveis",
     "utilizadores",
     "carregamentos",
@@ -55,6 +57,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",  
 ]
 
 # Configuração de CORS (para aceitar requisições do frontend)
@@ -97,6 +100,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "APIRest.wsgi.application"
+
+#não esquecer
+AUTH_USER_MODEL = 'utilizadores.Utilizador'
 
 
 # Database

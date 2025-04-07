@@ -19,7 +19,7 @@ class CarregamentosView(APIView):
         """
         carregamentos = Carregamento.objects.all()
         serializer = CarregamentoSerializer(carregamentos, many=True)
-        return Response('carregamentos',serializer.data, status=200)
+        return Response({'carregamentos',serializer.data}, status=200)
     
     def post(self, request):
         """
@@ -84,7 +84,7 @@ class CarregamentosView(APIView):
             serializer = CarregamentoSerializer(carregamento)
             if serializer.is_valid():
                 serializer.save()
-                return Response('carregamento',serializer.data, status=201)
+                return Response({'carregamento': serializer.data}, status=201)
             return Response(serializer.errors, status=400)
         except Exception as e:
             return Response({'error': str(e)}, status=500)
@@ -139,7 +139,7 @@ class CarregamentosView(APIView):
     
 def str_to_datetime(date):
     """
-    Converte uma string no formato 'YYYY-MM-DD HH:MM:SS' para um objeto datetime.
+    Converte uma string 'YYYY-MM-DD HH:MM:SS' para um objeto datetime.
     """
     formato = "%Y-%m-%dT%H:%M:%S" 
     date_timstamp = datetime.strptime(date, formato)

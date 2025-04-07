@@ -10,7 +10,7 @@ class PostoCarregamento(models.Model):
     pc_intensidade_kw = models.FloatField()
     pc_tipo_ligacao = models.IntegerField()
     pc_preco_kwh = models.FloatField()
-    pc_estado = models.BooleanField()
+    pc_estado = models.BooleanField() # alternativa integer - ativo/inativo/manutencao
     pc_img = models.ImageField(max_length=255, blank=True, null=True)
     pc_entidade = models.ForeignKey(Entidade, on_delete=models.CASCADE)
 

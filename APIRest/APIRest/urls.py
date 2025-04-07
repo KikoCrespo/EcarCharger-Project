@@ -17,6 +17,8 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
+from rest_framework_simplejwt.views import TokenRefreshView
+
 
 from utilizadores.views import LogoutView
 from utilizadores.views import UtilizadorView
@@ -29,16 +31,21 @@ from entidades.views import RegistarEntidadeView
 
 from carregamentos.views import CarregamentosView
 
+from postosCarregamento.views import PostoCarregamentoView
+
 urlpatterns = [
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # refresh token endpoint
     path("admin/", admin.site.urls),
     path('login/', LoginUtilizadorView.as_view(), name='loginUtilizador'),
     path('logout/', LogoutView, name='logout'),
     path('utilizadores/registar/', UtilizadorView.as_view(), name='registar'),
-    path('utilizadores/editar/<int:id>/', UtilizadorView.as_view(), name='editarUtilizador'),
+    path('utilizadores/editar/', UtilizadorView.as_view(), name='editarUtilizador'),
     path('registarEntidade/', RegistarEntidadeView.as_view(), name='registarEntidade'),
     path('utilizadores/listar/', UtilizadorView.as_view(), name='listarUtilizadores'),
     path('registarCarro/', AddCarroEntidadeView.as_view(), name='addCarroEntidade'),
     path('Frota/<int:entidade_id>/', getFrotaEntidade.as_view(), name='Frota'),
     path('carregamentos/iniciar/', CarregamentosView.as_view(), name='carregamentos'),
     path('carregamentos/editar/<int:id>/', CarregamentosView.as_view(), name='editarCarregamento'),
+    path('entidade/postos/adicionar/', PostoCarregamentoView.as_view(), name='adicionarPostoCarregamento'),
+    path('entidade/postos/listar/', PostoCarregamentoView.as_view(), name='listarPostosCarregamento'),
 ]
