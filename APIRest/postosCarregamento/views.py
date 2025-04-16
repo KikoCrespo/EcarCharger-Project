@@ -31,8 +31,7 @@ class PostoCarregamentoView(APIView):
         tipo_ligacao = request.data.get('pc_tipo_ligacao')
         preco_kwh = request.data.get('pc_preco_kwh')
         entidade_id = request.data.get('pc_entidade')
-
-        # Verifica se a entidade existe
+        
         try:
             entidade = Entidade.objects.get(id = entidade_id)
         except Entidade.DoesNotExist:
