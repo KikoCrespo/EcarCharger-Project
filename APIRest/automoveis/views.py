@@ -6,10 +6,8 @@ from entidades.models import Entidade
 from rest_framework.decorators import permission_classes
 from .serializer import CarroSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.contrib.auth.hashers import make_password, check_password
 
 
 permission_classes([AllowAny]) # tem de ser Authentication
@@ -60,7 +58,7 @@ class AddCarroEntidadeView(APIView):
         except json.JSONDecodeError:
             return JsonResponse({"error": "Formato de dados inválido!"}, status=400)
 
-@permission_classes([AllowAny]) # tem de ser Authentication
+@permission_classes([IsAuthenticated]) 
 class getFrotaEntidade(APIView):
     def get(self, request, entidade_id):
         try:
@@ -74,3 +72,19 @@ class getFrotaEntidade(APIView):
         print (frota)
 
         return Response(serializer.data, status=200)
+
+@permission_classes([IsAuthenticated]) 
+class  getCarrosUtilizador(APIView):
+    def get(self, request):
+        try:
+            utilizador = request.user.is_authenticated
+        except Exception as e:
+            return JsonResponse({"error": "Utilizador não autenticado!" }, status=401)
+        
+        Carros = Carro.objects.filter(c_utilizador=utilizador)
+        if not Carros.exists():
+            return JsonResponse({"error": "Não existem carros associados a este utilizador!"}, status=404)
+        serializer = CarroSerializer(Carros, many=True)
+        print (Carros)
+        return Response({"user": utilizador, "Carros": serializer.data}, status=200)
+    

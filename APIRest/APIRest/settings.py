@@ -62,7 +62,7 @@ MIDDLEWARE = [
 
 # Configuração de CORS (para aceitar requisições do frontend)
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",  # adicionar port do frontend
+    "http://localhost:5173",  # adicionar port do frontend
 ]
 
 CORS_ALLOW_CREDENTIALS = True

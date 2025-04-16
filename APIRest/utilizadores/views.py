@@ -145,9 +145,11 @@ class LoginUtilizadorView(APIView):
     def post(self, request):
         data = request.data
 
-        username = data.get("username")
+        email = data.get("username")
         password = data.get("password")
 
+        username = email.split('@')[0]  # remover dominio do email
+        
         try:
             utilizador = Utilizador.objects.get(username = username)
 
@@ -156,6 +158,7 @@ class LoginUtilizadorView(APIView):
             utilizador_auth = authenticate(username = utilizador.username, password = password)
             if utilizador_auth is not None:
                 refresh = RefreshToken.for_user(utilizador_auth)
+                print("entrou")
                 return Response({
                     "message": "Login realizado com sucesso!",
                     "access": str(refresh.access_token),
