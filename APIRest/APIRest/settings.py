@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
     "automoveis",
     "utilizadores",
     "carregamentos",
@@ -57,12 +59,14 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'corsheaders.middleware.CorsMiddleware',
+
 ]
 
 # Configuração de CORS (para aceitar requisições do frontend)
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",  # adicionar port do frontend
     "http://localhost:5173", # Vue
+
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -100,6 +104,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "APIRest.wsgi.application"
+
+#não esquecer
+AUTH_USER_MODEL = 'utilizadores.Utilizador'
 
 
 # Database

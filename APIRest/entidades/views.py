@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.http import JsonResponse
 import json
 from .models import Entidade
 from rest_framework.decorators import api_view , permission_classes
@@ -28,9 +27,9 @@ class RegistarEntidadeView(APIView):
         e_data_registo = data.get("e_data_registo")
         
         if not e_nome or not e_email or not e_nif:
-            return JsonResponse({"error": "Nome, Email e NIF são obrigatórios!"}, status=400)
+            return Response({"error": "Nome, Email e NIF são obrigatórios!"}, status=400)
         if Entidade.objects.filter(e_email=e_email).exists() and Entidade.objects.filter(e_nif=e_nif).exists():
-            return JsonResponse({"error": "Esta Entidade já está inserida no sistema!"}, status=400)
+            return Response({"error": "Esta Entidade já está inserida no sistema!"}, status=400)
         
         
         entidade = Entidade.objects.create(
