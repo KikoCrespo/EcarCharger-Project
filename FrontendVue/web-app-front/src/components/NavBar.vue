@@ -1,6 +1,6 @@
 <template>
     <Disclosure as="nav" class="w-full">
-        <div class="flex h-16 items-center justify-between mr-2 ">
+        <div class="flex h-16 items-center justify-between mr-2">
             <div>
                 <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                     <div class="hidden sm:ml-6 sm:block">
@@ -13,7 +13,7 @@
             </div>
             <div>
                 <!-- Botão de Notificação -->
-                <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <div class="right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                     <Menu as="div" class="relative ml-3">
                     <div>
                         <MenuButton class="relative rounded-full p-1 text-soft-orange focus:ring-2 focus:ring-soft-orange">
