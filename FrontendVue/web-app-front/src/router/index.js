@@ -1,8 +1,10 @@
+
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
-import SignIn from '../views/SigninView.vue'; 
+import LoginView from '@/views/LoginView.vue'; 
 import Home from '../views/HomeView.vue';
 import ListUsers from '@/views/ListUsers.vue';
+import RegistarEntidade from '../views/RegistarEntidadeView.vue'
 
 const routes = [
 
@@ -13,9 +15,16 @@ const routes = [
 
   },
   {
-    path: '/signin',
-    name: 'signin',
-    component: SignIn,
+    path: '/login',
+    name: 'login',
+    component: LoginView,
+    meta: { layout: 'login' }
+  },
+  {
+    path: '/entidades/adicionar',
+    name: 'registarEntidade',
+    component: RegistarEntidade,
+    meta: { layout: 'default' }
   },
   {
     path: '/users/list',
@@ -31,3 +40,5 @@ const router = createRouter({
 });
 
 export default router;
+
+

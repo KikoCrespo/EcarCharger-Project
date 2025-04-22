@@ -2,13 +2,10 @@
 @import "tailwindcss";
 @import 'flowbite';
 
-#app{
-  height: 100vh;
-  width: 100vw;
-}
 
 
-@theme {
+@theme{
+
   --color-soft-orange: #F68B39;
   --color-extra-soft-orange: --alpha(var(--color-soft-orange) / 50%);
   --color-background-orange: --alpha(var(--color-soft-orange) / 10%);
@@ -20,18 +17,16 @@ input[type="checkbox"]:checked {
   border-color: #FFA500; /* Substitua pelo código da cor soft-orange */
 }
 
-.centerComponent{
-  position: absolute; 
-  top: 50%; 
-  left: 50%; 
+.centerComponent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
   transform: translateX(-50%) translateY(-50%);
 }
 
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-}
+/* #app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-weight: normal;
+} */

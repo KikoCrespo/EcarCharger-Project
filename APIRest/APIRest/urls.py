@@ -23,6 +23,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from utilizadores.views import LogoutView
 from utilizadores.views import UtilizadorView
 from utilizadores.views import LoginUtilizadorView
+from utilizadores.views import PerfilUtilizadorView
 
 from automoveis.views import AddCarroEntidadeView
 from automoveis.views import getFrotaEntidade
@@ -41,7 +42,7 @@ urlpatterns = [
     path('api/logout/', LogoutView, name='logout'),
     path('api/utilizadores/registar/', UtilizadorView.as_view(), name='registar'),
     path('api/utilizadores/editar/', UtilizadorView.as_view(), name='editarUtilizador'),
-    path('api/registarEntidade/', RegistarEntidadeView.as_view(), name='registarEntidade'),
+    path('api/entidades/registar', RegistarEntidadeView.as_view(), name='registarEntidade'),
     path('api/utilizadores/listar/', UtilizadorView.as_view(), name='listarUtilizadores'),
     path('api/registarCarro/', AddCarroEntidadeView.as_view(), name='addCarroEntidade'),
     path('api/Frota/<int:entidade_id>/', getFrotaEntidade.as_view(), name='Frota'),
@@ -49,4 +50,5 @@ urlpatterns = [
     path('api/carregamentos/editar/<int:id>/', CarregamentosView.as_view(), name='editarCarregamento'),
     path('api/entidade/postos/adicionar/', PostoCarregamentoView.as_view(), name='adicionarPostoCarregamento'),
     path('api/entidade/postos/listar/', PostoCarregamentoView.as_view(), name='listarPostosCarregamento'),
+    path('api/perfil/', PerfilUtilizadorView.as_view(), name='perfil-utilizador'),
 ]

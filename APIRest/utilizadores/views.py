@@ -157,8 +157,9 @@ class LoginUtilizadorView(APIView):
             
             utilizador_auth = authenticate(username = utilizador.username, password = password)
             if utilizador_auth is not None:
+                utilizador.last_login = timezone.now()
+                utilizador.save()
                 refresh = RefreshToken.for_user(utilizador_auth)
-                print("entrou")
                 return Response({
                     "message": "Login realizado com sucesso!",
                     "access": str(refresh.access_token),
@@ -192,3 +193,26 @@ def LogoutView(request):
             return Response({"error": "Token não fornecido!"})
     else:
         return Response({"error": "Utilizador não autenticado!"})
+    
+
+class PerfilUtilizadorView(APIView):
+    permission_classes = [IsAuthenticated]  # Garante que só utilizadores autenticados podem aceder
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            user = request.user
+            print(user)
+            return Response({
+                'user': {
+                'id': user.id,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email,
+                'username': user.username,
+                'ultimo_registo': user.last_login.strftime('%Y-%m-%d %H:%M:%S') if user.last_login else None,
+            }
+        })    
+        else:
+            return Response({
+                'error': 'utilizador não autenticado'
+            }, status=401)

@@ -1,4 +1,4 @@
-import './assets/main.css'
+import './assets/css/main.css'
 
 
 import { createApp } from 'vue'
@@ -15,3 +15,4 @@ axios.defaults.baseURL = 'http://127.0.0.1:8000/api/'
 app.use(router,axios)
 
 app.mount('#app')
+
