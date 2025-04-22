@@ -4,21 +4,21 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 const form = ref({
-    name: '',
-    email: '',
-    nif: '',
-    contacto: '',
-    morada: '',
-    ordem: ''
+    e_nome: '',
+    e_email: '',
+    e_nif: '',
+    e_contacto: '',
+    e_morada: '',
+    e_ordem: ''
 });
 
 const errors = ref({
-    name: '',
-    email: '',
-    nif: '',
-    contacto: '',
-    morada: '',
-    ordem: ''
+    e_nome: '',
+    e_email: '',
+    e_nif: '',
+    e_contacto: '',
+    e_morada: '',
+    e_ordem: ''
 });
 
 const successMessage = ref('');
@@ -26,102 +26,112 @@ const router = useRouter();
 
 const submitForm = async () => {
     errors.value = {
-        name: '',
-        email: '',
-        nif: '',
-        contacto: '',
-        morada: '',
-        ordem: ''
+        e_nome: '',
+        e_email: '',
+        e_nif: '',
+        e_contacto: '',
+        e_morada: '',
+        e_ordem: ''
     };
     successMessage.value = '';
 
     let hasError = false;
 
-    if (!form.value.name) {
-        errors.value.name = 'Nome é obrigatório.';
+    if (!form.value.e_nome) {
+        errors.value.e_nome = 'Nome é obrigatório.';
         hasError = true;
     }
-    if (!form.value.email) {
-        errors.value.email = 'Email é obrigatório.';
+    if (!form.value.e_email) {
+        errors.value.e_email = 'Email é obrigatório.';
         hasError = true;
     }
-    if (!form.value.nif) {
-        errors.value.nif = 'NIF é obrigatório.';
+    if (!form.value.e_nif) {
+        errors.value.e_nif = 'NIF é obrigatório.';
         hasError = true;
     }
-    if (!form.value.contacto) {
-        errors.value.contacto = 'Contacto é obrigatório.';
+    if (!form.value.e_contacto) {
+        errors.value.e_contacto = 'Contacto é obrigatório.';
         hasError = true;
     }
-    if (!form.value.morada) {
-        errors.value.morada = 'Morada é obrigatória.';
+    if (!form.value.e_morada) {
+        errors.value.e_morada = 'Morada é obrigatória.';
         hasError = true;
     }
-    if (!form.value.ordem) {
-        errors.value.ordem = 'Ordem é obrigatória.';
+    if (!form.value.e_ordem) {
+        errors.value.e_ordem = 'Ordem é obrigatória.';
         hasError = true;
     }
 
     if (hasError) return;
 
     try {
-        await axios.post('http://localhost:8000/api/entidade/', form.value);
+        await axios.post('http://localhost:8000/api/entidades/registar', form.value);
         successMessage.value = 'Entidade registada com sucesso!';
         // router.push('/entidades'); // Se quiseres redirecionar depois
     } catch (error) {
-        console.error(error);
-        successMessage.value = 'Erro ao registar entidade.';
+        if (error.response) {
+            console.error('Erro da API:', error.response.data);
+            alert(error.response.data.error || 'Erro ao registar entidade');
+        } else {
+            console.error('Erro inesperado:', error.message);
+            alert('Erro de rede ou inesperado');
+        }
     }
 };
 </script>
 
 <template>
-    <div class="max-w-xl mx-auto mt-10 p-8 bg-white rounded shadow">
-        <h2 class="text-2xl font-semibold mb-6 text-center">Registar Entidade</h2>
+    <div class="flex w-full">
+        <div class="w-200  mt-10 p-8 bg-white rounded shadow justify-center">
+            <p class="text-2xl font-semibold mb-6">
+                <span class="text-[#c0c0c0]">Entidades &gt;</span>
+                <span class="text-[#00000]"> Adicionar Entidade</span>
+            </p>
 
-        <form @submit.prevent="submitForm" class="space-y-4">
-            <div>
-                <label class="block text-sm font-medium">Nome da Entidade</label>
-                <input v-model="form.name" class="input" />
-                <span v-if="errors.name" class="text-red-500 text-sm">{{ errors.name }}</span>
-            </div>
+            <form @submit.prevent="submitForm" class="space-y-4 ">
+                <div>
+                    <label class="block text-sm font-medium">Nome da Entidade</label>
+                    <input v-model="form.e_nome" class="input" />
+                    <span v-if="errors.e_nome" class="text-red-500 text-sm">{{ errors.e_nome }}</span>
+                </div>
 
-            <div>
-                <label class="block text-sm font-medium">Email</label>
-                <input v-model="form.email" type="email" class="input" />
-                <span v-if="errors.email" class="text-red-500 text-sm">{{ errors.email }}</span>
-            </div>
+                <div>
+                    <label class="block text-sm font-medium">Email</label>
+                    <input v-model="form.e_email" type="email" class="input" />
+                    <span v-if="errors.e_email" class="text-red-500 text-sm">{{ errors.e_email }}</span>
+                </div>
 
-            <div>
-                <label class="block text-sm font-medium">NIF</label>
-                <input v-model="form.nif" class="input" />
-                <span v-if="errors.nif" class="text-red-500 text-sm">{{ errors.nif }}</span>
-            </div>
+                <div>
+                    <label class="block text-sm font-medium">NIF</label>
+                    <input v-model="form.e_nif" class="input" />
+                    <span v-if="errors.e_nif" class="text-red-500 text-sm">{{ errors.e_nif }}</span>
+                </div>
 
-            <div>
-                <label class="block text-sm font-medium">Contacto</label>
-                <input v-model="form.contacto" class="input" />
-                <span v-if="errors.contacto" class="text-red-500 text-sm">{{ errors.contacto }}</span>
-            </div>
+                <div>
+                    <label class="block text-sm font-medium">Contacto</label>
+                    <input v-model="form.e_contacto" class="input" />
+                    <span v-if="errors.e_contacto" class="text-red-500 text-sm">{{ errors.e_contacto }}</span>
+                </div>
 
-            <div>
-                <label class="block text-sm font-medium">Morada</label>
-                <input v-model="form.morada" class="input" />
-                <span v-if="errors.morada" class="text-red-500 text-sm">{{ errors.morada }}</span>
-            </div>
+                <div>
+                    <label class="block text-sm font-medium">Morada</label>
+                    <input v-model="form.e_morada" class="input" />
+                    <span v-if="errors.e_morada" class="text-red-500 text-sm">{{ errors.e_morada }}</span>
+                </div>
 
-            <div>
-                <label class="block text-sm font-medium">Ordem</label>
-                <input v-model="form.ordem" class="input" />
-                <span v-if="errors.ordem" class="text-red-500 text-sm">{{ errors.ordem }}</span>
-            </div>
+                <div>
+                    <label class="block text-sm font-medium">Ordem</label>
+                    <input v-model="form.e_ordem" class="input" />
+                    <span v-if="errors.e_ordem" class="text-red-500 text-sm">{{ errors.e_ordem }}</span>
+                </div>
 
-            <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
-                Registar
-            </button>
+                <button type="submit" class="bg-[#ffA500] text-white py-2 px-4 rounded hover:bg-[#ffA500]-100">
+                    Registar
+                </button>
 
-            <p v-if="successMessage" class="text-green-600 mt-4">{{ successMessage }}</p>
-        </form>
+                <p v-if="successMessage" class="text-green-600 mt-4">{{ successMessage }}</p>
+            </form>
+        </div>
     </div>
 </template>
 
