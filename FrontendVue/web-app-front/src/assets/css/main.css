@@ -2,14 +2,9 @@
 @import "tailwindcss";
 
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
-}
 
-@theme {
+
+@theme{
   --color-soft-orange: #F68B39;
   --color-extra-soft-orange: --alpha(var(--color-soft-orange) / 50%);
   --color-background-orange: --alpha(var(--color-soft-orange) / 10%);
@@ -21,15 +16,23 @@ input[type="checkbox"]:checked {
   border-color: #FFA500; /* Substitua pelo código da cor soft-orange */
 }
 
-.centerComponent{
-  position: absolute; 
-  top: 50%; 
-  left: 50%; 
+.centerComponent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
   transform: translateX(-50%) translateY(-50%);
 }
 
+/* #app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-weight: normal;
+} */
 
-@media (min-width: 1024px) {
+
+
+/* @media (min-width: 1024px) {
   body {
     display: flex;
     place-items: center;
@@ -40,4 +43,4 @@ input[type="checkbox"]:checked {
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
-}
+} */

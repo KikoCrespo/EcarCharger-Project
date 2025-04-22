@@ -10,7 +10,7 @@ const routes = [
         meta: { layout: 'login' }
     },
     {
-        path: '/entidade/adicionar',
+        path: '/entidades/adicionar',
         name: 'registarEntidade',
         component: RegistarEntidade,
         meta: { layout: 'default' }
