@@ -1,14 +1,17 @@
 <script setup>
 import { ref } from 'vue';
-
+import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 const email = ref('');
 const password = ref('');
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const emailError = ref(0);
 const passwordError = ref(0);
+const router = useRouter();
+const loginError = ref('');
 
-const login = () => {
+const login = async() => {
     emailError.value = 0;
     passwordError.value = 0;
 
@@ -28,9 +31,27 @@ const login = () => {
     if (emailError.value === 0 && passwordError.value === 0) {
         // Aqui você pode adicionar a lógica para o login
         // Por exemplo, chamar uma API para autenticação
-        
-    }
-}
+        try {
+            const response = await axios.post('http://localhost:8000/api/login/', {
+                username: email.value,
+                password: password.value
+            });
+            console.log('Resposta da API:', response.data);
+            const access = response.data.access;
+            const refresh = response.data.refresh;
+            localStorage.setItem('access', access);
+            localStorage.setItem('refresh', refresh);
+            if (response.status === 200) {
+                // Redirecionar para a página de dashboard ou outra página
+                //router.push('/dashboard'); 
+                console.log('Login bem-sucedido!');
+            }  
+        } catch (error) {
+            loginError.value = 'Credenciais inválidas ou erro na conexão.';
+            console.error(error);
+        }
+      } 
+  }
 </script>
 
 
@@ -78,6 +99,9 @@ const login = () => {
         class="w-full bg-soft-orange text-black py-3 text-md rounded-md shadow-lg hover:shadow-lg hover:shadow-extra-soft-orange">
         Iniciar Sessão
       </button>
+      <span v-if="loginError" class="text-red-500 text-sm">
+            {{ loginError }}
+      </span>
     </form>
   </div>
 </template>
