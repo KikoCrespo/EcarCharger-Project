@@ -209,7 +209,9 @@ class PerfilUtilizadorView(APIView):
                 'last_name': user.last_name,
                 'email': user.email,
                 'username': user.username,
-                'ultimo_registo': user.last_login.strftime('%Y-%m-%d %H:%M:%S') if user.last_login else None,
+                'last_record': user.last_login.strftime('%Y-%m-%d %H:%M:%S') if user.last_login else None,
+                'type': user.is_staff,
+                'supa': user.is_superuser
             }
         })    
         else:

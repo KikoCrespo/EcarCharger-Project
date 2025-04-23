@@ -1,13 +1,16 @@
 <script setup>
 import { ref } from 'vue';
+
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+
 
 const email = ref('');
 const password = ref('');
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const emailError = ref(0);
 const passwordError = ref(0);
+
 const router = useRouter();
 const loginError = ref('');
 
@@ -53,6 +56,7 @@ const login = async () => {
     }
   }
 }
+
 </script>
 
 <template>
@@ -97,6 +101,3 @@ const login = async () => {
   </div>
 </template>
 
-<style scoped>
-
-</style>

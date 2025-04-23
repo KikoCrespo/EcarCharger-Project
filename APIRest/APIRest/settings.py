@@ -57,12 +57,15 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",  
+    'corsheaders.middleware.CorsMiddleware',
+
 ]
 
 # Configuração de CORS (para aceitar requisições do frontend)
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # adicionar port do frontend
+    "http://localhost:8000",  # adicionar port do frontend
+    "http://localhost:5173", # Vue
+
 ]
 
 CORS_ALLOW_CREDENTIALS = True
