@@ -37,12 +37,19 @@
                 <h1 class="cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
                     Consultar Frota
                 </h1>
-                <h1 class="cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
+                <h1 v-if="user_data.staff" class="cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
                     Adicionar Veículo
                 </h1>
             </div>
 
-            <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-soft-orange text-gray-900" @click="toggleStatistic">
+            <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-soft-orange text-gray-900">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-miterlimit="5.759" d="M3 3v16a2 2 0 0 0 2 2h16"/><path stroke-miterlimit="5.759" d="m7 14l4-4l4 4l6-6"/>
+                    <path d="M18 8h3v3"/></g>
+                </svg>
+                <span class="text-[15px] ml-4 font-bold text-gray-900">Estatísticas</span>
+            </div>
+            
+            <div v-if="user_data.staff" class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-soft-orange text-gray-900" @click="toggleStatistic">
                 <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-miterlimit="5.759" d="M3 3v16a2 2 0 0 0 2 2h16"/><path stroke-miterlimit="5.759" d="m7 14l4-4l4 4l6-6"/>
                     <path d="M18 8h3v3"/></g>
                 </svg>
@@ -57,7 +64,7 @@
             </div>
 
             <!--Submenu da estatisticas-->
-            <div class="text-left text-sm mt-2 w-4/5 mx-auto text-black font-bold" v-show="statisticOpen">
+            <div v-if="user_data.staff" class="text-left text-sm mt-2 w-4/5 mx-auto text-black font-bold" v-show="statisticOpen">
                 <h1 class="cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
                     Pessoais
                 </h1>
@@ -71,7 +78,7 @@
 
 
     
-            <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-soft-orange text-gray-900" @click="toggleUsers">
+            <div v-if="user_data.staff" class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-soft-orange text-gray-900" @click="toggleUsers">
                 <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2m1-17.87a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.85"/>
                 </svg>
                 <div class="flex justify-between w-full items-center">
@@ -85,7 +92,7 @@
             </div>
             
             <!-- Submenu Utilizadores -->
-            <div class="text-left text-sm mt-2 w-4/5 mx-auto text-black font-bold" v-show="usersOpen">
+            <div v-if="user_data.staff" class="text-left text-sm mt-2 w-4/5 mx-auto text-black font-bold" v-show="usersOpen">
                 <h1 class="cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
                     Listar
                 </h1>
@@ -120,6 +127,14 @@
 
 <script setup>
 import { ref } from 'vue';
+import { defineProps } from 'vue';
+
+const props = defineProps({
+user_data: {
+    type: Object,
+    required: true
+}
+});
 
 const usersOpen = ref(false);
 const carsOpen = ref(false);

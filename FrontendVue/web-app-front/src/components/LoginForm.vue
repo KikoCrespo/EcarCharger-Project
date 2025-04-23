@@ -101,6 +101,3 @@ const login = async () => {
   </div>
 </template>
 
-<style scoped>
-
-</style>

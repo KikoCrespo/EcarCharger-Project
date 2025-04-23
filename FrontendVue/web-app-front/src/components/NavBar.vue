@@ -5,8 +5,8 @@
                 <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                     <div class="hidden sm:ml-6 sm:block">
                         <div>
-                            <h1 class="font-semibold text-gray-900">Pedro Silva</h1>
-                            <span class="text-sm text-gray-400 font-extralight">Último acesso 24-02-2025 - 14:32</span>
+                            <h1 class="font-semibold text-gray-900">{{ user_data.first_name }}</h1>
+                            <span class="text-sm text-gray-400 font-extralight">Último acesso {{user_data.last_record}}</span>
                         </div>
                     </div>
                 </div>
@@ -48,6 +48,18 @@
   <script setup>
   import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItems } from '@headlessui/vue'
   import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
+  import { defineProps } from 'vue';
+
+    const props = defineProps({
+    user_data: {
+        type: Object,
+        required: true
+    }
+    });
+
+  
+
 
   
   const notifications = [

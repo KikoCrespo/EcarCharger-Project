@@ -5,26 +5,27 @@ import LoginView from '@/views/LoginView.vue';
 import Home from '../views/HomeView.vue';
 import ListUsers from '@/views/ListUsers.vue';
 import RegistarEntidade from '../views/RegistarEntidadeView.vue'
+import SigninView from '@/views/SigninView.vue';
 
 const routes = [
 
   {
     path: '/',
     name:'home',
-    component: Home
-
+    component: Home,
+    meta: { layout: 'default' }
   },
   {
     path: '/login',
     name: 'login',
-    component: LoginView,
+    component: SigninView,
     meta: { layout: 'login' }
   },
   {
     path: '/entidades/adicionar',
     name: 'registarEntidade',
     component: RegistarEntidade,
-    meta: { layout: 'default' }
+    
   },
   {
     path: '/users/list',

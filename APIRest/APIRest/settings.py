@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     "entidades",
     "notificacoes",
     "postosCarregamento",
-    "corsheaders",
 ]
 
 MIDDLEWARE = [

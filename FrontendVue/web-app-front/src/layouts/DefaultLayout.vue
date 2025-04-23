@@ -2,12 +2,14 @@
 import { reactive, onMounted } from 'vue';
 import axios from 'axios';
 import SideMenu from '@/components/SideMenu.vue';
+import { ref } from 'vue';
 import SideAndNavBarDesktop from '@/components/SideAndNavBarDesktop.vue'
 
 const state = reactive({
     isAuthenticated: false,
     user: null, 
 });
+
 
 // Função para verificar o token e obter os dados do utilizador
 onMounted(() => {
@@ -31,25 +33,19 @@ onMounted(() => {
             });
     }else {
         state.isAuthenticated = false;
+        
         console.log('Token não encontrado. Utilizador não autenticado.');
     }
 });
 
+
+
+
 </script>
 
 <template>
-    <SideAndNavBarDesktop/>
+    <SideAndNavBarDesktop v-if="state.user" :user_data="state.user" />
     
-    <SideMenu id="SideMenu" class="h-full" />
-
-    <!-- Header -->
-    <header id="cabecalho" class="w-full h-16 flex items-center justify-between p-6 bg-white shadow z-10">
-        <!-- Verifica se o state.user está definido antes de tentar acessar o nome -->
-        <p class="text-gray-600" v-if="state.user && state.user.first_name">Olá, {{ state.user.first_name }}</p>
-        <p v-else>Carregando...</p>
-        <p v-if="state.user">Ultimo acesso, {{ state.user.ultimo_registo}}</p>
-
-    </header>
 
 </template>
 
