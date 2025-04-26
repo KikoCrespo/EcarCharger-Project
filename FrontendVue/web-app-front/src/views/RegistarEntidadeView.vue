@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
 import { useRouter } from 'vue-router';
+import axiosInterceptor from '../interceptors/axiosInterceptor';
 
 const form = ref({
     e_nome: '',
@@ -65,7 +65,7 @@ const submitForm = async () => {
     if (hasError) return;
 
     try {
-        await axios.post('http://localhost:8000/api/entidades/registar', form.value);
+        await axiosInterceptor.post('/entidades/registar', form.value);
         successMessage.value = 'Entidade registada com sucesso!';
         // router.push('/entidades'); // Se quiseres redirecionar depois
     } catch (error) {

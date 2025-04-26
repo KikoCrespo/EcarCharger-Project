@@ -14,9 +14,9 @@ from django.contrib.auth import authenticate
 
 
 @permission_classes([IsAuthenticated])     # Tem que ser Authentication
-class UtilizadorView(APIView):
+class AdminView(APIView):
     """
-    Registar utilizador
+    Registar utilizador do tipo admin
     """
     def post(self, request):  
         
@@ -28,7 +28,6 @@ class UtilizadorView(APIView):
             password = data.get("u_password")
             entidade_id = data.get("u_entidade")
             tipo = data.get("u_tipo")
-            imagem = data.get("u_img_perfil")
             
 
             if not email or not password or not entidade_id:
@@ -58,7 +57,7 @@ class UtilizadorView(APIView):
                 u_entidade=entidade,
                 u_tipo=tipo,
                 u_estado=True,
-                u_img_perfil=imagem,
+                u_img_perfil= None,
             )
             
 
@@ -201,7 +200,6 @@ class PerfilUtilizadorView(APIView):
     def get(self, request):
         if request.user.is_authenticated:
             user = request.user
-            print(user)
             return Response({
                 'user': {
                 'id': user.id,
@@ -218,3 +216,57 @@ class PerfilUtilizadorView(APIView):
             return Response({
                 'error': 'utilizador não autenticado'
             }, status=401)
+
+class FuncionarioView(APIView):
+    permission_classes = [IsAuthenticated]  # Garante que só utilizadores autenticados podem aceder
+
+    def post(self, request):
+        data = request.data
+        user = request.user
+
+        if not user.is_authenticated:
+            return Response({"error": "Utilizador não está autenticado!"}, status=401)
+        
+        if not user.is_staff:
+            return Response({"error": "Utilizador não tem permissão para criar outros utilizadores!"}, status=403)
+    
+        firstName = data.get("primeiro_nome")
+        lastName = data.get("ultimo_nome")
+        email = data.get("u_email")
+        password = data.get("u_password")
+        entidade_id = data.get("u_entidade")
+        tipo = data.get("u_tipo")
+        
+        username = email.split('@')[0] # remover domninio do email
+
+        if Utilizador.objects.filter(email = email).exists():
+            return Response({"error": "Este email já está em uso!"}, status=400)
+
+        if Utilizador.objects.filter(username = username).exists():
+            return Response({"error": "Este Username já está em uso!"}, status=400)
+        try:
+            entidade = Entidade.objects.get(id=entidade_id)
+        except Entidade.DoesNotExist:
+            return Response({"error": "Entidade não encontrada!"}, status=404)
+        
+        dataRegisto = timezone.now()
+
+        utilizador = Utilizador.objects.create(
+            first_name= firstName,
+            last_name= lastName,
+            username=username,
+            email=email,
+            password = make_password(password),
+            date_joined=dataRegisto,
+            u_entidade=entidade,
+            u_tipo=tipo,
+            u_estado=True
+        )
+        utilizador.save()
+        serializer = UtilizadorSerializer(utilizador)
+        
+        return Response({
+            'message': f"Utilizador {utilizador.first_name} {utilizador.last_name} registado com sucesso!",
+            'user': serializer.data
+        }, status=201)
+    
