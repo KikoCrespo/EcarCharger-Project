@@ -42,12 +42,12 @@ const login = async () => {
       console.log('Resposta da API:', response.data);
       const access = response.data.access;
       const refresh = response.data.refresh;
-      
+
       if (response.status === 200) {
         sessionStorage.setItem('access', access);
         sessionStorage.setItem('refresh', refresh);
         // Redirecionar para a página de dashboard ou outra página
-        router.push('/entidades/adicionar'); 
+        router.push('/entidades/adicionar');
         console.log('Login bem-sucedido!');
       }
     } catch (error) {
