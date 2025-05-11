@@ -10,7 +10,7 @@
 @theme{
 
   --color-soft-orange: #F68B39;
-  --color-extra-soft-orange: --alpha(var(--color-soft-orange) / 50%);
+  --color-extra-soft-orange: #FBC59C;
   --color-background-orange: --alpha(var(--color-soft-orange) / 10%);
   --font-poppins: "Poppins", sans-serif;
 }

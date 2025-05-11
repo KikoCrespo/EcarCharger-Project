@@ -6,6 +6,8 @@ import Home from '../views/HomeView.vue';
 import ListUsers from '@/views/ListUsers.vue';
 import RegistarEntidade from '../views/RegistarEntidadeView.vue'
 import SigninView from '@/views/SigninView.vue';
+import AddUserView from "@/views/AddUserView.vue";
+import MyVehiclesView from "@/views/MyVehiclesView.vue";
 
 const routes = [
 
@@ -28,9 +30,22 @@ const routes = [
     
   },
   {
-    path: '/users/list',
+    path: '/utilizadores/listar',
     name: 'listusers',
     component: ListUsers,
+    meta: { layout: 'default' }
+  },
+  {
+    path: '/utilizadores/adicionar',
+    name: 'adduser',
+    component: AddUserView,
+    meta: { layout: 'default' }
+  },
+  {
+    path: '/frota/meus-veiculos',
+    name: 'myvehicles',
+    component: MyVehiclesView,
+    meta: { layout: 'default' }
   },
   
 ];
