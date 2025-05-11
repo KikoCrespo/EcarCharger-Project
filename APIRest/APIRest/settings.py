@@ -67,11 +67,17 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",  # adicionar port do frontend
     "http://localhost:5173", # Vue
-
 ]
 
 CORS_ALLOW_CREDENTIALS = True
 
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+    'OPTIONS',
+]
 
 ASGI_APPLICATION = "APIRest.asgi.application"
 

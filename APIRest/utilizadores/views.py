@@ -13,11 +13,12 @@ from django.contrib.auth import authenticate
 
 
 
-@permission_classes([IsAuthenticated])     # Tem que ser Authentication
+   # Tem que ser Authentication
 class AdminView(APIView):
     """
     Registar utilizador do tipo admin
     """
+    @permission_classes([IsAuthenticated])
     def post(self, request):  
         
         try:
@@ -85,6 +86,7 @@ class AdminView(APIView):
         utilizadores = Utilizador.objects.all()
         serializer = UtilizadorSerializer(utilizadores, many=True)
         return Response({"message": "Lista de utilizadores","users": serializer.data }, status=200)
+    
     """
     Atualizar utilizador
     """

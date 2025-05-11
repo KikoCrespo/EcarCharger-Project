@@ -37,7 +37,7 @@
                 <h1 class="cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
                     Consultar Frota
                 </h1>
-                <h1 v-if="user_data.staff" class="cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
+                <h1 v-if="user_data.type" class="cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
                     Adicionar Veículo
                 </h1>
             </div>
@@ -49,7 +49,7 @@
                 <span class="text-[15px] ml-4 font-bold text-gray-900">Estatísticas</span>
             </div>
             
-            <div v-if="user_data.staff" class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-soft-orange text-gray-900" @click="toggleStatistic">
+            <div v-if="user_data.type" class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-soft-orange text-gray-900" @click="toggleStatistic">
                 <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-miterlimit="5.759" d="M3 3v16a2 2 0 0 0 2 2h16"/><path stroke-miterlimit="5.759" d="m7 14l4-4l4 4l6-6"/>
                     <path d="M18 8h3v3"/></g>
                 </svg>
@@ -64,7 +64,7 @@
             </div>
 
             <!--Submenu da estatisticas-->
-            <div v-if="user_data.staff" class="text-left text-sm mt-2 w-4/5 mx-auto text-black font-bold" v-show="statisticOpen">
+            <div v-if="user_data.type" class="text-left text-sm mt-2 w-4/5 mx-auto text-black font-bold" v-show="statisticOpen">
                 <h1 class="cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
                     Pessoais
                 </h1>
@@ -78,7 +78,7 @@
 
 
     
-            <div v-if="user_data.staff" class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-soft-orange text-gray-900" @click="toggleUsers">
+            <div v-if="user_data.type" class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-soft-orange text-gray-900" @click="toggleUsers">
                 <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2m1-17.87a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.85"/>
                 </svg>
                 <div class="flex justify-between w-full items-center">
@@ -92,20 +92,18 @@
             </div>
             
             <!-- Submenu Utilizadores -->
-            <div v-if="user_data.staff" class="text-left text-sm mt-2 w-4/5 mx-auto text-black font-bold" v-show="usersOpen">
-                <h1 class="cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
+            <div v-if="user_data.type" class="text-left text-sm mt-2 w-4/5 mx-auto text-black font-bold" v-show="usersOpen">
+                <router-link to="/utilizadores/listar" class="block cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
                     Listar
-                </h1>
-                <h1 class="cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
+                </router-link>
+                <router-link to="/utilizadores/adicionar" class="block cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
                     Adicionar utilizador
-                </h1>
-                <h1 class="cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
+                </router-link>
+                <router-link to="/utilizadores/pedidos" class="block cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
                     Pedidos de alteração
-                </h1>
+                </router-link>
             </div>
         </div>
-        
-        
        <div>
             <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-soft-orange text-gray-900">
                 <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24"><path fill="currentColor" d="m19.59 15.5l-1.82-1.3c.3-1.08.32-2.25 0-3.42l1.82-1.28L18.14 7l-2.03.92c-.79-.8-1.79-1.42-2.96-1.71L12.95 4h-2.9l-.2 2.21c-1.17.29-2.17.91-2.96 1.71L4.86 7L3.41 9.5l1.82 1.28c-.32 1.17-.3 2.34 0 3.42l-1.82 1.3L4.86 18l2.03-.93c.79.79 1.79 1.39 2.96 1.7l.2 2.23h2.9l.2-2.23c1.17-.31 2.17-.91 2.96-1.7l2.03.93l1.45-2.5M13.5 3c.27 0 .5.2.5.46l.18 2.04c.76.28 1.44.69 2.05 1.18l1.85-.87c.23-.12.52-.04.66.19l2 3.5c.14.21.06.5-.16.65l-1.67 1.17c.13.8.12 1.59 0 2.36l1.67 1.17c.22.15.3.44.16.65l-2 3.5c-.14.21-.43.29-.66.17l-1.85-.86c-.61.49-1.29.89-2.05 1.19l-.18 2c0 .29-.23.5-.5.5h-4a.5.5 0 0 1-.5-.5l-.18-2c-.76-.3-1.44-.7-2.05-1.19l-1.85.86c-.23.12-.52.04-.66-.17l-2-3.5c-.14-.21-.06-.5.16-.65l1.67-1.17c-.12-.77-.13-1.56 0-2.36l-1.67-1.17c-.22-.15-.3-.44-.16-.65l2-3.5c.14-.23.43-.31.66-.19l1.85.87c.61-.49 1.29-.9 2.05-1.18L9 3.46c0-.26.23-.46.5-.46h4m-2 6a3.5 3.5 0 0 1 3.5 3.5a3.5 3.5 0 0 1-3.5 3.5A3.5 3.5 0 0 1 8 12.5A3.5 3.5 0 0 1 11.5 9m0 1A2.5 2.5 0 0 0 9 12.5a2.5 2.5 0 0 0 2.5 2.5a2.5 2.5 0 0 0 2.5-2.5a2.5 2.5 0 0 0-2.5-2.5Z"/>

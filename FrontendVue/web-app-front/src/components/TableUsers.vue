@@ -1,70 +1,56 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import ConfirmModal from './ConfirmModal.vue'
 import ActionsListHeader from './ActionsListHeader.vue'
+import axios from 'axios'
 
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { ArrowDownTrayIcon, PlusIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
+//import { c } from 'vite/dist/node/moduleRunnerTransport.d-CXw_Ws6P'
 
 const searchQuery = ref('')
 const selectAll = ref(false)
 
-const users = ref([
-  {
-    id: 1,
-    name: 'Neil Sims',
-    email: 'neil.sims@flowbite.com',
-    role: 'React Developer',
-    date: '12/04/2004',
-    status: 'Ativo',
-    active: true,
-    checked: false
-  },
-  {
-    id: 2,
-    name: 'Bonnie Green',
-    email: 'bonnie@flowbite.com',
-    role: 'Designer',
-    date: '12/04/2004',
-    status: 'Ativo',
-    active: true,
-    checked: false
-  },
-  {
-    id: 3,
-    name: 'Jese Leos',
-    email: 'jese@flowbite.com',
-    role: 'Vue JS Developer',
-    date: '12/04/2004',
-    status: 'Ativo',
-    active: true,
-    checked: false
-  },
-  {
-    id: 4,
-    name: 'Thomas Lean',
-    email: 'thomes@flowbite.com',
-    role: 'UI/UX Engineer',
-    date: '12/04/2004',
-    status: 'Ativo',
-    active: true,
-    checked: false
-  },
-  {
-    id: 5,
-    name: 'Leslie Livingston',
-    email: 'leslie@flowbite.com',
-    role: 'SEO Specialist',
-    date: '12/04/2004',
-    status: 'Inativo',
-    active: false,
-    checked: false
+const users = ref([])
+
+
+onMounted(async () => {
+  try {
+    const token = sessionStorage.getItem('access');
+    if (token) {
+      axios
+        .get('http://localhost:8000/api/utilizadores/listar/', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          console.log('Resposta da API:', response);
+        
+          if (response.data && Array.isArray(response.data.users)) {
+            users.value = response.data.users;
+            console.log('Utilizadores:', users.value);
+          } else {
+            console.error('Formato de dados inválido recebido da API.');
+          }
+        })
+        .catch((error) => {
+          console.error('Erro ao recuperar dados dos utilizadores:', error);
+          state.isAuthenticated = false;
+        });
+    } else {
+      state.isAuthenticated = false;
+      console.log('Token não encontrado. Utilizador não autenticado.');
+    }
+  } catch (error) {
+    console.error('Erro ao comunicar com a base de dados:', error);
   }
-])
+});
+
 
 const filteredUsers = computed(() => {
   return users.value.filter(user =>
-    user.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+    user.first_name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
     user.email.toLowerCase().includes(searchQuery.value.toLowerCase())
   )
 })
@@ -311,16 +297,16 @@ function closeModal() {
             <td class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
               <img class="w-10 h-10 rounded-full" src="" alt="User image" />
               <div class="ps-3">
-                <div class="text-base font-semibold">{{ user.name }}</div>
+                <div class="text-base font-semibold">{{ user.first_name }}</div>
                 <div class="font-normal text-gray-500">{{ user.email }}</div>
               </div>
             </td>
             <td class="px-6 py-4 text-gray-900">{{ user.role }}</td>
-            <td class="px-6 py-4 text-gray-900">{{ user.date }}</td>
+            <td class="px-6 py-4 text-gray-900">{{ user.date_joined }}</td>
             <td class="px-6 py-4 text-gray-900">
               <div class="flex items-center">
                 <div class="h-2.5 w-2.5 rounded-full me-2"
-                  :class="user.active ? 'bg-green-500' : 'bg-red-500'"></div>
+                  :class="user.is_active ? 'bg-green-500' : 'bg-red-500'"></div>
                 {{ user.status }}
               </div>
             </td>

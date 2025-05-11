@@ -8,6 +8,7 @@ import RegistarEntidade from '../views/RegistarEntidadeView.vue'
 import SigninView from '@/views/SigninView.vue';
 import AddUserView from "@/views/AddUserView.vue";
 import MyVehiclesView from "@/views/MyVehiclesView.vue";
+import ProfileUserView from "@/views/ProfileUserView.vue";
 
 const routes = [
 
@@ -47,7 +48,12 @@ const routes = [
     component: MyVehiclesView,
     meta: { layout: 'default' }
   },
-  
+  {
+    path: '/utilizadores/perfil',
+    name: 'profileuser',
+    component: ProfileUserView,
+    meta: { layout: 'default' }
+  },
 ];
 
 const router = createRouter({
