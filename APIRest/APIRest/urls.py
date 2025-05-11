@@ -34,6 +34,7 @@ from carregamentos.views import CarregamentosView
 
 from postosCarregamento.views import PostoCarregamentoView
 
+
 urlpatterns = [
 
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # refresh token endpoint
@@ -52,3 +53,5 @@ urlpatterns = [
     path('api/entidade/postos/listar/', PostoCarregamentoView.as_view(), name='listarPostosCarregamento'),
     path('api/perfil/', PerfilUtilizadorView.as_view(), name='perfil-utilizador'),
 ]
+
+

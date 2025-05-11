@@ -20,7 +20,6 @@ const props = defineProps({
 <div class="flex h-full">
     <SideBar :user_data="user_data" class="hidden sm:flex"/>
     <NavBar :user_data="user_data" class=""/>
-   
 </div>
 
 </template>
