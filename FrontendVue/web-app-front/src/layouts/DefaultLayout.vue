@@ -88,7 +88,7 @@ onMounted(() => {
                 </ul>
             </header>
             <main class="mt-5 px-5 h-auto overflow-auto">
-                <router-view />
+                <router-view v-if="state.user" :user_data="state.user"/>
             </main>
         </div>
         

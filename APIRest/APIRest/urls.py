@@ -16,8 +16,11 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path ,include
 from rest_framework_simplejwt.views import TokenRefreshView
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 
 from utilizadores.views import LogoutView
@@ -25,6 +28,8 @@ from utilizadores.views import AdminView
 #from utilizadores.views import UtilizadorView
 from utilizadores.views import LoginUtilizadorView
 from utilizadores.views import PerfilUtilizadorView
+from utilizadores.views import FuncionarioView
+
 
 from automoveis.views import AddCarroEntidadeView
 from automoveis.views import getFrotaEntidade
@@ -43,7 +48,7 @@ urlpatterns = [
     path('api/login/', LoginUtilizadorView.as_view(), name='loginUtilizador'),
     path('api/logout/', LogoutView, name='logout'),
     path('api/utilizadores/registar/', AdminView.as_view(), name='registar'),
-    path('api/utilizadores/editar/', AdminView.as_view(), name='editarUtilizador'),
+    path('api/utilizadores/editar/', FuncionarioView.as_view(), name='editarUtilizador'),
     path('api/entidades/registar', RegistarEntidadeView.as_view(), name='registarEntidade'),
     path('api/utilizadores/listar/', AdminView.as_view(), name='listarUtilizadores'),
     path('api/registarCarro/', AddCarroEntidadeView.as_view(), name='addCarroEntidade'),
@@ -55,4 +60,5 @@ urlpatterns = [
     path('api/perfil/', PerfilUtilizadorView.as_view(), name='perfil-utilizador'),
 ]
 
-
+if settings.DEBUG:  # Só serve os arquivos de mídia durante o desenvolvimento
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -197,11 +197,14 @@ def LogoutView(request):
     
 
 class PerfilUtilizadorView(APIView):
-    permission_classes = [IsAuthenticated]  # Garante que só utilizadores autenticados podem aceder
 
+    permission_classes = [IsAuthenticated]  # Garante que só utilizadores autenticados podem aceder
     def get(self, request):
         if request.user.is_authenticated:
             user = request.user
+            if user.u_img_perfil:  # Verifique se o usuário tem uma foto
+                foto_url = request.build_absolute_uri(user.u_img_perfil.url)
+
             return Response({
                 'user': {
                 'id': user.id,
@@ -210,8 +213,10 @@ class PerfilUtilizadorView(APIView):
                 'email': user.email,
                 'username': user.username,
                 'last_record': user.last_login.strftime('%Y-%m-%d %H:%M:%S') if user.last_login else None,
+                'department': user.u_departamento,
                 'type': user.is_staff,
-                'supa': user.is_superuser
+                'supa': user.is_superuser,
+                'foto_url': foto_url if user.u_img_perfil else None,
             }
         })    
         else:
@@ -220,8 +225,8 @@ class PerfilUtilizadorView(APIView):
             }, status=401)
 
 class FuncionarioView(APIView):
-    permission_classes = [IsAuthenticated]  # Garante que só utilizadores autenticados podem aceder
 
+    permission_classes = [IsAuthenticated]  # Garante que só utilizadores autenticados podem aceder
     def post(self, request):
         data = request.data
         user = request.user
@@ -271,4 +276,42 @@ class FuncionarioView(APIView):
             'message': f"Utilizador {utilizador.first_name} {utilizador.last_name} registado com sucesso!",
             'user': serializer.data
         }, status=201)
+    
+    def put(self, request):
+        try:
+            utilizador = request.user  
+            if not utilizador.is_authenticated: 
+                return Response({"error": "Utilizador não autenticado!"}, status=401)
+
+            data = request.data
+            if not data:
+                return Response({"error": "Dados não fornecidos!"}, status=400) 
+
+            firstName = data.get("first_name")
+            lastName = data.get("last_name")
+            password = make_password(data.get("password"))
+            departamento = data.get("u_departamento")
+
+
+            utilizador.first_name = firstName 
+            utilizador.last_name = lastName    
+            utilizador.password = password
+            utilizador.u_departamento = departamento
+
+            if 'foto' in request.FILES:
+                utilizador.u_img_perfil = request.FILES['foto']
+
+            utilizador.save() 
+
+            serializer = UtilizadorSerializer(utilizador)
+
+            return Response({
+                'message': f"Utilizador {utilizador.first_name} {utilizador.last_name} atualizado com sucesso!",
+                'user': serializer.data}, status=200)
+        
+        except json.JSONDecodeError:
+            return Response({"error": "Formato de dados inválido!"}, status=400)
+        
+        except Utilizador.DoesNotExist:
+            return Response({"error": "Utilizador não encontrado!"}, status=404)
     
