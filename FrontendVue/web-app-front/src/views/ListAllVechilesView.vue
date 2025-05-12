@@ -12,7 +12,7 @@
           </svg>
         </div>
         <input v-model="searchQuery" type="text" id="table-search-users"
-               class="block p-2 ps-10 text-sm rounded-lg w-80 bg-transparent border-extra-soft-orange hover:border-soft-orange focus:ring-soft-orange placeholder-gray-500 text-gray-900"
+               class="block p-2 ps-10 text-sm rounded-lg w-80 bg-transparent duration-300 border-extra-soft-orange hover:border-soft-orange focus:ring-soft-orange placeholder-gray-500 text-gray-900"
                placeholder="Pesquisar veículos" />
       </div>
       <div>

@@ -8,6 +8,7 @@ import SigninView from '@/views/SigninView.vue';
 import AddUserView from "@/views/AddUserView.vue";
 import MyVehiclesView from "@/views/MyVehiclesView.vue";
 import ListAllVechilesView from "@/views/ListAllVechilesView.vue";
+import VehicleDetailView from "@/views/VehicleDetailView.vue";
 
 const routes = [
 
@@ -51,6 +52,12 @@ const routes = [
     path: '/frota/consultar',
     name: 'listvehicles',
     component: ListAllVechilesView,
+    meta: { layout: 'default' }
+  },
+  {
+    path: '/frota/meus-veiculos/detail',
+    name: 'vehicledetail',
+    component: VehicleDetailView,
     meta: { layout: 'default' }
   },
   
