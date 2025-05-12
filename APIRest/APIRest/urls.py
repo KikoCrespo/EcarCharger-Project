@@ -21,7 +21,8 @@ from rest_framework_simplejwt.views import TokenRefreshView
 
 
 from utilizadores.views import LogoutView
-from utilizadores.views import UtilizadorView
+from utilizadores.views import AdminView
+#from utilizadores.views import UtilizadorView
 from utilizadores.views import LoginUtilizadorView
 from utilizadores.views import PerfilUtilizadorView
 
@@ -41,10 +42,10 @@ urlpatterns = [
     path("api/admin/", admin.site.urls),
     path('api/login/', LoginUtilizadorView.as_view(), name='loginUtilizador'),
     path('api/logout/', LogoutView, name='logout'),
-    path('api/utilizadores/registar/', UtilizadorView.as_view(), name='registar'),
-    path('api/utilizadores/editar/', UtilizadorView.as_view(), name='editarUtilizador'),
+    path('api/utilizadores/registar/', AdminView.as_view(), name='registar'),
+    path('api/utilizadores/editar/', AdminView.as_view(), name='editarUtilizador'),
     path('api/entidades/registar', RegistarEntidadeView.as_view(), name='registarEntidade'),
-    path('api/utilizadores/listar/', UtilizadorView.as_view(), name='listarUtilizadores'),
+    path('api/utilizadores/listar/', AdminView.as_view(), name='listarUtilizadores'),
     path('api/registarCarro/', AddCarroEntidadeView.as_view(), name='addCarroEntidade'),
     path('api/Frota/<int:entidade_id>/', getFrotaEntidade.as_view(), name='Frota'),
     path('api/carregamentos/iniciar/', CarregamentosView.as_view(), name='carregamentos'),

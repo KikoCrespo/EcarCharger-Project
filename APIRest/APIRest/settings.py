@@ -67,11 +67,17 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",  # adicionar port do frontend
     "http://localhost:5173", # Vue
-
 ]
 
 CORS_ALLOW_CREDENTIALS = True
 
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+    'OPTIONS',
+]
 
 ASGI_APPLICATION = "APIRest.asgi.application"
 
@@ -93,7 +99,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Token expira em 15 min
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # Token expira em 5 min
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Refresh token dura 7 dias
     'ROTATE_REFRESH_TOKENS': True,  # Gera um novo refresh token quando usado
     'BLACKLIST_AFTER_ROTATION': True,  # Revoga o antigo refresh token
