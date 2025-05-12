@@ -12,7 +12,7 @@
           </svg>
         </div>
         <input v-model="searchQuery" type="text" id="table-search-users"
-               class="block p-2 ps-10 text-sm rounded-lg w-80  duration-300 bg-transparent border-extra-soft-orange hover:border-soft-orange focus:ring-soft-orange placeholder-gray-500 text-gray-900"
+               class="block p-2 ps-10 text-sm rounded-lg w-80 bg-transparent duration-300 border-extra-soft-orange hover:border-soft-orange focus:ring-soft-orange placeholder-gray-500 text-gray-900"
                placeholder="Pesquisar veículos" />
       </div>
       <div>
@@ -128,13 +128,13 @@
               @click="openRequestModal(vehicle)"
           >
             <CarIcon class="h-4 w-4" />
-            <span>Terminar Requisição</span>
+            <span>Requisição</span>
           </button>
 
         </div>
       </div>
     </div>
-    <EndVehicleRequesitionModal
+    <RequestVehicleModal
         v-if="selectedVehicle"
         :show="showRequestModal"
         :vehicle="selectedVehicle"
@@ -158,7 +158,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import EndVehicleRequesitionModal from "@/components/EndVehicleRequesitionModal.vue";
+import RequestVehicleModal from "@/components/RequestVehicleModal.vue";
 import FilterModal from "@/components/FilterVehiclesModal.vue";
 import {
   FilterIcon,
@@ -171,6 +171,7 @@ import {
   Cog,
 
 } from 'lucide-vue-next';
+
 
 
 // Estado

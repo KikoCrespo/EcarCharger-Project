@@ -13,7 +13,7 @@ from django.contrib.auth import authenticate
 
 
 
-   # Tem que ser Authentication
+# Tem que ser Authentication
 class AdminView(APIView):
     """
     Registar utilizador do tipo admin

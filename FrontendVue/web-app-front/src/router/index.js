@@ -1,14 +1,14 @@
 
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
-import LoginView from '@/views/LoginView.vue'; 
 import Home from '../views/HomeView.vue';
 import ListUsers from '@/views/ListUsers.vue';
 import RegistarEntidade from '../views/RegistarEntidadeView.vue'
 import SigninView from '@/views/SigninView.vue';
 import AddUserView from "@/views/AddUserView.vue";
 import MyVehiclesView from "@/views/MyVehiclesView.vue";
-import ProfileUserView from "@/views/ProfileUserView.vue";
+import ListAllVechilesView from "@/views/ListAllVechilesView.vue";
+import VehicleDetailView from "@/views/VehicleDetailView.vue";
 
 const routes = [
 
@@ -49,11 +49,18 @@ const routes = [
     meta: { layout: 'default' }
   },
   {
-    path: '/utilizadores/perfil',
-    name: 'profileuser',
-    component: ProfileUserView,
+    path: '/frota/consultar',
+    name: 'listvehicles',
+    component: ListAllVechilesView,
     meta: { layout: 'default' }
   },
+  {
+    path: '/frota/meus-veiculos/detail',
+    name: 'vehicledetail',
+    component: VehicleDetailView,
+    meta: { layout: 'default' }
+  },
+  
 ];
 
 const router = createRouter({
