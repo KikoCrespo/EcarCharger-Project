@@ -128,13 +128,13 @@
               @click="openRequestModal(vehicle)"
           >
             <CarIcon class="h-4 w-4" />
-            <span>Terminar Requisição</span>
+            <span>Requisição</span>
           </button>
 
         </div>
       </div>
     </div>
-    <EndVehicleRequesitionModal
+    <RequestVehicleModal
         v-if="selectedVehicle"
         :show="showRequestModal"
         :vehicle="selectedVehicle"
@@ -158,7 +158,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import EndVehicleRequesitionModal from "@/components/EndVehicleRequesitionModal.vue";
+import RequestVehicleModal from "@/components/RequestVehicleModal.vue";
 import FilterModal from "@/components/FilterVehiclesModal.vue";
 import {
   FilterIcon,
@@ -171,6 +171,7 @@ import {
   Cog,
 
 } from 'lucide-vue-next';
+
 
 
 // Estado

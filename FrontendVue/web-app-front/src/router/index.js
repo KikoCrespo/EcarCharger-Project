@@ -1,13 +1,13 @@
 
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
-import LoginView from '@/views/LoginView.vue'; 
 import Home from '../views/HomeView.vue';
 import ListUsers from '@/views/ListUsers.vue';
 import RegistarEntidade from '../views/RegistarEntidadeView.vue'
 import SigninView from '@/views/SigninView.vue';
 import AddUserView from "@/views/AddUserView.vue";
 import MyVehiclesView from "@/views/MyVehiclesView.vue";
+import ListAllVechilesView from "@/views/ListAllVechilesView.vue";
 
 const routes = [
 
@@ -45,6 +45,12 @@ const routes = [
     path: '/frota/meus-veiculos',
     name: 'myvehicles',
     component: MyVehiclesView,
+    meta: { layout: 'default' }
+  },
+  {
+    path: '/frota/consultar',
+    name: 'listvehicles',
+    component: ListAllVechilesView,
     meta: { layout: 'default' }
   },
   
