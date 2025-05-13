@@ -7,7 +7,8 @@ class Utilizador(AbstractUser):
     u_entidade = models.ForeignKey(Entidade, on_delete=models.CASCADE)
     u_tipo = models.IntegerField()
     u_estado = models.BooleanField(default=False)
-    u_img_perfil = models.ImageField(max_length=255, blank=True, null=True)
+    u_img_perfil = models.ImageField(upload_to='fotos_perfil/', blank=True, null=True)
+    u_departamento = models.CharField(max_length=255, blank=True, null=True)
 
     
     class Meta:
