@@ -1,7 +1,7 @@
 
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../views/HomeView.vue';
+import DasboardView from '../views/DashboardView.vue';
 import ListUsers from '@/views/ListUsers.vue';
 import RegistarEntidade from '../views/RegistarEntidadeView.vue'
 import SigninView from '@/views/SigninView.vue';
@@ -15,7 +15,7 @@ const routes = [
   {
     path: '/',
     name:'home',
-    component: Home,
+    component: DasboardView,
     meta: { layout: 'default' }
   },
   {

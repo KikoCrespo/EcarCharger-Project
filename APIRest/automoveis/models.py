@@ -16,6 +16,8 @@ class Carro(models.Model):
     c_img = models.ImageField(max_length=255, blank=True, null=True)
     c_utilizador = models.ManyToManyField(Utilizador, blank=True)
     c_entidade = models.ForeignKey(Entidade, on_delete=models.CASCADE)
+    # estado (uso, manuntenção, disponivel),cor, lugares, transmissao, combustivel(diesel/gasolina/eletrico), quilometragem, old_quilometragem  / podem ser null -> emissões C02, consumo médio, capacidade tanque 
+
 
     class Meta:
         db_table = 'Carro' 

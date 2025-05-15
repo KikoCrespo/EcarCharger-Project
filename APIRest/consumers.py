@@ -14,6 +14,6 @@ class SensorDataConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         print(f"🔵 Mensagem recebida do cliente: {text_data}")
 
-    async def send_sensor_data(self, event):  # Este nome tem que bater com o tipo passado
+    async def send_sensor_data(self, event):
         print(f"🟡 Enviando dados para cliente: {event['data']}")
         await self.send(text_data=json.dumps(event["data"]))
