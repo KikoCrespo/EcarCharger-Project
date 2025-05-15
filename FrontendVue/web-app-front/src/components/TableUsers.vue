@@ -2,10 +2,10 @@
 import { ref, computed, onMounted } from 'vue'
 import ConfirmModal from './ConfirmModal.vue'
 import ActionsListHeader from './ActionsListHeader.vue'
-import api from '@/interceptors/axiosInterceptor'
+import axios from 'axios'
 
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { ArrowDownTrayIcon, PlusIcon, ChevronDownIcon, UserCircleIcon } from '@heroicons/vue/24/outline'
+import { ArrowDownTrayIcon, PlusIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
 //import { c } from 'vite/dist/node/moduleRunnerTransport.d-CXw_Ws6P'
 
 const searchQuery = ref('')
@@ -18,7 +18,8 @@ onMounted(async () => {
   try {
     const token = sessionStorage.getItem('access');
     if (token) {
-      api.get('http://localhost:8000/api/utilizadores/listar/', {
+      axios
+        .get('http://localhost:8000/api/utilizadores/listar/', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -249,7 +250,7 @@ function closeModal() {
         <span class="sm:ml-3 p-4">
         <button @click="toogleRole" id="dropdownRoleButton" data-dropdown-toggle="dropdownRole" class="inline-flex items-center rounded-md  px-3 py-2 text-sm font-semibold text-gray-900 border border-extra-soft-orange focus:outline-none hover:border-soft-orange focus:ring-2 focus:ring-soft-orange">
           <ChevronDownIcon class="mr-1.5 -ml-0.5 size-5 transition-transform duration-300" :class="{'rotate-180': roleOpen}" aria-hidden="true"/>
-          Departamento
+          Cargos
         </button>
       </span>
         <div id="dropdownRole" class="z-10 hidden bg-white divide-y divide-soft-orange rounded-lg shadow-sm w-44 mt-2 mr-4">
@@ -258,42 +259,7 @@ function closeModal() {
                   <label class="flex block w-full text-left px-4 py-2">
                     <input type="checkbox"
                       class="h-5 w-5 text-amber-600 border border-soft-orange rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-soft-orange disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100" />
-                    <span class="ml-2">Recursos Humanos</span>
-                  </label>
-                </li>
-                <li>
-                  <label class="flex block w-full text-left px-4 py-2">
-                    <input type="checkbox"
-                      class="h-5 w-5 text-amber-600 border border-soft-orange rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-soft-orange disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100" />
-                    <span class="ml-2">Engenharia</span>
-                  </label>
-                </li>
-                <li>
-                  <label class="flex block w-full text-left px-4 py-2">
-                    <input type="checkbox"
-                      class="h-5 w-5 text-amber-600 border border-soft-orange rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-soft-orange disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100" />
-                    <span class="ml-2">Marketing</span>
-                  </label>
-                </li>
-                <li>
-                  <label class="flex block w-full text-left px-4 py-2">
-                    <input type="checkbox"
-                      class="h-5 w-5 text-amber-600 border border-soft-orange rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-soft-orange disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100" />
-                    <span class="ml-2">TI</span>
-                  </label>
-                </li>
-                <li>
-                  <label class="flex block w-full text-left px-4 py-2">
-                    <input type="checkbox"
-                      class="h-5 w-5 text-amber-600 border border-soft-orange rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-soft-orange disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100" />
-                    <span class="ml-2">Financeiro</span>
-                  </label>
-                </li>
-                <li>
-                  <label class="flex block w-full text-left px-4 py-2">
-                    <input type="checkbox"
-                      class="h-5 w-5 text-amber-600 border border-soft-orange rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-soft-orange disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100" />
-                    <span class="ml-2">Operações</span>
+                    <span class="ml-2">Ativo</span>
                   </label>
                 </li>
               </ul>
@@ -316,7 +282,7 @@ function closeModal() {
               </div>
             </th>
             <th class="px-6 py-3">Nome</th>
-            <th class="px-6 py-3">Departamento</th>
+            <th class="px-6 py-3">Cargo</th>
             <th class="px-6 py-3">Data de registo</th>
             <th class="px-6 py-3">Status</th>
             <th class="px-6 py-3">Ações</th>
@@ -329,14 +295,13 @@ function closeModal() {
                 class="w-4 h-4 text-soft-orange border-gray-300 rounded-sm focus:ring-soft-orange focus:ring-2" />
             </td>
             <td class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-              <img v-if="user.u_img_perfil" class="w-12 h-12 rounded-full" :src="user.u_img_perfil" alt="image" />
-              <UserCircleIcon v-else class="w-12 h-12 text-gray-300" aria-hidden="true" />
+              <img class="w-10 h-10 rounded-full" src="" alt="User image" />
               <div class="ps-3">
                 <div class="text-base font-semibold">{{ user.first_name }}</div>
                 <div class="font-normal text-gray-500">{{ user.email }}</div>
               </div>
             </td>
-            <td class="px-6 py-4 text-gray-900">{{ user.u_departamento }}</td>
+            <td class="px-6 py-4 text-gray-900">{{ user.role }}</td>
             <td class="px-6 py-4 text-gray-900">{{ user.date_joined }}</td>
             <td class="px-6 py-4 text-gray-900">
               <div class="flex items-center">

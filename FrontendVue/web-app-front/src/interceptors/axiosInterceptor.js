@@ -1,51 +1,42 @@
-import axios from 'axios'
+import axios from 'axios';
+import { useRouter } from 'vue-router';
 
-const api = axios.create({
-    baseURL: 'http://localhost:8000/api/',
-})
+const router = useRouter();
 
-// Adiciona o token a todas as requests
-api.interceptors.request.use(config => {
-    const access = sessionStorage.getItem('access')
-    if (access) {
-        config.headers['Authorization'] = `Bearer ${access}`
-    }
-    return config
-})
+axios.defaults.baseURL = 'http://127.0.0.1:8000/api/';
 
-// Interceptor de resposta para lidar com 401 e renovar token
-api.interceptors.response.use(response => response,
+axios.interceptors.response.use(
+    response => response,
     async error => {
-        const originalRequest = error.config
+        const originalRequest = error.config;
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true
+        if (error.response?.status === 401 && !originalRequest.__isRetryRequest) {
+            originalRequest.__isRetryRequest = true;
+            const refresh = sessionStorage.getItem('refresh');
 
-            const refresh = sessionStorage.getItem('refresh')
             if (!refresh) {
-                window.location.href = '/login'
-                return Promise.reject(error)
+                router.push('/login');
+                return Promise.reject(error);
             }
 
             try {
-                const res = await axios.post('http://localhost:8000/api/token/refresh/', {
-                    refresh: refresh
-                })
+                const res = await axios.post('/token/refresh/', { refresh });
+                const newAccess = res.data.access;
+                sessionStorage.setItem('access', newAccess);
 
-                const newAccess = res.data.access
-                sessionStorage.setItem('access', newAccess)
-
-                originalRequest.headers['Authorization'] = `Bearer ${newAccess}`
-                return api(originalRequest)
+                originalRequest.headers['Authorization'] = `Bearer ${newAccess}`;
+                return axios(originalRequest);
             } catch (err) {
-                sessionStorage.clear()
-                window.location.href = '/login'
-                return Promise.reject(err)
+                sessionStorage.clear();
+                router.push('/login');
+                return Promise.reject(err);
             }
         }
 
-        return Promise.reject(error)
+        return Promise.reject(error);
     }
-)
+);
 
-export default api
+
+const axiosInterceptor = axios;
+export default axiosInterceptor;

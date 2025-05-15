@@ -116,7 +116,7 @@
 <script setup>
 import { onMounted, ref, defineProps, watch } from 'vue'
 import { UserCircleIcon, PencilIcon } from '@heroicons/vue/24/outline'
-import api from '@/interceptors/axiosInterceptor'
+import axios from 'axios'
 
 const isEditing = ref(false)
 const selectedImage = ref(null)
@@ -201,7 +201,7 @@ const handleSubmit = () => {
     formData.append('foto', selectedImage.value);  // <-- importante
   }
 
-  api.put('http://localhost:8000/api/utilizadores/editar/', formData, {
+  axios.put('http://localhost:8000/api/utilizadores/editar/', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
       Authorization: `Bearer ${token}`

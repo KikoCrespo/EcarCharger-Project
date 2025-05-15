@@ -9,7 +9,6 @@ import AddUserView from "@/views/AddUserView.vue";
 import MyVehiclesView from "@/views/MyVehiclesView.vue";
 import ListAllVechilesView from "@/views/ListAllVechilesView.vue";
 import VehicleDetailView from "@/views/VehicleDetailView.vue";
-import ProfileUserView from '@/views/ProfileUserView.vue';
 
 const routes = [
 
@@ -30,12 +29,6 @@ const routes = [
     name: 'registarEntidade',
     component: RegistarEntidade,
     
-  },
-  {
-    path: '/utilizadores/perfil',
-    name: 'userprofile',
-    component: ProfileUserView,
-    meta: { layout: 'default' }
   },
   {
     path: '/utilizadores/listar',
