@@ -13,7 +13,7 @@ from django.contrib.auth import authenticate
 
 
 
-   # Tem que ser Authentication
+# Tem que ser Authentication
 class AdminView(APIView):
     """
     Registar utilizador do tipo admin
@@ -22,16 +22,18 @@ class AdminView(APIView):
     def post(self, request):  
         
         try:
-            data = request.body
-            firstName = data.get("primeiro_nome")
-            lastName = data.get("ultimo_nome")
-            email = data.get("u_email")
-            password = data.get("u_password")
-            entidade_id = data.get("u_entidade")
+            data = json.loads(request.body)
+            user = request.user
+            firstName = data.get("first_name")
+            lastName = data.get("last_name")
+            email = data.get("email")
+            password = data.get("password")
+            departamento = data.get("u_departamento")
             tipo = data.get("u_tipo")
+            print(tipo)
             
 
-            if not email or not password or not entidade_id:
+            if not email or not password or not departamento:
                 return Response({"error": "Todos os campos são obrigatórios!"}, status=400)
 
             if Utilizador.objects.filter(email = email).exists():
@@ -41,10 +43,6 @@ class AdminView(APIView):
             if Utilizador.objects.filter(username = username).exists():
                 return Response({"error": "Este Username já está em uso!"}, status=400)
             
-            try:
-                entidade = Entidade.objects.get(id=entidade_id)
-            except Entidade.DoesNotExist:
-                return Response({"error": "Entidade não encontrada!"}, status=404)
             
             dataRegisto = timezone.now()
 
@@ -55,8 +53,9 @@ class AdminView(APIView):
                 email=email,
                 password = make_password(password),
                 date_joined=dataRegisto,
-                u_entidade=entidade,
-                u_tipo=tipo,
+                u_entidade= user.u_entidade,
+                is_staff= tipo,
+                u_tipo = tipo,
                 u_estado=True,
                 u_img_perfil= None,
             )
@@ -84,7 +83,7 @@ class AdminView(APIView):
     @permission_classes([IsAuthenticated])
     def get(self, request):
         utilizadores = Utilizador.objects.all()
-        serializer = UtilizadorSerializer(utilizadores, many=True)
+        serializer = UtilizadorSerializer(utilizadores, many=True, context={'request': request}) # enviar context para que o serializer reconheça o request e consiga criar um url
         return Response({"message": "Lista de utilizadores","users": serializer.data }, status=200)
     
     """
@@ -198,12 +197,15 @@ def LogoutView(request):
 
 class PerfilUtilizadorView(APIView):
 
-    permission_classes = [IsAuthenticated]  # Garante que só utilizadores autenticados podem aceder
+    permission_classes = [IsAuthenticated]  # Garante que só utilizadores autenticados possam aceder
     def get(self, request):
         if request.user.is_authenticated:
             user = request.user
-            if user.u_img_perfil:  # Verifique se o usuário tem uma foto
-                foto_url = request.build_absolute_uri(user.u_img_perfil.url)
+            if user.u_img_perfil:  # Verifica se o utilizador tem uma foto
+                foto_url = request.build_absolute_uri(user.u_img_perfil.url) #constroi o Url para caminho absoluto
+
+            entidade = user.u_entidade
+
 
             return Response({
                 'user': {
@@ -217,6 +219,7 @@ class PerfilUtilizadorView(APIView):
                 'type': user.is_staff,
                 'supa': user.is_superuser,
                 'foto_url': foto_url if user.u_img_perfil else None,
+                'entidade': entidade.e_nome
             }
         })    
         else:
@@ -228,7 +231,7 @@ class FuncionarioView(APIView):
 
     permission_classes = [IsAuthenticated]  # Garante que só utilizadores autenticados podem aceder
     def post(self, request):
-        data = request.data
+        data = json.loads(request.body)
         user = request.user
 
         if not user.is_authenticated:
@@ -237,11 +240,11 @@ class FuncionarioView(APIView):
         if not user.is_staff:
             return Response({"error": "Utilizador não tem permissão para criar outros utilizadores!"}, status=403)
     
-        firstName = data.get("primeiro_nome")
-        lastName = data.get("ultimo_nome")
-        email = data.get("u_email")
-        password = data.get("u_password")
-        entidade_id = data.get("u_entidade")
+        firstName = data.get("first_name")
+        lastName = data.get("last_name")
+        email = data.get("email")
+        password = data.get("password")
+        departamento = data.get("u_departamento")
         tipo = data.get("u_tipo")
         
         username = email.split('@')[0] # remover domninio do email
@@ -251,22 +254,20 @@ class FuncionarioView(APIView):
 
         if Utilizador.objects.filter(username = username).exists():
             return Response({"error": "Este Username já está em uso!"}, status=400)
-        try:
-            entidade = Entidade.objects.get(id=entidade_id)
-        except Entidade.DoesNotExist:
-            return Response({"error": "Entidade não encontrada!"}, status=404)
         
         dataRegisto = timezone.now()
 
         utilizador = Utilizador.objects.create(
-            first_name= firstName,
-            last_name= lastName,
-            username=username,
-            email=email,
+            first_name = firstName,
+            last_name = lastName,
+            username = username,
+            email = email,
             password = make_password(password),
-            date_joined=dataRegisto,
-            u_entidade=entidade,
-            u_tipo=tipo,
+            date_joined = dataRegisto,
+            u_entidade = user.u_entidade,
+            u_departamento= departamento,
+            is_staff = tipo,
+            u_tipo = tipo,
             u_estado=True
         )
         utilizador.save()
