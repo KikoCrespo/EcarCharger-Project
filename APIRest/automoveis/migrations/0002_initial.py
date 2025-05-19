@@ -16,15 +16,15 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
-            model_name="carro",
+            model_name="Veiculo",
             name="c_utilizador",
             field=models.ManyToManyField(blank=True, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name="anexos",
-            name="an_carro",
+            name="an_Veiculo",
             field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to="automoveis.carro"
+                on_delete=django.db.models.deletion.CASCADE, to="automoveis.Veiculo"
             ),
         ),
     ]

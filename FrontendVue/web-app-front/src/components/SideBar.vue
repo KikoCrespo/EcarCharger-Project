@@ -39,15 +39,17 @@
             <!--Submenu da frota-->
             <div class="text-left text-sm mt-2 w-4/5 mx-auto text-black font-bold" v-show="carsOpen">
 
-                <router-link to="/frota/meus-veiculos" class="block cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
-                  Meus Veículos
+                <router-link to="/frota/meus-veiculos"
+                    class="block cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
+                    Meus Veículos
                 </router-link>
-                <router-link to="/frota/consultar" class="block cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
-                  Consultar Frota
+                <router-link to="/frota/consultar"
+                    class="block cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
+                    Consultar Frota
                 </router-link>
-                <h1 v-if="user_data.type" class="cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
-                    Adicionar Veículo
-                </h1>
+                <router-link to="/frota/adicionar-veiculo" v-if="user_data.type" class="block cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1" >
+                        Adicionar Veículo
+                </router-link>
             </div>
 
 

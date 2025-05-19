@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="Carro",
+            name="Veiculo",
             fields=[
                 (
                     "id",
@@ -73,7 +73,7 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={
-                "db_table": "Carro",
+                "db_table": "Veiculo",
             },
         ),
     ]

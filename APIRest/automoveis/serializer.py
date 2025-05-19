@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import Carro, Anexos
-class CarroSerializer(serializers.ModelSerializer):
+from .models import Veiculo, Anexos
+class VeiculoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Carro
+        model = Veiculo
         fields = '__all__'
 
 class AnexosSerializer(serializers.ModelSerializer):

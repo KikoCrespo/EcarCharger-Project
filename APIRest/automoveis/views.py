@@ -1,17 +1,17 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 import json
-from .models import Carro
+from .models import Veiculo
 from entidades.models import Entidade
 from rest_framework.decorators import permission_classes
-from .serializer import CarroSerializer
+from .serializer import VeiculoSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 
 permission_classes([AllowAny]) # tem de ser Authentication
-class AddCarroEntidadeView(APIView):
+class AddVeiculoEntidadeView(APIView):
     def post(self, request): 
         try:
             data = json.loads(request.body)
@@ -33,10 +33,10 @@ class AddCarroEntidadeView(APIView):
             except Entidade.DoesNotExist:
                 return JsonResponse({"error": "Entidade não encontrada!"}, status=404)
             
-            if Carro.objects.filter(c_matricula=matricula).exists():
+            if Veiculo.objects.filter(c_matricula=matricula).exists():
                 return JsonResponse({"error": "Esta matricula já está registada!"}, status=400)
 
-            carro = Carro.objects.create(
+            Veiculo = Veiculo.objects.create(
                 c_marca=marca,
                 c_modelo=modelo,
                 c_matricula= matricula,
@@ -48,12 +48,12 @@ class AddCarroEntidadeView(APIView):
                 c_estado=True
             )
 
-            carro.save()
-            serializer = CarroSerializer(carro)
-            print (carro)
+            Veiculo.save()
+            serializer = VeiculoSerializer(Veiculo)
+            print (Veiculo)
             return Response({
-                            "message": f"Carro com a matricula {carro.c_matricula} registado com sucesso!", 
-                            'carro': serializer.data
+                            "message": f"Veiculo com a matricula {Veiculo.c_matricula} registado com sucesso!", 
+                            'Veiculo': serializer.data
                             }, status=201)
         except json.JSONDecodeError:
             return JsonResponse({"error": "Formato de dados inválido!"}, status=400)
@@ -65,26 +65,26 @@ class getFrotaEntidade(APIView):
             entidade = Entidade.objects.get(id=entidade_id)
         except Entidade.DoesNotExist:
             return JsonResponse({"error": "Entidade não encontrada!"}, status=404)
-        frota = Carro.objects.filter(c_entidade=entidade)
+        frota = Veiculo.objects.filter(c_entidade=entidade)
         if not frota.exists():
-            return JsonResponse({"error": "Não existem carros associados a esta entidade!"}, status=404)
-        serializer = CarroSerializer(frota, many=True)
+            return JsonResponse({"error": "Não existem Veiculos associados a esta entidade!"}, status=404)
+        serializer = VeiculoSerializer(frota, many=True)
         print (frota)
 
         return Response(serializer.data, status=200)
 
 @permission_classes([IsAuthenticated]) 
-class  getCarrosUtilizador(APIView):
+class  getVeiculosUtilizador(APIView):
     def get(self, request):
         try:
             utilizador = request.user.is_authenticated
         except Exception as e:
             return JsonResponse({"error": "Utilizador não autenticado!" }, status=401)
         
-        Carros = Carro.objects.filter(c_utilizador=utilizador)
-        if not Carros.exists():
-            return JsonResponse({"error": "Não existem carros associados a este utilizador!"}, status=404)
-        serializer = CarroSerializer(Carros, many=True)
-        print (Carros)
-        return Response({"user": utilizador, "Carros": serializer.data}, status=200)
+        Veiculos = Veiculo.objects.filter(c_utilizador=utilizador)
+        if not Veiculos.exists():
+            return JsonResponse({"error": "Não existem Veiculos associados a este utilizador!"}, status=404)
+        serializer = VeiculoSerializer(Veiculos, many=True)
+        print (Veiculos)
+        return Response({"user": utilizador, "Veiculos": serializer.data}, status=200)
     

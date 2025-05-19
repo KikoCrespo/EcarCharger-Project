@@ -34,10 +34,10 @@ class Migration(migrations.Migration):
                 ("ca_avg_kwh", models.FloatField()),
                 ("ca_custo", models.FloatField()),
                 (
-                    "ca_carro",
+                    "ca_Veiculo",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
-                        to="automoveis.carro",
+                        to="automoveis.Veiculo",
                     ),
                 ),
                 (
