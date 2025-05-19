@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.decorators import permission_classes
+from rest_framework.decorators import permission_classes, api_view
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from.serializer import CarregamentoSerializer
 from .models import Carregamento
@@ -9,6 +9,9 @@ from rest_framework.views import APIView
 from utilizadores.models import Utilizador
 from automoveis.models import Carro
 from postosCarregamento.models import PostoCarregamento
+from rest_framework import status
+
+
 
 
 @permission_classes([AllowAny])
@@ -144,3 +147,4 @@ def str_to_datetime(date):
     formato = "%Y-%m-%dT%H:%M:%S" 
     date_timstamp = datetime.strptime(date, formato)
     return date_timstamp
+

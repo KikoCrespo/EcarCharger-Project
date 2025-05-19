@@ -10,13 +10,14 @@ import MyVehiclesView from "@/views/MyVehiclesView.vue";
 import ListAllVechilesView from "@/views/ListAllVechilesView.vue";
 import VehicleDetailView from "@/views/VehicleDetailView.vue";
 import ProfileUserView from '@/views/ProfileUserView.vue';
+import HomeView from '@/views/HomeView.vue';
 
 const routes = [
 
   {
     path: '/',
     name:'home',
-    component: DasboardView,
+    component: HomeView,
     meta: { layout: 'default' }
   },
   {

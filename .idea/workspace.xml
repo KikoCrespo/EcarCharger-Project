@@ -5,9 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="33e13635-1438-4149-9579-adddb6dabdc8" name="Changes" comment="#merge conflict">
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/Dashboard/ChargingStationsList.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/Dashboard/ConsumptionCard.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/Dashboard/ExpensesBubbleChart.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/Dashboard/LineChart.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/Dashboard/VehicleSelectionModal.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIRest/APIRest/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/APIRest/APIRest/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIRest/carregamentos/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/APIRest/carregamentos/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIRest/scripts/management/commands/start_mqtt_consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/APIRest/scripts/management/commands/start_mqtt_consumer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/TableUsers.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/TableUsers.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/views/DashboardView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/views/DashboardView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/views/HomeView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/views/HomeView.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +87,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/Dashboard" />
       <recent name="$PROJECT_DIR$/APIRest/APIRest" />
       <recent name="$PROJECT_DIR$/APIRest" />
     </key>
@@ -176,7 +188,12 @@
       <workItem from="1747130824037" duration="75000" />
       <workItem from="1747239435963" duration="8440000" />
       <workItem from="1747311545653" duration="186000" />
-      <workItem from="1747319458181" duration="750000" />
+      <workItem from="1747319458181" duration="1898000" />
+      <workItem from="1747324164358" duration="2234000" />
+      <workItem from="1747335064600" duration="2158000" />
+      <workItem from="1747392969296" duration="243000" />
+      <workItem from="1747483096783" duration="14851000" />
+      <workItem from="1747665477921" duration="7418000" />
     </task>
     <task id="LOCAL-00001" summary="merge conflict">
       <option name="closed" value="true" />

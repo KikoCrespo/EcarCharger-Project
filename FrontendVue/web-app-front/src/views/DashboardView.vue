@@ -1,17 +1,29 @@
+
+
 <template>
-  <div class="flex w-full">
+  <div class="flex w-full flex-col items-center">
+    <button
+        @click="toggleConnection"
+        class="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+    >
+      {{ isConnected ? 'Parar Carregamento' : 'Iniciar Carregamento' }}
+    </button>
+
     <div id="chart">
       <apexchart type="radialBar" height="390" :options="chartOptions" :series="series" />
     </div>
-
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
-// --- ApexCharts ---
-const series = ref([0, 0, 0, 0]) // voltage, current, power, pf
+// Estados reativos
+const isConnected = ref(false)
+const socket = ref(null)
+const series = ref([0, 0, 0, 0])
+
+// Configurações do gráfico (mantidas como no original)
 const chartOptions = ref({
   chart: {
     height: 390,
@@ -60,25 +72,57 @@ const chartOptions = ref({
   ]
 })
 
-// --- WebSocket ---
-onMounted(() => {
-  const socket = new WebSocket('ws://localhost:8000/ws/sensor/')
+const toggleConnection = async () => {
+  if (!isConnected.value) {
+    try {
+      // Inicia a conexão
+      startWebSocket();
 
-  socket.onopen = () => {
+      const response = await fetch('http://192.168.1.106:5000/send-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (!response.ok) {
+        throw new Error('Falha ao iniciar');
+      }
+
+    } catch (error) {
+      console.error('Erro:', error);
+      socket.value?.close();
+      isConnected.value = false;
+    }
+  } else {
+    try {
+      // Envia requisição de parada
+      await fetch('http://192.168.1.106:5000/stop-read', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+    } catch (error) {
+      console.error('Erro ao parar:', error);
+    } finally {
+      socket.value?.close();
+    }
+  }
+}
+
+const startWebSocket = () => {
+  socket.value = new WebSocket('ws://localhost:8000/ws/sensor/')
+
+  socket.value.onopen = () => {
     console.log('WebSocket connected')
+    isConnected.value = true
   }
 
-  socket.onmessage = (event) => {
+  socket.value.onmessage = (event) => {
     const data = JSON.parse(event.data)
     console.log('Received sensor data:', data)
 
     if (data === null) {
-      series.value = [
-        parseFloat(0),
-        parseFloat(0),
-        parseFloat(0),
-        parseFloat(0)
-      ]
+      // Fecha a conexão quando recebe null
+      socket.value.close()
       return
     }
 
@@ -90,12 +134,24 @@ onMounted(() => {
     ]
   }
 
-  socket.onerror = (error) => {
+  socket.value.onclose = () => {
+    console.log('WebSocket disconnected')
+    isConnected.value = false
+    series.value = [0, 0, 0, 0]
+  }
+
+  socket.value.onerror = (error) => {
     console.error('WebSocket error:', error)
+    isConnected.value = false
+  }
+}
+
+// Fechar conexão quando o componente é desmontado
+onBeforeUnmount(() => {
+  if (socket.value) {
+    socket.value.close()
   }
 })
-
-// REF: https://apexcharts.com/vue-chart-demos/radialbar-charts/custom-angle-circle/
 </script>
 
 

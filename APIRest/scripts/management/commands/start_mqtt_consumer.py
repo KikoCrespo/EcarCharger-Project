@@ -23,6 +23,7 @@ class Command(BaseCommand):
 
         influx_client = InfluxDBClient(url="http://localhost:8086", token=token, org=org)
         write_api = influx_client.write_api()
+        last_message_time = datetime.now()
         channel_layer = get_channel_layer()
         print(get_channel_layer())
 
