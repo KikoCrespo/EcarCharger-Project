@@ -337,14 +337,8 @@
 
 <script setup>
 import AddMaintenanceModal from "@/components/AddMaintenanceModal.vue";
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import {
-  HomeIcon,
-  TruckIcon,
-  BarChartIcon,
-  SettingsIcon,
-  LogOutIcon,
-  ChevronRightIcon,
   XIcon,
   CarIcon,
   HistoryIcon,
@@ -353,9 +347,9 @@ import {
   DownloadIcon,
   UploadIcon,
   PlusIcon,
-  BellIcon
+
 } from 'lucide-vue-next';
-//import Chart from 'chart.js/auto';
+
 
 // Estado
 const showMaintenanceModal = ref(false);
@@ -367,7 +361,7 @@ const requestForm = ref({
   reason: ''
 });
 
-// Dados simulados do veículo
+// Dados simulados
 const vehicle = ref({
   id: 2,
   plate: 'BB - 34 - ZX',
@@ -498,11 +492,7 @@ function getMaintenanceIcon(type) {
 }
 
 function submitRequest() {
-  // Aqui você implementaria a lógica para enviar a requisição
-  console.log('Requisição enviada:', {
-    vehicleId: vehicle.value.id,
-    ...requestForm.value
-  });
+
 
   // Simular sucesso
   showRequestModal.value = false;

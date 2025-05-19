@@ -1,7 +1,7 @@
 
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../views/HomeView.vue';
+import DasboardView from '../views/DashboardView.vue';
 import ListUsers from '@/views/ListUsers.vue';
 import RegistarEntidade from '../views/RegistarEntidadeView.vue'
 import SigninView from '@/views/SigninView.vue';
@@ -10,15 +10,19 @@ import MyVehiclesView from "@/views/MyVehiclesView.vue";
 import ListAllVechilesView from "@/views/ListAllVechilesView.vue";
 import VehicleDetailView from "@/views/VehicleDetailView.vue";
 import ProfileUserView from '@/views/ProfileUserView.vue';
+<<<<<<< HEAD
 import AddVehiclesView from '@/views/AddVehiclesView.vue';
 import { compile } from 'vue';
+=======
+import HomeView from '@/views/HomeView.vue';
+>>>>>>> d1f15dd2be7a953b526e7e1828f021faab7a0463
 
 const routes = [
 
   {
     path: '/',
     name:'home',
-    component: Home,
+    component: HomeView,
     meta: { layout: 'default' }
   },
   {

@@ -342,7 +342,7 @@ function closeModal() {
               <div class="flex items-center">
                 <div class="h-2.5 w-2.5 rounded-full me-2"
                   :class="user.is_active ? 'bg-green-500' : 'bg-red-500'"></div>
-                {{ user.status }}
+                {{ user.is_active ? 'Ativo' : 'Inativo' }}
               </div>
             </td>
             <td class="px-6 py-4">

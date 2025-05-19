@@ -59,6 +59,7 @@ urlpatterns = [
     path('api/entidade/postos/adicionar/', PostoCarregamentoView.as_view(), name='adicionarPostoCarregamento'),
     path('api/entidade/postos/listar/', PostoCarregamentoView.as_view(), name='listarPostosCarregamento'),
     path('api/perfil/', PerfilUtilizadorView.as_view(), name='perfil-utilizador'),
+
 ]
 
 if settings.DEBUG:  # Só serve os arquivos de mídia durante o desenvolvimento

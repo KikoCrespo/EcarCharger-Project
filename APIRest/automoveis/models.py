@@ -3,7 +3,6 @@ from entidades.models import Entidade
 from utilizadores.models import Utilizador
 
 
-
 class Veiculo(models.Model):
     v_modelo = models.CharField(max_length=55)
     v_marca = models.CharField(max_length=55)
@@ -20,6 +19,7 @@ class Veiculo(models.Model):
     v_assentos = models.IntegerField()
     v_transmissão = models.CharField(max_length=55)
     v_combustivel = models.CharField(max_length=55)
+
 
     class Meta:
         db_table = 'Veiculo' 

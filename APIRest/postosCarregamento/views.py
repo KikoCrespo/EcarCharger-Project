@@ -52,4 +52,52 @@ class PostoCarregamentoView(APIView):
             serializer = PostoCarregamentotSerializer(posto)
             return Response({'Posto': serializer.data}, status=201)
         except Exception as e:
-            return Response({'error': str(e)}, status= 400) 
+            return Response({'error': str(e)}, status= 400)
+    #alterar
+    def getPosto(self, request):
+        """
+        Informação de um posto de carregamento
+        """
+        posto = PostoCarregamento.objects.get(id=request.data.get('posto_id'))
+        if not posto:
+            return Response({'message': 'Não existe posto de carregamento'}, status= 404)
+        serializer = PostoCarregamentotSerializer(posto)
+        return Response({'posto': serializer.data }, status= 200)
+
+class IoTEquipamentoView(APIView):
+    def get(self, request):
+        """
+        Lista de postos de carregamento
+        """
+
+        postos = PostoCarregamento.objects.all()
+        if postos.count() == 0:
+            return Response({'message': 'Não existem postos de carregamento'}, status= 404)
+        serializer = PostoCarregamentotSerializer(postos, many=True)
+        return Response({'postos': serializer.data }, status= 200)
+    def post(self, request):
+        """
+        Cria um novo posto de carregamento
+        """
+
+        nome = request.data.get('iot_nome')
+        data_registo = request.data.get('iot_data_registo')
+        estado = request.data.get('iot_estado')
+        img = request.data.get('iot_img')
+        url = request.data.get('iot_url')
+        output = request.data.get('iot_output')
+        try:
+            posto = PostoCarregamento.objects.create(
+                iot_nome=nome,
+                iot_data_registo=data_registo,
+                iot_estado=estado,
+                iot_img=img,
+                iot_url=url,
+                iot_output=output
+            )
+
+            serializer = PostoCarregamentotSerializer(posto)
+            return Response({'Posto': serializer.data}, status=201)
+        except Exception as e:
+            return Response({'error': str(e)}, status= 400)
+

@@ -23,6 +23,7 @@ class Command(BaseCommand):
 
         influx_client = InfluxDBClient(url="http://localhost:8086", token=token, org=org)
         write_api = influx_client.write_api()
+        last_message_time = datetime.now()
         channel_layer = get_channel_layer()
         print(get_channel_layer())
 
@@ -58,15 +59,24 @@ class Command(BaseCommand):
             try:
                 data = json.loads(body)
                 print(f"📥 Received: {data}")
-                write_to_influxdb(data)
-                async_to_sync(channel_layer.group_send)(
-                    "sensor_data",
-                    {
-                        "type": "send_sensor_data",
-                        "data": data
-                    }
-                )
-                print("📡 Sent to WebSocket")
+                if(data['current'] == 0 and data['power'] == 0):
+                    async_to_sync(channel_layer.group_send)(
+                        "sensor_data",
+                        {
+                            "type": "send_sensor_data",
+                            "data": None
+                        }
+                    )
+                else:
+                    write_to_influxdb(data)
+                    async_to_sync(channel_layer.group_send)(
+                        "sensor_data",
+                        {
+                            "type": "send_sensor_data",
+                            "data": data
+                        }
+                    )
+                    print("📡 Sent to WebSocket")
                 last_message_time = datetime.now()
             except Exception as e:
                 print(f"❌ Callback error: {e}")
@@ -84,7 +94,7 @@ class Command(BaseCommand):
                 now = datetime.now()
                 if (now - last_message_time) > timedelta(seconds=20):
                     on_timeout()
-                    last_message_time = now  # resetar para evitar chamadas contínuas
+                    last_message_time = now  # resetar para evitar chamadas continuas
         except KeyboardInterrupt:
             print("🛑 Stopped.")
             channel.stop_consuming()
