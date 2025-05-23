@@ -28,6 +28,10 @@
               <input type="checkbox" v-model="localFilters.types.utilitario" class="rounded text-soft-orange focus:ring-soft-orange" />
               <span>Utilitário</span>
             </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" v-model="localFilters.types.comercial" class="rounded text-soft-orange focus:ring-soft-orange" />
+              <span>Comercial</span>
+            </label>
           </div>
         </div>
 
@@ -35,15 +39,15 @@
           <label class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
           <div class="space-y-2">
             <label class="flex items-center gap-2">
-              <input type="checkbox" v-model="localFilters.status.available" class="rounded text-soft-orange focus:ring-soft-orange" />
+              <input type="checkbox" v-model="localFilters.state.available" class="rounded text-soft-orange focus:ring-soft-orange" />
               <span>Disponível</span>
             </label>
             <label class="flex items-center gap-2">
-              <input type="checkbox" v-model="localFilters.status.inUse" class="rounded text-soft-orange focus:ring-soft-orange" />
+              <input type="checkbox" v-model="localFilters.state.inUse" class="rounded text-soft-orange focus:ring-soft-orange" />
               <span>Em Uso</span>
             </label>
             <label class="flex items-center gap-2">
-              <input type="checkbox" v-model="localFilters.status.maintenance" class="rounded text-soft-orange focus:ring-soft-orange" />
+              <input type="checkbox" v-model="localFilters.state.maintenance" class="rounded text-soft-orange focus:ring-soft-orange" />
               <span>Em Manutenção</span>
             </label>
           </div>

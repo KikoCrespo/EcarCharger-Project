@@ -1,13 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from entidades.models import Entidade
+from uploadFiles import caminho_foto_perfil
 
-# Create your models here.
+# your models here.
 class Utilizador(AbstractUser):
     u_entidade = models.ForeignKey(Entidade, on_delete=models.CASCADE)
     u_tipo = models.IntegerField()
     u_estado = models.BooleanField(default=False)
-    u_img_perfil = models.ImageField(upload_to='fotos_perfil/', blank=True, null=True)
+    u_img_perfil = models.ImageField(upload_to= caminho_foto_perfil, blank=True, null=True)
     u_departamento = models.CharField(max_length=255, blank=True, null=True)
 
     
