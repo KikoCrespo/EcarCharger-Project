@@ -72,7 +72,7 @@ class Command(BaseCommand):
                     async_to_sync(channel_layer.group_send)(
                         "sensor_data",
                         {
-                            "type": "send_sensor_data",
+                            "type": "charging_auto_ended",
                             "data": data
                         }
                     )
