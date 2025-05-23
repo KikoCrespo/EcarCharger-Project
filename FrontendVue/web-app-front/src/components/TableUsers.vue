@@ -161,7 +161,7 @@ function closeModal() {
   </div>
   
 
-  <div class="relative overflow-x-auto shadow-md sm:rounded-lg p-3">
+  <div class="relative h-auto overflow-x-auto shadow-md sm:rounded-lg p-3">
     
     <div class="flex items-center justify-start flex-wrap md:flex-nowrap space-y-4 md:space-y-0 pb-4">
       

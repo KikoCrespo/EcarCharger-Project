@@ -31,7 +31,7 @@ from utilizadores.views import PerfilUtilizadorView
 from utilizadores.views import FuncionarioView
 
 
-from automoveis.views import AddCarroEntidadeView
+from automoveis.views import AddVeiculoEntidadeView
 from automoveis.views import getFrotaEntidade
 
 from entidades.views import RegistarEntidadeView
@@ -53,8 +53,8 @@ urlpatterns = [
     path('api/utilizadores/editar/', FuncionarioView.as_view(), name='editarUtilizador'),
     path('api/entidades/registar', RegistarEntidadeView.as_view(), name='registarEntidade'),
     path('api/utilizadores/listar/', AdminView.as_view(), name='listarUtilizadores'),
-    path('api/registarCarro/', AddCarroEntidadeView.as_view(), name='addCarroEntidade'),
-    path('api/Frota/<int:entidade_id>/', getFrotaEntidade.as_view(), name='Frota'),
+    path('api/frota/adicionar-veiculo/', AddVeiculoEntidadeView.as_view(), name='addVeiculoEntidade'),
+    path('api/frota/consultar/', getFrotaEntidade.as_view(), name='Frota'),
     path('api/carregamentos/iniciar/', CarregamentosView.as_view(), name='carregamentos'),
 
     path('api/carregamentos/<int:session_id>/stop/', CarregamentosView.stop_charging_view, name='stop_charging_view'),

@@ -67,7 +67,7 @@
         class="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
     >
       <div class="relative">
-        <img src="../assets/img/carroteste.png" :alt="vehicle.model" class="w-full h-48 object-contain bg-gradient-to-t from-extra-soft-orange to-orange-50" />
+        <img src="../assets/img/Veiculoteste.png" :alt="vehicle.model" class="w-full h-48 object-contain bg-gradient-to-t from-extra-soft-orange to-orange-50" />
         <div
             class="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-medium"
             :class="{
@@ -160,6 +160,7 @@
 import { ref, computed, onMounted } from 'vue';
 import EndVehicleRequesitionModal from "@/components/EndVehicleRequesitionModal.vue";
 import FilterModal from "@/components/FilterVehiclesModal.vue";
+import api from '@/interceptors/axiosInterceptor'
 import {
   FilterIcon,
   XIcon,
@@ -171,6 +172,8 @@ import {
   Cog,
 
 } from 'lucide-vue-next';
+
+
 
 
 // Estado
@@ -205,165 +208,32 @@ const filters = ref({
 // Filtros ativos
 const activeFilters = ref([]);
 
-// Dados simulados
-const vehicles = ref([
-  {
-    id: 1,
-    plate: 'AA - 12 - BQ',
-    type: 'Citadino',
-    model: 'Mercedes-Benz Classe A',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 4,
-    power: 360,
-    transmission: 'Automático',
-    fuel: 'Gasolina',
-    status: 'available',
-    favorite: false
-  },
-  {
-    id: 2,
-    plate: 'BB - 34 - ZX',
-    type: 'SUV',
-    model: 'Mercedes-Benz GLE',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 5,
-    power: 360,
-    transmission: 'Automático',
-    fuel: 'Diesel',
-    status: 'in-use',
-    favorite: true
-  },
-  {
-    id: 3,
-    plate: 'CC - 56 - YW',
-    type: 'SUV',
-    model: 'Mercedes-Benz GLC',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 5,
-    power: 320,
-    transmission: 'Automático',
-    fuel: 'Híbrido',
-    status: 'available',
-    favorite: false
-  },
-  {
-    id: 4,
-    plate: 'DD - 78 - VU',
-    type: 'Sedan',
-    model: 'Mercedes-Benz Classe C',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 5,
-    power: 280,
-    transmission: 'Automático',
-    fuel: 'Diesel',
-    status: 'maintenance',
-    favorite: false
-  },
-  {
-    id: 5,
-    plate: 'EE - 90 - TS',
-    type: 'Utilitário',
-    model: 'Mercedes-Benz Vito',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 7,
-    power: 240,
-    transmission: 'Manual',
-    fuel: 'Diesel',
-    status: 'available',
-    favorite: false
-  },
-  {
-    id: 6,
-    plate: 'FF - 12 - RQ',
-    type: 'SUV',
-    model: 'Mercedes-Benz GLA',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 5,
-    power: 300,
-    transmission: 'Automático',
-    fuel: 'Gasolina',
-    status: 'in-use',
-    favorite: false
-  },
-  {
-    id: 7,
-    plate: 'GG - 34 - PO',
-    type: 'Citadino',
-    model: 'Mercedes-Benz Classe B',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 4,
-    power: 260,
-    transmission: 'Automático',
-    fuel: 'Híbrido',
-    status: 'available',
-    favorite: false
-  },
-  {
-    id: 8,
-    plate: 'HH - 56 - NM',
-    type: 'Sedan',
-    model: 'Mercedes-Benz Classe E',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 5,
-    power: 400,
-    transmission: 'Automático',
-    fuel: 'Diesel',
-    status: 'available',
-    favorite: false
-  },
-  {
-    id: 9,
-    plate: 'II - 78 - LK',
-    type: 'SUV',
-    model: 'Mercedes-Benz GLS',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 7,
-    power: 450,
-    transmission: 'Automático',
-    fuel: 'Gasolina',
-    status: 'maintenance',
-    favorite: false
-  },
-  {
-    id: 10,
-    plate: 'JJ - 90 - JI',
-    type: 'Utilitário',
-    model: 'Mercedes-Benz Sprinter',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 9,
-    power: 280,
-    transmission: 'Manual',
-    fuel: 'Diesel',
-    status: 'available',
-    favorite: false
-  },
-  {
-    id: 11,
-    plate: 'KK - 12 - HG',
-    type: 'Sedan',
-    model: 'Mercedes-Benz Classe S',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 5,
-    power: 500,
-    transmission: 'Automático',
-    fuel: 'Híbrido',
-    status: 'in-use',
-    favorite: false
-  },
-  {
-    id: 12,
-    plate: 'LL - 34 - FE',
-    type: 'SUV',
-    model: 'Mercedes-Benz EQC',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 5,
-    power: 420,
-    transmission: 'Automático',
-    fuel: 'Elétrico',
-    status: 'available',
-    favorite: false
+
+onMounted(async () => {
+  try {
+    
+      api.get('/frota/consultar/', {
+        })
+        .then((response) => {
+          console.log('Resposta da API:', response);
+        
+          if (response.data && Array.isArray(response.data.users)) {
+            vehicles.value = response.data.vehicles;
+            users.value = response.data.users;
+            console.log('Utilizadores:', users.value);
+          } else {
+            console.error('Formato de dados inválido recebido da API.');
+          }
+        })
+        .catch((error) => {
+          console.error('Erro ao recuperar dados dos utilizadores:', error);
+          state.isAuthenticated = false;
+        });
+  } catch (error) {
+    console.error('Erro ao comunicar com a base de dados:', error);
   }
-]);
+});
+
 
 // Computed properties
 const filteredVehicles = computed(() => {

@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <!-- Status da frota -->
+  <!-- v_estado da frota -->
   <div class="grid grid-cols-4 gap-6 mb-8">
     <div class="bg-white rounded-lg shadow p-4 border border-gray-100">
       <div class="text-gray-500 text-sm mb-1">Total de Veículos</div>
@@ -60,31 +60,31 @@
   </div>
 
   <!-- Lista de veículos -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[600px] overflow-y-auto">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[63vh] overflow-y-auto">
     <div
         v-for="vehicle in filteredVehicles"
         :key="vehicle.id"
         class="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
     >
       <div class="relative">
-        <img src="../assets/img/carroteste.png" :alt="vehicle.model" class="w-full h-48 object-contain bg-gradient-to-t from-extra-soft-orange to-orange-50" />
+        <img src="../assets/img/carroteste.png" :alt="vehicle.v_modelo" class="w-full h-48 object-contain bg-gradient-to-t from-extra-soft-orange to-orange-50" />
         <div
             class="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-medium"
             :class="{
-                      'bg-green-100 text-green-800': vehicle.status === 'available',
-                      'bg-orange-100 text-orange-800': vehicle.status === 'in-use',
-                      'bg-red-100 text-red-800': vehicle.status === 'maintenance'
+                      'bg-green-100 text-green-800': vehicle.v_estado === 1,
+                      'bg-orange-100 text-orange-800': vehicle.v_estado === 2,
+                      'bg-red-100 text-red-800': vehicle.v_estado === 3
                     }"
         >
-          {{ getStatusText(vehicle.status) }}
+          {{ getv_estadoText(vehicle.v_estado) }}
         </div>
       </div>
 
       <div class="p-4">
         <div class="flex justify-between items-start mb-2">
           <div>
-            <h3 class="font-bold text-lg">{{ vehicle.plate }}</h3>
-            <p class="text-gray-600">{{ vehicle.type }}</p>
+            <h3 class="font-bold text-lg">{{ vehicle.v_matricula }}</h3>
+            <p class="text-gray-600">{{ vehicle.v_marca }}  {{vehicle.v_modelo}}</p>
           </div>
           <button
               class="text-gray-500 hover:text-gray-700"
@@ -97,34 +97,34 @@
         <div class="grid grid-cols-2 gap-2 mb-4">
           <div class="flex items-center gap-1 text-gray-600">
             <UsersIcon class="h-4 w-4" />
-            <span>{{ vehicle.seats }}</span>
+            <span>{{ vehicle.v_assentos }}</span>
           </div>
           <div class="flex items-center gap-1 text-gray-600">
             <BoltIcon class="h-4 w-4" />
-            <span>{{ vehicle.power }} kw</span>
+            <span>{{ vehicle.v_potencia }} kw</span>
           </div>
           <div class="flex items-center gap-1 text-gray-600">
             <Cog class="h-4 w-4" />
-            <span>{{ vehicle.transmission }}</span>
+            <span>{{ vehicle.v_transmissao }}</span>
           </div>
           <div class="flex items-center gap-1 text-gray-600">
             <FuelIcon class="h-4 w-4" />
-            <span>{{ vehicle.fuel }}</span>
+            <span>{{ vehicle.v_combustivel }}</span>
           </div>
         </div>
 
         <div class="flex gap-2">
           <button
               class="flex-1 bg-gray-100 hover:bg-gray-200 duration-300 text-gray-800 py-2 rounded-lg flex items-center justify-center gap-1"
-              @click="viewVehicleDetails(vehicle.id)"
-          >
+              @click="vehicleToView = vehicle; showVehicleModal = true">
+              
             <EyeIcon class="h-4 w-4" />
             <span>Visualizar</span>
           </button>
           <button
               class="flex-1 bg-extra-soft-orange hover:bg-soft-orange duration-300  text-gray-900 py-2 rounded-lg flex items-center justify-center gap-1"
-              :disabled="vehicle.status !== 'available'"
-              :class="{ 'opacity-50 cursor-not-allowed': vehicle.status !== 'available' }"
+              :disabled="vehicle.v_estado !== 'available'"
+              :class="{ 'opacity-50 cursor-not-allowed': vehicle.v_estado !== 'available' }"
               @click="openRequestModal(vehicle)"
           >
             <CarIcon class="h-4 w-4" />
@@ -151,8 +151,11 @@
       @reset-filters="resetFilters"
   />
 
-
-
+  <VehicleDetailsModal
+  :show="showVehicleModal"
+  :vehicle="vehicleToView"
+  @update:show="showVehicleModal = $event"
+/>
 
 </template>
 
@@ -160,6 +163,10 @@
 import { ref, computed, onMounted } from 'vue';
 import RequestVehicleModal from "@/components/RequestVehicleModal.vue";
 import FilterModal from "@/components/FilterVehiclesModal.vue";
+import api from '@/interceptors/axiosInterceptor'
+import VehicleDetailsModal from '@/components/VehicleDetailsModal.vue';
+
+
 import {
   FilterIcon,
   XIcon,
@@ -172,7 +179,7 @@ import {
 
 } from 'lucide-vue-next';
 
-
+const vehicles = ref([]);
 
 // Estado
 const searchQuery = ref('');
@@ -182,15 +189,20 @@ const showFilterModal = ref(false);
 const showRequestModal = ref(false);
 const selectedVehicle = ref(null);
 
+const showVehicleModal = ref(false);
+const vehicleToView = ref(null);
+
+
 // Filtros
 const filters = ref({
   types: {
     suv: false,
     citadino: false,
     sedan: false,
-    utilitario: false
+    utilitario: false,
+    comercial: false
   },
-  status: {
+  state: {
     available: false,
     inUse: false,
     maintenance: false
@@ -206,165 +218,28 @@ const filters = ref({
 // Filtros ativos
 const activeFilters = ref([]);
 
-// Dados simulados
-const vehicles = ref([
-  {
-    id: 1,
-    plate: 'AA - 12 - BQ',
-    type: 'Citadino',
-    model: 'Mercedes-Benz Classe A',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 4,
-    power: 360,
-    transmission: 'Automático',
-    fuel: 'Gasolina',
-    status: 'available',
-    favorite: false
-  },
-  {
-    id: 2,
-    plate: 'BB - 34 - ZX',
-    type: 'SUV',
-    model: 'Mercedes-Benz GLE',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 5,
-    power: 360,
-    transmission: 'Automático',
-    fuel: 'Diesel',
-    status: 'in-use',
-    favorite: true
-  },
-  {
-    id: 3,
-    plate: 'CC - 56 - YW',
-    type: 'SUV',
-    model: 'Mercedes-Benz GLC',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 5,
-    power: 320,
-    transmission: 'Automático',
-    fuel: 'Híbrido',
-    status: 'available',
-    favorite: false
-  },
-  {
-    id: 4,
-    plate: 'DD - 78 - VU',
-    type: 'Sedan',
-    model: 'Mercedes-Benz Classe C',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 5,
-    power: 280,
-    transmission: 'Automático',
-    fuel: 'Diesel',
-    status: 'maintenance',
-    favorite: false
-  },
-  {
-    id: 5,
-    plate: 'EE - 90 - TS',
-    type: 'Utilitário',
-    model: 'Mercedes-Benz Vito',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 7,
-    power: 240,
-    transmission: 'Manual',
-    fuel: 'Diesel',
-    status: 'available',
-    favorite: false
-  },
-  {
-    id: 6,
-    plate: 'FF - 12 - RQ',
-    type: 'SUV',
-    model: 'Mercedes-Benz GLA',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 5,
-    power: 300,
-    transmission: 'Automático',
-    fuel: 'Gasolina',
-    status: 'in-use',
-    favorite: false
-  },
-  {
-    id: 7,
-    plate: 'GG - 34 - PO',
-    type: 'Citadino',
-    model: 'Mercedes-Benz Classe B',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 4,
-    power: 260,
-    transmission: 'Automático',
-    fuel: 'Híbrido',
-    status: 'available',
-    favorite: false
-  },
-  {
-    id: 8,
-    plate: 'HH - 56 - NM',
-    type: 'Sedan',
-    model: 'Mercedes-Benz Classe E',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 5,
-    power: 400,
-    transmission: 'Automático',
-    fuel: 'Diesel',
-    status: 'available',
-    favorite: false
-  },
-  {
-    id: 9,
-    plate: 'II - 78 - LK',
-    type: 'SUV',
-    model: 'Mercedes-Benz GLS',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 7,
-    power: 450,
-    transmission: 'Automático',
-    fuel: 'Gasolina',
-    status: 'maintenance',
-    favorite: false
-  },
-  {
-    id: 10,
-    plate: 'JJ - 90 - JI',
-    type: 'Utilitário',
-    model: 'Mercedes-Benz Sprinter',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 9,
-    power: 280,
-    transmission: 'Manual',
-    fuel: 'Diesel',
-    status: 'available',
-    favorite: false
-  },
-  {
-    id: 11,
-    plate: 'KK - 12 - HG',
-    type: 'Sedan',
-    model: 'Mercedes-Benz Classe S',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 5,
-    power: 500,
-    transmission: 'Automático',
-    fuel: 'Híbrido',
-    status: 'in-use',
-    favorite: false
-  },
-  {
-    id: 12,
-    plate: 'LL - 34 - FE',
-    type: 'SUV',
-    model: 'Mercedes-Benz EQC',
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NGPn4YUZ9EMbcdOZrhDtwFjnQ3Ku22.png',
-    seats: 5,
-    power: 420,
-    transmission: 'Automático',
-    fuel: 'Elétrico',
-    status: 'available',
-    favorite: false
+onMounted(async () => {
+  try {
+    
+      await api.get('/frota/consultar/', {
+        })
+        .then((response) => {
+          console.log('Resposta da API:', response);
+          if (response.data && Array.isArray(response.data.vehicles)) {
+            vehicles.value = response.data.vehicles;
+            console.log('veiculos:', vehicles.value);
+          } else {
+            console.error('Formato de dados inválido recebido da API.');
+          }
+        })
+        .catch((error) => {
+          console.error('Erro ao recuperar dados dos veiculos:', error);
+          state.isAuthenticated = false;
+        });
+  } catch (error) {
+    console.error('Erro ao comunicar com a base de dados:', error);
   }
-]);
+});
 
 // Computed properties
 const filteredVehicles = computed(() => {
@@ -374,35 +249,38 @@ const filteredVehicles = computed(() => {
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase();
     result = result.filter(vehicle =>
-        vehicle.plate.toLowerCase().includes(query) ||
-        vehicle.type.toLowerCase().includes(query) ||
-        vehicle.model.toLowerCase().includes(query)
+        vehicle.v_matricula.toLowerCase().includes(query) ||
+        vehicle.v_categoria_display.toLowerCase().includes(query) ||
+        vehicle.v_modelo.toLowerCase().includes(query) ||
+        vehicle.v_marca.toLowerCase().includes(query) ||
+        `${vehicle.v_marca} ${vehicle.v_modelo}`.toLowerCase().includes(query)
     );
   }
 
   // Aplicar filtros
   const hasTypeFilters = Object.values(filters.value.types).some(value => value);
-  const hasStatusFilters = Object.values(filters.value.status).some(value => value);
+  const hasStateFilters = Object.values(filters.value.state).some(value => value);
   const hasSeatsFilters = Object.values(filters.value.seats).some(value => value);
 
   if (hasTypeFilters) {
     result = result.filter(vehicle => {
-      const type = vehicle.type.toLowerCase();
+      const type = vehicle.v_categoria_display;
       return (
-          (filters.value.types.suv && type === 'suv') ||
-          (filters.value.types.citadino && type === 'citadino') ||
-          (filters.value.types.sedan && type === 'sedan') ||
-          (filters.value.types.utilitario && type === 'utilitário')
+          (filters.value.types.sedan && type === 'Sedan') ||
+          (filters.value.types.citadino && type === 'Citadino') ||
+          (filters.value.types.suv && type === 'SUV') ||
+          (filters.value.types.comercial && type === 'Comercial') ||
+          (filters.value.types.utilitario && type === 'Utilitario')
       );
     });
   }
 
-  if (hasStatusFilters) {
+  if (hasStateFilters) {
     result = result.filter(vehicle => {
       return (
-          (filters.value.status.available && vehicle.status === 'available') ||
-          (filters.value.status.inUse && vehicle.status === 'in-use') ||
-          (filters.value.status.maintenance && vehicle.status === 'maintenance')
+          (filters.value.state.available && vehicle.v_estado === 1) ||
+          (filters.value.state.inUse && vehicle.v_estado === 2) ||
+          (filters.value.state.maintenance && vehicle.v_estado === 3)
       );
     });
   }
@@ -410,10 +288,10 @@ const filteredVehicles = computed(() => {
   if (hasSeatsFilters) {
     result = result.filter(vehicle => {
       return (
-          (filters.value.seats.two && vehicle.seats === 2) ||
-          (filters.value.seats.four && vehicle.seats === 4) ||
-          (filters.value.seats.five && vehicle.seats === 5) ||
-          (filters.value.seats.seven && vehicle.seats >= 7)
+          (filters.value.seats.two && vehicle.v_assentos === 2) ||
+          (filters.value.seats.four && vehicle.v_assentos === 4) ||
+          (filters.value.seats.five && vehicle.v_assentos === 5) ||
+          (filters.value.seats.seven && vehicle.v_assentos >= 7)
       );
     });
   }
@@ -426,17 +304,17 @@ const filteredVehicles = computed(() => {
 
 
 const totalVehicles = computed(() => vehicles.value.length);
-const availableVehicles = computed(() => vehicles.value.filter(v => v.status === 'available').length);
-const inUseVehicles = computed(() => vehicles.value.filter(v => v.status === 'in-use').length);
-const maintenanceVehicles = computed(() => vehicles.value.filter(v => v.status === 'maintenance').length);
+const availableVehicles = computed(() => vehicles.value.filter(v => v.v_estado=== 1).length);
+const inUseVehicles = computed(() => vehicles.value.filter(v => v.v_estado === 2).length);
+const maintenanceVehicles = computed(() => vehicles.value.filter(v => v.v_estado === 3).length);
 
 // Métodos
-function getStatusText(status) {
-  switch (status) {
-    case 'available': return 'Disponível';
-    case 'in-use': return 'Em Uso';
-    case 'maintenance': return 'Manutenção';
-    default: return status;
+function getv_estadoText(v_estado) {
+  switch (v_estado) {
+    case 1: return 'Disponível';
+    case 2: return 'Em Uso';
+    case 3: return 'Manutenção';
+    default: return v_estado;
   }
 }
 
@@ -447,6 +325,7 @@ function toggleFavorite(id) {
 
 function viewVehicleDetails(id) {
   console.log('Ver detalhes do veículo:', id);
+
 }
 
 function removeFilter(index) {
@@ -457,10 +336,11 @@ function removeFilter(index) {
   if (filter === 'Citadino') filters.value.types.citadino = false;
   if (filter === 'Sedan') filters.value.types.sedan = false;
   if (filter === 'Utilitário') filters.value.types.utilitario = false;
+  if (filter === 'Comercial') filters.value.types.comercial = false;
 
-  if (filter === 'Disponível') filters.value.status.available = false;
-  if (filter === 'Em Uso') filters.value.status.inUse = false;
-  if (filter === 'Em Manutenção') filters.value.status.maintenance = false;
+  if (filter === 'Disponível') filters.value.state.available = false;
+  if (filter === 'Em Uso') filters.value.state.inUse = false;
+  if (filter === 'Em Manutenção') filters.value.state.maintenance = false;
 
   if (filter === '2 Lugares') filters.value.seats.two = false;
   if (filter === '4 Lugares') filters.value.seats.four = false;
@@ -479,11 +359,12 @@ function applyFilters(newFilters) {
   if (filters.value.types.citadino) activeFilters.value.push('Citadino');
   if (filters.value.types.sedan) activeFilters.value.push('Sedan');
   if (filters.value.types.utilitario) activeFilters.value.push('Utilitário');
+  if (filters.value.types.comercial) activeFilters.value.push('Comercial');
 
-  // Status
-  if (filters.value.status.available) activeFilters.value.push('Disponível');
-  if (filters.value.status.inUse) activeFilters.value.push('Em Uso');
-  if (filters.value.status.maintenance) activeFilters.value.push('Em Manutenção');
+  // v_estado
+  if (filters.value.state.available) activeFilters.value.push('Disponível');
+  if (filters.value.state.inUse) activeFilters.value.push('Em Uso');
+  if (filters.value.state.maintenance) activeFilters.value.push('Em Manutenção');
 
   // Lugares
   if (filters.value.seats.two) activeFilters.value.push('2 Lugares');
@@ -497,7 +378,7 @@ function applyFilters(newFilters) {
 function resetFilters() {
   filters.value = {
     types: { suv: false, citadino: false, sedan: false, utilitario: false },
-    status: { available: false, inUse: false, maintenance: false },
+    state: { available: false, inUse: false, maintenance: false },
     seats: { two: false, four: false, five: false, seven: false }
   };
   activeFilters.value = [];
@@ -505,7 +386,7 @@ function resetFilters() {
 
 // Modal de requisição
 const openRequestModal = (vehicle) => {
-  if (vehicle.status !== 'available') return;
+  if (vehicle.v_estado !== 'available') return;
   selectedVehicle.value = vehicle;
   showRequestModal.value = true;
 };

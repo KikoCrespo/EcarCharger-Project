@@ -1,6 +1,7 @@
 <script setup>
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { ExclamationCircleIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
+//import { c } from 'vite/dist/node/moduleRunnerTransport.d-DJ_mE5sf'
 import { ref, watch } from 'vue'
 
 defineProps({
@@ -10,11 +11,17 @@ defineProps({
   action: String,
 })
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'confirm'])
 
 const closeModal = () => {
   emit('close')
 }
+
+const confirmAction = () => {
+  emit('confirm')
+}
+
+
 </script>
 
 <template>
@@ -43,7 +50,7 @@ const closeModal = () => {
                 </div>
               </div>
               <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                <button type="button" :class="action === 'Inativar' ? 'bg-red-600 hover:bg-red-500' : 'bg-green-600 hover:bg-green-500'" class="inline-flex w-full justify-center rounded-md  px-3 py-2 text-sm font-semibold text-white shadow-xs sm:ml-3 sm:w-auto" @click="closeModal">
+                <button type="button" :class="action === 'Inativar' ? 'bg-red-600 hover:bg-red-500' : 'bg-green-600 hover:bg-green-500'" class="inline-flex w-full justify-center rounded-md  px-3 py-2 text-sm font-semibold text-white shadow-xs sm:ml-3 sm:w-auto" @click="confirmAction">
                   {{ action }}
                 </button>
                 <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto" @click="closeModal">

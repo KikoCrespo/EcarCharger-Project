@@ -54,7 +54,7 @@ onMounted(() => {
 
 <template>
 
-    <div class="flex h-full">
+    <div class="flex h-screen">
         <SideBar v-if="state.user" :user_data="state.user" class="hidden sm:flex " />
 
         <div class="w-full">
@@ -83,7 +83,7 @@ onMounted(() => {
                     </template>
                 </ul>
             </header>
-            <main class="mt-5 px-5 h-auto overflow-auto">
+            <main class="mt-5 px-5 h-[85vh] overflow-auto">
                 <router-view v-if="state.user" :user_data="state.user" />
             </main>
         </div>

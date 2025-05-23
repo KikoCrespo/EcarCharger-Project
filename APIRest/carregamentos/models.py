@@ -1,7 +1,7 @@
 from django.db import models
 from entidades.models import Entidade
 from utilizadores.models import Utilizador
-from automoveis.models import Carro
+from automoveis.models import Veiculo 
 from postosCarregamento.models import PostoCarregamento
 
 # Create your models here.
@@ -20,7 +20,7 @@ class Carregamento(models.Model):
     ca_avg_kwh = models.FloatField(null=True, blank=True)
     ca_custo = models.FloatField(null=True, blank=True)
     ca_utilizador = models.ForeignKey(Utilizador, on_delete=models.CASCADE)
-    ca_carro = models.ForeignKey(Carro, on_delete=models.CASCADE)
+    ca_Veiculo = models.ForeignKey(Veiculo, on_delete=models.CASCADE)
     ca_posto = models.ForeignKey(PostoCarregamento, on_delete=models.CASCADE)
     ca_entidade = models.ForeignKey(Entidade, on_delete=models.CASCADE)
     ca_estado = models.CharField(max_length=20, choices=STATUS_CHOICES, default='ACTIVE')

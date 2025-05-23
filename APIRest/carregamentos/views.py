@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from datetime import datetime
 from rest_framework.views import APIView
 from utilizadores.models import Utilizador
-from automoveis.models import Carro
+from automoveis.models import Veiculo
 from postosCarregamento.models import PostoCarregamento
 from rest_framework import status
 
@@ -38,10 +38,10 @@ class CarregamentosView(APIView):
             avg_kwh = data.get('ca_avg_kwh')
             custo = data.get('ca_custo')
             id_utilizador = data.get('ca_utilizador')
-            id_carro = data.get('ca_carro')
+            id_Veiculo = data.get('ca_Veiculo')
             id_posto = data.get('ca_posto')
 
-            if not all([data_inicio, data_fim, duracao, avg_v, avg_a, avg_kwh, custo, utilizador, carro, posto]):
+            if not all([data_inicio, data_fim, duracao, avg_v, avg_a, avg_kwh, custo, utilizador, Veiculo, posto]):
                 return Response({'error': 'Existem campos em falta'}, status=400)
             # Verifica se o utilizador existe
             try:
@@ -52,14 +52,14 @@ class CarregamentosView(APIView):
             except Utilizador.DoesNotExist:
                 return Response({'error': 'Utilizador não encontrado'}, status=404)
             
-            # Verifica se o carro existe
+            # Verifica se o Veiculo existe
             try:
-                carro = Carro.objects.get(id= id_carro)
-                if not carro.c_estado == 'ativo':
-                    return Response({'error': 'Carro está desativado'}, status=403)
+                Veiculo = Veiculo.objects.get(id= id_Veiculo)
+                if not Veiculo.c_estado == 'ativo':
+                    return Response({'error': 'Veiculo está desativado'}, status=403)
                 
-            except Carro.DoesNotExist:
-                return Response({'error': 'Carro não encontrado'}, status=404)
+            except Veiculo.DoesNotExist:
+                return Response({'error': 'Veiculo não encontrado'}, status=404)
             
             # Verifica se o posto existe
             try:
@@ -80,7 +80,7 @@ class CarregamentosView(APIView):
                 ca_avg_kwh = avg_kwh,
                 ca_custo = custo,
                 ca_utilizador = utilizador,
-                ca_carro = carro,
+                ca_Veiculo = Veiculo,
                 ca_posto = posto
             )
             
@@ -108,10 +108,10 @@ class CarregamentosView(APIView):
             avg_kwh = data.get('ca_avg_kwh')
             custo = data.get('ca_custo')
             utilizador_id = data.get('ca_utilizador')
-            carro = data.get('ca_carro')
+            Veiculo = data.get('ca_Veiculo')
             posto = data.get('ca_posto')
 
-            if not all([data_inicio, data_fim, avg_v, avg_a, avg_kwh, custo, utilizador_id, carro, posto]):
+            if not all([data_inicio, data_fim, avg_v, avg_a, avg_kwh, custo, utilizador_id, Veiculo, posto]):
                 return Response({'error': 'Existem campos em falta'}, status=400)
 
             duracao = data_fim - data_inicio   
@@ -130,7 +130,7 @@ class CarregamentosView(APIView):
             carregamento.ca_avg_kwh = avg_kwh
             carregamento.ca_custo = custo
             carregamento.ca_utilizador = utilizador
-            carregamento.ca_carro = carro
+            carregamento.ca_Veiculo = Veiculo
             carregamento.ca_posto = posto
 
             

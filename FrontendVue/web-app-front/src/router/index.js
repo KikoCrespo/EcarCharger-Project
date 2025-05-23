@@ -10,7 +10,10 @@ import MyVehiclesView from "@/views/MyVehiclesView.vue";
 import ListAllVechilesView from "@/views/ListAllVechilesView.vue";
 import VehicleDetailView from "@/views/VehicleDetailView.vue";
 import ProfileUserView from '@/views/ProfileUserView.vue';
+import AddVehiclesView from '@/views/AddVehiclesView.vue';
+import { compile } from 'vue';
 import HomeView from '@/views/HomeView.vue';
+
 
 const routes = [
 
@@ -68,6 +71,12 @@ const routes = [
     component: VehicleDetailView,
     meta: { layout: 'default' }
   },
+  {
+    path: '/frota/adicionar-veiculo',
+    name: 'addvehicles',
+    component: AddVehiclesView,
+    meta: {layout: 'default' }
+  }
   
 ];
 

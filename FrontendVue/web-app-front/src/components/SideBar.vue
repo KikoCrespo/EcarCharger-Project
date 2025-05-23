@@ -39,15 +39,17 @@
             <!--Submenu da frota-->
             <div class="text-left text-sm mt-2 w-4/5 mx-auto text-black font-bold" v-show="carsOpen">
 
-                <router-link to="/frota/meus-veiculos" class="block cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
-                  Meus Veículos
+                <router-link to="/frota/meus-veiculos"
+                    class="block cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
+                    Meus Veículos
                 </router-link>
-                <router-link to="/frota/consultar" class="block cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
-                  Consultar Frota
+                <router-link to="/frota/consultar"
+                    class="block cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
+                    Consultar Frota
                 </router-link>
-                <h1 v-if="user_data.type" class="cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
-                    Adicionar Veículo
-                </h1>
+                <router-link to="/frota/adicionar-veiculo" v-if="user_data.type" class="block cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1" >
+                        Adicionar Veículo
+                </router-link>
             </div>
 
 
@@ -137,6 +139,40 @@
                     Pedidos de alteração
                 </router-link>
             </div>
+
+            <!-- menu de postos de carregamento -->
+            <div v-if="user_data.type"
+                class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-soft-orange text-gray-900" @click="togglePostos">
+                <fuel-icon class="size-6" />
+                <div class="flex justify-between w-full items-center">
+                    <span class="text-[15px] ml-4 text-black font-bold">Postos</span>
+                    <span class="text-sm transition-transform duration-300" :class="{ 'rotate-180': PostosOpen }">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Submenu Postos -->
+            <div v-if="user_data.type" class="text-left text-sm mt-2 w-4/5 mx-auto text-black font-bold"
+                v-show="PostosOpen">
+                <router-link to="/postos/listar"
+                    class="block cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
+                    Listar
+                </router-link>
+                <router-link v-if="user_data.is_superuser" to="/postos/adicionar"
+                    class="block cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
+                    Adicionar Posto
+                </router-link>
+                <router-link v-if="user_data.is_superuser" to="/postos/iot/adicionar"
+                    class="block cursor-pointer p-2 hover:bg-soft-orange rounded-md mt-1">
+                    Adicionar IOT
+                </router-link>
+            </div>
+
+
         </div>
         <div>
             <div
@@ -166,6 +202,7 @@
 <script setup>
 import { ref } from 'vue';
 import { defineProps } from 'vue';
+import {FuelIcon} from 'lucide-vue-next';
 
 const props = defineProps({
     user_data: {
@@ -174,6 +211,7 @@ const props = defineProps({
     }
 });
 
+const PostosOpen = ref(false);
 const usersOpen = ref(false);
 const carsOpen = ref(false);
 const statisticOpen = ref(false);
@@ -188,5 +226,9 @@ const toggleFrota = () => {
 
 const toggleUsers = () => {
     usersOpen.value = !usersOpen.value;
+};
+
+const togglePostos = () => {
+    PostosOpen.value = !PostosOpen.value;
 };
 </script>
