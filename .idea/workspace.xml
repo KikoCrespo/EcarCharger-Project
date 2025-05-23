@@ -5,20 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="33e13635-1438-4149-9579-adddb6dabdc8" name="Changes" comment="#merge conflict">
-      <change afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/Dashboard/ChargingStationsList.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/Dashboard/ConsumptionCard.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/Dashboard/ExpensesBubbleChart.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/Dashboard/LineChart.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/Dashboard/VehicleSelectionModal.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIRest/APIRest/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/APIRest/APIRest/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIRest/carregamentos/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/APIRest/carregamentos/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIRest/scripts/management/commands/start_mqtt_consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/APIRest/scripts/management/commands/start_mqtt_consumer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/TableUsers.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/TableUsers.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/router/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/views/DashboardView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/views/DashboardView.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/views/HomeView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/views/HomeView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIRest/consumers.py" beforeDir="false" afterPath="$PROJECT_DIR$/APIRest/consumers.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,6 +144,42 @@
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <method v="2" />
     </configuration>
+    <configuration default="true" type="tests" factoryName="Autodetect">
+      <module name="WebApp" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <module name="WebApp" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -193,7 +219,9 @@
       <workItem from="1747335064600" duration="2158000" />
       <workItem from="1747392969296" duration="243000" />
       <workItem from="1747483096783" duration="14851000" />
-      <workItem from="1747665477921" duration="7418000" />
+      <workItem from="1747665477921" duration="7985000" />
+      <workItem from="1747765995618" duration="3938000" />
+      <workItem from="1747844271662" duration="9742000" />
     </task>
     <task id="LOCAL-00001" summary="merge conflict">
       <option name="closed" value="true" />

@@ -38,6 +38,7 @@ from entidades.views import RegistarEntidadeView
 
 from carregamentos.views import CarregamentosView
 
+
 from postosCarregamento.views import PostoCarregamentoView
 
 
@@ -55,6 +56,9 @@ urlpatterns = [
     path('api/registarCarro/', AddCarroEntidadeView.as_view(), name='addCarroEntidade'),
     path('api/Frota/<int:entidade_id>/', getFrotaEntidade.as_view(), name='Frota'),
     path('api/carregamentos/iniciar/', CarregamentosView.as_view(), name='carregamentos'),
+
+    path('api/carregamentos/<int:session_id>/stop/', CarregamentosView.stop_charging_view, name='stop_charging_view'),
+
     path('api/carregamentos/editar/<int:id>/', CarregamentosView.as_view(), name='editarCarregamento'),
     path('api/entidade/postos/adicionar/', PostoCarregamentoView.as_view(), name='adicionarPostoCarregamento'),
     path('api/entidade/postos/listar/', PostoCarregamentoView.as_view(), name='listarPostosCarregamento'),
