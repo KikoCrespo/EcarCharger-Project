@@ -1,19 +1,32 @@
 <script setup>
 import { reactive, onMounted } from 'vue';
-import axios from 'axios';
-import SideMenu from '@/components/SideMenu.vue';
+import api from '@/interceptors/axiosInterceptor'
+import { ref } from 'vue';
+import SideBar from '@/components/SideBar.vue';
+import NavBar from '@/components/NavBar.vue';
+import { ChevronRightIcon } from '@heroicons/vue/24/outline'
+import IconHome from "@/assets/icons/IconHome.vue";
 
 const state = reactive({
     isAuthenticated: false,
-    user: null, 
+    user: null,
 });
+
+
+const getUrl = () => {
+    const url = window.location.href;
+    const path = new URL(url).pathname;
+    const urlParts = path.split('/').filter(part => part !== '');
+    return urlParts;
+};
+const currentUrl = ref(getUrl());
+
 
 // Função para verificar o token e obter os dados do utilizador
 onMounted(() => {
     const token = sessionStorage.getItem('access');
     if (token) {
-        axios
-            .get('http://localhost:8000/api/perfil/', {
+        api.get('http://localhost:8000/api/perfil/', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -28,53 +41,57 @@ onMounted(() => {
                 console.error('Erro ao recuperar dados do utilizador:', error);
                 state.isAuthenticated = false;
             });
-    }else {
+    } else {
         state.isAuthenticated = false;
         console.log('Token não encontrado. Utilizador não autenticado.');
     }
 });
 
+
+
+
 </script>
 
 <template>
-    <div class="grid h-screen w-screen grid-rows-[auto,1fr] grid-cols-[300px,1fr] ">
-        <!-- Sidebar -->
-        <SideMenu id="SideMenu" class="h-full" />
 
-        <!-- Header -->
-        <header id="cabecalho" class="w-full h-16 flex items-center justify-between p-6 bg-white shadow z-10">
-            <!-- Verifica se o state.user está definido antes de tentar acessar o nome -->
-            <p class="text-gray-600" v-if="state.user && state.user.first_name">Olá, {{ state.user.first_name }}</p>
-            <p v-else>Carregando...</p>
-            <p v-if="state.user">Ultimo acesso, {{ state.user.ultimo_registo}}</p>
+    <div class="flex h-screen">
+        <SideBar v-if="state.user" :user_data="state.user" class="hidden sm:flex " />
 
-        </header>
+        <div class="w-full">
+            <NavBar v-if="state.user" :user_data="state.user" class="" />
+            <header class="mt-5 px-6 ">
+                <ul class="flex items-center space-x-2">
+                    <li>
+                        <a href="/"
+                            class="text-gray-900 font-medium flex items-center hover:text-soft-orange duration-300">
+                            <IconHome size="18" class="mr-0.5" />
+                            Home
+                        </a>
+                    </li>
+                    <template v-for="(segment, index) in currentUrl" :key="index">
+                        <li class="flex items-center">
+                            <ChevronRightIcon class="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                            <span :class="[
+                                'text-base font-medium',
+                                index === currentUrl.length - 1
+                                    ? 'text-soft-orange'
+                                    : 'text-gray-400 hover:text-soft-orange duration-300 '
+                            ]">
+                                {{ decodeURIComponent(segment) }}
+                            </span>
+                        </li>
+                    </template>
+                </ul>
+            </header>
+            <main class="mt-5 px-5 h-[85vh] overflow-auto">
+                <router-view v-if="state.user" :user_data="state.user" />
+            </main>
+        </div>
 
-        <!-- Main content -->
-        <main id="main" class="p-6 bg-white justify-center ">
-            <router-view />
-        </main>
     </div>
+
+
+
+
+
 </template>
-
-<style scoped>
-body {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    grid-column-gap: 0;
-    grid-row-gap: 0;
-}
-
-#SideMenu {
-    grid-area: 1 / 1 / 6 / 2;
-}
-
-#cabecalho {
-    grid-area: 1 / 2 / 1 / 8;
-}
-
-#main {
-    grid-area: 1 / 2 / 6 / 8;
-}
-</style>

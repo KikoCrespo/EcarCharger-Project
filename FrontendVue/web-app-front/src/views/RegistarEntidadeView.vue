@@ -1,7 +1,30 @@
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
 import { useRouter } from 'vue-router';
+import axiosInterceptor from '../interceptors/axiosInterceptor';
+
+
+
+  const socket = new WebSocket("ws://localhost:8000/ws/sensor/");
+
+  socket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    console.log("Received sensor data:", data);
+    if(data === null){
+        console.log("Sensor 1: Sensor em modo de espera");
+    }
+    this.sensorData = data;  // Exemplo: guarda os dados no estado
+
+  };
+
+  socket.onopen = () => {
+    console.log("WebSocket connected");
+  };
+
+  socket.onerror = (error) => {
+    console.error("WebSocket error:", error);
+  };
+
 
 const form = ref({
     e_nome: '',
@@ -65,7 +88,7 @@ const submitForm = async () => {
     if (hasError) return;
 
     try {
-        await axios.post('http://localhost:8000/api/entidades/registar', form.value);
+        await axiosInterceptor.post('/entidades/registar', form.value);
         successMessage.value = 'Entidade registada com sucesso!';
         // router.push('/entidades'); // Se quiseres redirecionar depois
     } catch (error) {

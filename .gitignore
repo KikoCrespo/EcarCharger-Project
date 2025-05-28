@@ -1,3 +1,6 @@
 venv/
 API/db.sqlite3.txt
 todo
+APIRest/media/fotos_perfil/
+__pycache__/
+*.pyc

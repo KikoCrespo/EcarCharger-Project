@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,7 +42,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'channels',
     'corsheaders',
+    'scripts',
     "automoveis",
     "utilizadores",
     "carregamentos",
@@ -57,15 +60,37 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",  
+    'corsheaders.middleware.CorsMiddleware',
+
 ]
 
 # Configuração de CORS (para aceitar requisições do frontend)
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # adicionar port do frontend
+    "http://localhost:8000",  # adicionar port do frontend
+    "http://localhost:5173", # Vue
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+    'OPTIONS',
+]
+
+ASGI_APPLICATION = "APIRest.asgi.application"
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
+    },
+}
+
 
 
 REST_FRAMEWORK = {
@@ -75,7 +100,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Token expira em 15 min
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # Token expira em 5 min
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Refresh token dura 7 dias
     'ROTATE_REFRESH_TOKENS': True,  # Gera um novo refresh token quando usado
     'BLACKLIST_AFTER_ROTATION': True,  # Revoga o antigo refresh token
@@ -166,3 +191,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+MEDIA_URL = '/Files/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'Files')

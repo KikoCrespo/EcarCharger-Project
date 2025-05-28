@@ -1,11 +1,18 @@
 import './assets/css/main.css'
+
+
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store' 
+import axios from 'axios';
+import VueApexCharts from 'vue3-apexcharts'
 
 
 const app = createApp(App)
 
-app.use(router) // Usa o router antes de montar
-app.mount('#app') // Monta so depois de estar tudo pronto 
+axios.defaults.baseURL = 'http://127.0.0.1:8000/api/'
+
+app.use(router,axios)
+app.component('apexchart', VueApexCharts)
+app.mount('#app')
+
