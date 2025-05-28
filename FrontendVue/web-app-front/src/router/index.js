@@ -13,6 +13,7 @@ import ProfileUserView from '@/views/ProfileUserView.vue';
 import AddVehiclesView from '@/views/AddVehiclesView.vue';
 import { compile } from 'vue';
 import HomeView from '@/views/HomeView.vue';
+import PersonalStatisticsView from '@/views/PersonalStatisticsView.vue';
 
 
 const routes = [
@@ -76,6 +77,12 @@ const routes = [
     name: 'addvehicles',
     component: AddVehiclesView,
     meta: {layout: 'default' }
+  },
+  {
+    path: '/estatisticas/pessoais',
+    name: 'personalstatistics',
+    component: PersonalStatisticsView,
+    meta: { layout: 'default' }
   }
   
 ];
