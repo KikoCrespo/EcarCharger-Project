@@ -13,6 +13,7 @@ import ProfileUserView from '@/views/ProfileUserView.vue';
 import AddVehiclesView from '@/views/AddVehiclesView.vue';
 import { compile } from 'vue';
 import HomeView from '@/views/HomeView.vue';
+import RequestVehicleAdminView from '@/views/RequestVehicleAdminView.vue';
 
 
 const routes = [
@@ -66,15 +67,23 @@ const routes = [
     meta: { layout: 'default' }
   },
   {
-    path: '/frota/meus-veiculos/detail',
+    path: '/frota/meus-veiculos/detail/:id',
     name: 'vehicledetail',
     component: VehicleDetailView,
+    props: true,
     meta: { layout: 'default' }
   },
   {
     path: '/frota/adicionar-veiculo',
     name: 'addvehicles',
     component: AddVehiclesView,
+    meta: {layout: 'default' }
+  },
+
+  {
+    path: '/frota/requisicoes',
+    name: 'requisitions',
+    component: RequestVehicleAdminView,
     meta: {layout: 'default' }
   }
   

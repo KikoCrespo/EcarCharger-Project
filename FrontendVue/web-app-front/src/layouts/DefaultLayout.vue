@@ -26,7 +26,7 @@ const currentUrl = ref(getUrl());
 onMounted(() => {
     const token = sessionStorage.getItem('access');
     if (token) {
-        api.get('http://localhost:8000/api/perfil/', {
+        api.get('/perfil/', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

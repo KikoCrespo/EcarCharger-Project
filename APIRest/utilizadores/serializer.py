@@ -9,4 +9,4 @@ class UtilizadorSerializer(serializers.ModelSerializer):
             'last_login': {'format': '%Y-%m-%d'},
         }
         u_img_perfil = serializers.ImageField(use_url=True)
-        fields = ['username', 'email', 'first_name', 'last_name', 'is_active', 'is_staff', 'is_superuser', 'date_joined', 'last_login', 'u_departamento', 'u_img_perfil', 'u_entidade']
+        fields = ['id','username', 'email', 'first_name', 'last_name', 'is_active', 'is_staff', 'is_superuser', 'date_joined', 'last_login', 'u_departamento', 'u_img_perfil', 'u_entidade']

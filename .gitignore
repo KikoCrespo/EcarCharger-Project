@@ -4,3 +4,4 @@ todo
 APIRest/media/fotos_perfil/
 __pycache__/
 *.pyc
+APIRest/APIRest/.env/

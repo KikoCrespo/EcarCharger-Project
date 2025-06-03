@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -78,6 +79,7 @@ CORS_ALLOW_METHODS = [
     'PUT',
     'DELETE',
     'OPTIONS',
+    'PATCH',
 ]
 
 ASGI_APPLICATION = "APIRest.asgi.application"
@@ -134,20 +136,14 @@ AUTH_USER_MODEL = 'utilizadores.Utilizador'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-     "default": {
-
-            'ENGINE': "django.db.backends.postgresql_psycopg2",
-
-            'NAME': "postgres",
-
-            'USER': "postgres.sykfhtjuydhufijedvpr",
-
-            'PASSWORD': "EcarDb2425@",
-
-            'HOST': "aws-0-eu-west-2.pooler.supabase.com",
-
-            'PORT': "6543",
-        }
+    'default': {
+        'ENGINE': config('DB_ENGINE'),
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
+    }
 }
 
 
@@ -175,7 +171,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Lisbon"
 
 USE_I18N = True
 
