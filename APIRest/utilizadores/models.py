@@ -19,7 +19,7 @@ class Utilizador(AbstractUser):
 
     def getCarregamentos(self):
         from carregamentos.models import Carregamento
-        return Carregamento.objects.filter(ca_utilizador=self)
+        return Carregamento.objects.filter(ca_utilizador=self, ca_estado=2)
 
     def getNrCarregamentos(self):
         from carregamentos.models import Carregamento

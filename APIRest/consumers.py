@@ -70,6 +70,8 @@ class SensorDataConsumer(AsyncWebsocketConsumer):
         if not station.pc_estado:
             return await self.send_error("Posto indisponível")
 
+        await self.update_charging_station_status(station.id, False)
+
         self.session_id = await self.create_charging_session(
             station,
             await self.get_user(data['user_id']),
@@ -140,6 +142,9 @@ class SensorDataConsumer(AsyncWebsocketConsumer):
         # Buscar dados do InfluxDB para esta sessão
         session = await self.get_charging_session(self.session_id)
 
+        station_id = await self.get_station_by_session(session.id)
+        await self.update_charging_station_status(station_id, True)
+
         session_data = await self.get_session_data_from_influx(
             self.session_id,
             session.ca_data_inicio,
@@ -147,14 +152,13 @@ class SensorDataConsumer(AsyncWebsocketConsumer):
         )
 
         # Finalizar sessão com os dados calculados e a data de fim correta
+
         await self.finalize_session(
             self.session_id,
             auto_stop=True,
             session_data=session_data,
             end_time=end_time
         )
-
-        await self.stop_charging_station(self.session_id)
 
         # Enviar resumo para o frontend
         await self.send(json.dumps({
@@ -170,11 +174,16 @@ class SensorDataConsumer(AsyncWebsocketConsumer):
 
         # Buscar dados do InfluxDB para esta sessão
         session = await self.get_charging_session(self.session_id)
+
+        station_id = await self.get_station_by_session(session.id)
+        await self.update_charging_station_status(station_id, True)
+
         session_data = await self.get_session_data_from_influx(
             self.session_id,
             session.ca_data_inicio,
             session.ca_data_fim if session.ca_data_fim else timezone.now()
         )
+
 
         # Finalizar sessão com os dados calculados
         await self.finalize_session(
@@ -191,6 +200,8 @@ class SensorDataConsumer(AsyncWebsocketConsumer):
             'session_id': self.session_id,
             'summary': session_data
         }))
+
+
 
     # IoT Control
     async def stop_charging_station(self, session_id):
@@ -274,6 +285,7 @@ class SensorDataConsumer(AsyncWebsocketConsumer):
                 "energy_consumed": 0
             }
 
+
     @database_sync_to_async
     def finalize_session(self, session_id, auto_stop, session_data, end_time=None):
         """Finaliza sessão com cálculos finais"""
@@ -328,13 +340,33 @@ class SensorDataConsumer(AsyncWebsocketConsumer):
         return Carregamento.objects.get(id=session_id)
 
     @database_sync_to_async
+    def get_station_by_session(self, session_id):
+        """Busca o posto de carregamento associado a uma sessão"""
+        try:
+            session = Carregamento.objects.get(id=session_id)
+            return session.ca_posto.id
+        except ObjectDoesNotExist:
+            return None
+
+    @database_sync_to_async
+    def update_charging_station_status(self, station_id, status):
+        """Atualiza o estado do posto de carregamento"""
+        try:
+            station = PostoCarregamento.objects.get(id=station_id)
+            station.pc_estado = status
+            station.save(update_fields=['pc_estado'])
+            return True
+        except ObjectDoesNotExist:
+            return False
+
+    @database_sync_to_async
     def create_charging_session(self, station, user, vehicle):
         return Carregamento.objects.create(
             ca_utilizador=user,
             ca_posto=station,
             ca_entidade=station.pc_entidade,
             ca_Veiculo=vehicle,
-            ca_data_inicio=timezone.now()
+            ca_data_inicio=timezone.now(),
         ).id
 
     @database_sync_to_async
