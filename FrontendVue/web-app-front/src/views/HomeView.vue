@@ -38,8 +38,8 @@
             <!-- Consumo -->
             <div class="statistics-card">
               <consumption-card
-                  :consumption="285"
-                  :trend="-8.6"
+                  :consumption="totalEnergy"
+                  :trend="energyTrend"
                   :period="'last week'"
               />
             </div>
@@ -81,6 +81,7 @@ import ConsumptionCard from '@/components/Dashboard/ConsumptionCard.vue';
 import LineChart from '@/components/Dashboard/LineChart.vue';
 import ExpensesBubbleChart from '@/components/Dashboard/ExpensesBubbleChart.vue';
 import VehicleSelectionModal from '@/components/Dashboard/VehicleSelectionModal.vue';
+import api from '@/interceptors/axiosInterceptor'
 
 // Estado
 const currentDateTime = ref(formatDateTime(new Date()));
@@ -90,6 +91,10 @@ const showVehicleModal = ref(false);
 const isConnected = ref(false)
 const socket = ref(null)
 const series = ref([0, 0, 0, 0])
+
+// Dados principais
+const totalEnergy = ref(0);
+const energyTrend = ref(0);
 
 //Socket
 
@@ -123,7 +128,7 @@ function handleVehicleSelection({ vehicle, station }) {
   if (stationToUse) {
     const stationIndex = chargingStations.value.findIndex(s => s.id === stationToUse.id);
     if (stationIndex !== -1) {
-      chargingStations.value[stationIndex].status = 'in-use';
+      chargingStations.value[stationIndex].status = false;
     }
   }
 
@@ -265,43 +270,7 @@ const chartOptions = ref({
 
 
 // Dados simulados
-const chargingStations = ref([
-  {
-    id: 1,
-    name: 'Garagem',
-    status: 'available',
-    type: 'Rápido',
-    power: '50kW'
-  },
-  {
-    id: 2,
-    name: 'Armazém 1.2',
-    status: 'in-use',
-    type: 'Normal',
-    power: '22kW'
-  },
-  {
-    id: 3,
-    name: 'Armazém 1.3',
-    status: 'available',
-    type: 'Rápido',
-    power: '50kW'
-  },
-  {
-    id: 4,
-    name: 'Armazém 1.2',
-    status: 'in-use',
-    type: 'Normal',
-    power: '22kW'
-  },
-  {
-    id: 5,
-    name: 'Armazém 1.2',
-    status: 'in-use',
-    type: 'Lento',
-    power: '7.4kW'
-  }
-]);
+const chargingStations = ref([]);
 
 const vehicles = ref([
   {
@@ -353,24 +322,20 @@ const vehicles = ref([
 
 const consumptionSeries = ref([
   {
-    name: 'Last 6 days',
-    data: [75, 125, 150, 130, 100, 180],
+    name: 'Semana atual',
+    data: [0,0,0,0,0,0],
     color: '#f39c12'
   },
   {
-    name: 'Last Week',
-    data: [85, 100, 120, 110, 95, 140],
+    name: 'Semana Anterior',
+    data: [0,0,0,0,0,0],
     color: '#bdc3c7'
   }
 ]);
 
-const consumptionCategories = ref(['01', '02', '03', '04', '05', '06']);
+const consumptionCategories = ref(['1', '2', '3', '4', '5', '6', '7']);
 
-const expensesData = ref([
-  { month: 'Março', value: 140.60, color: '#8e44ad' },
-  { month: 'Julho', value: 123.12, color: '#1abc9c' },
-  { month: 'Dezembro', value: 212.30, color: '#f39c12' }
-]);
+const expensesData = ref([]);
 
 // Métodos
 function formatDateTime(date) {
@@ -389,7 +354,7 @@ function updateDateTime() {
 
 function selectStation(station) {
   // Só permite selecionar postos disponíveis
-  if (station.status === 'available') {
+  if (station.status === true) {
     selectedStation.value = station;
   } else {
     alert('Este posto não está disponível para carregamento.');
@@ -399,9 +364,84 @@ function selectStation(station) {
 
 
 // Lifecycle hooks
-onMounted(() => {
+onMounted(async () =>  {
   // Atualizar a data/hora a cada minuto
   setInterval(updateDateTime, 60000);
+  try {
+    const response = await api.get('/dashboard/');
+    if (response.data) {
+      // Armazena os dados do usuário e os totais
+      const userData = {
+
+        consumosSemanais_now: response.data.consumos_semanais_now,
+        consumosSemanais_before: response.data.consumos_semanais_before,
+        custosMensais: response.data.maiores_custos_mensais,
+        postos: response.data.postos,
+        totalQuantidadeSemanal: response.data.total_quantidade_semanal,
+        totalQuantidadeSemanal_before: response.data.total_quantidade_semanal_before,
+
+      };
+
+      // Atualizar valores principais
+      totalEnergy.value = userData.totalQuantidadeSemanal
+      console.log(userData.totalQuantidadeSemanal)
+
+        if(userData.totalQuantidadeSemanal_before !== 0) {
+          // Cálculo da tendência de energia
+          energyTrend.value = (userData.totalQuantidadeSemanal - userData.totalQuantidadeSemanal_before) / userData.totalQuantidadeSemanal_before * 100;
+
+        } else {
+          energyTrend.value = userData.totalQuantidadeSemanal > 0 ? 100 : 0; // Se não houver energia antes, mas houver agora, consideramos um aumento de 100%
+        }
+
+      consumptionSeries.value = [
+        {
+          name: 'Semana atual',
+          data: [
+            userData.consumosSemanais_now['monday'],
+            userData.consumosSemanais_now['tuesday'],
+            userData.consumosSemanais_now['wednesday'],
+            userData.consumosSemanais_now['thursday'],
+            userData.consumosSemanais_now['friday'],
+            userData.consumosSemanais_now['saturday'],
+            userData.consumosSemanais_now['sunday']
+          ],
+          color: '#f39c12'
+        },
+        {
+          name: 'Semana Anterior',
+          data: [
+            userData.consumosSemanais_before['monday'],
+            userData.consumosSemanais_before['tuesday'],
+            userData.consumosSemanais_before['wednesday'],
+            userData.consumosSemanais_before['thursday'],
+            userData.consumosSemanais_before['friday'],
+            userData.consumosSemanais_before['saturday'],
+            userData.consumosSemanais_before['sunday']
+          ],
+          color: '#bdc3c7'
+        }
+      ];
+
+      chargingStations.value = Object.entries(userData.postos).map (([key, station]) => ({
+        id: key,
+        address: station.morada,
+        status: station.estado,
+      }));
+
+      expensesData.value = Object.entries(userData.custosMensais).map(([key, mes]) => ({
+        month: key,
+        value: mes.custo,
+        color: '#' + Math.floor(Math.random() * 16777215).toString(16) // Gera uma cor aleatória
+      }));
+
+    } else {
+      console.error('Formato de dados inválido recebido da API.');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    state.isAuthenticated = false;
+  }
 });
 </script>
 

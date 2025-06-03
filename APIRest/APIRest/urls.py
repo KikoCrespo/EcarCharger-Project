@@ -28,7 +28,7 @@ from utilizadores.views import AdminView
 #from utilizadores.views import UtilizadorView
 from utilizadores.views import LoginUtilizadorView
 from utilizadores.views import PerfilUtilizadorView
-from utilizadores.views import FuncionarioView, CarregamentosUtilizadorView
+from utilizadores.views import FuncionarioView, CarregamentosUtilizadorView, DashboardView
 
 
 
@@ -56,11 +56,13 @@ urlpatterns = [
     path('api/utilizadores/listar/', AdminView.as_view(), name='listarUtilizadores'),
     path('api/frota/adicionar-veiculo/', AddVeiculoEntidadeView.as_view(), name='addVeiculoEntidade'),
     path('api/frota/consultar/', getFrotaEntidade.as_view(), name='Frota'),
-    path('api/carregamentos/iniciar/', CarregamentosView.as_view(), name='carregamentos'),
+
 
     path('api/estatisticas/pessoais/', CarregamentosUtilizadorView.as_view(), name='estatisticasPessoais'),
+    path('api/dashboard/', DashboardView.as_view(), name='dashboard'),
 
-    path('api/carregamentos/<int:session_id>/stop/', CarregamentosView.stop_charging_view, name='stop_charging_view'),
+    path('api/carregamentos/iniciar/', CarregamentosView.as_view(), name='carregamentos'),
+    #path('api/carregamentos/<int:session_id>/stop/', CarregamentosView.stop_charging_view, name='stop_charging_view'),
 
     path('api/carregamentos/editar/<int:id>/', CarregamentosView.as_view(), name='editarCarregamento'),
     path('api/entidade/postos/adicionar/', PostoCarregamentoView.as_view(), name='adicionarPostoCarregamento'),

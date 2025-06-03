@@ -5,6 +5,8 @@ from uploadFiles import caminho_foto_perfil
 from datetime import timedelta
 from django.utils import timezone
 
+
+
 class Utilizador(AbstractUser):
     u_entidade = models.ForeignKey(Entidade, on_delete=models.CASCADE)
     u_tipo = models.IntegerField()
@@ -148,6 +150,70 @@ class Utilizador(AbstractUser):
 
         return custos_mensais_now, custos_mensais_before
 
+
+    def calcular_kwh_totais_semanais(self):
+        from carregamentos.models import Carregamento
+
+        carregamentos = self.getCarregamentos()
+        start_of_week = timezone.now() - timedelta(days=timezone.now().weekday())
+
+        consumos_diarios_now = {
+            'monday': 0,
+            'tuesday': 0,
+            'wednesday': 0,
+            'thursday': 0,
+            'friday': 0,
+            'saturday': 0,
+            'sunday': 0,
+        }
+
+        consumos_diarios_before = {
+            'monday': 0,
+            'tuesday': 0,
+            'wednesday': 0,
+            'thursday': 0,
+            'friday': 0,
+            'saturday': 0,
+            'sunday': 0,
+        }
+
+        # Consumos da semana atual
+        for carregamento in carregamentos.filter(ca_data_inicio__gte=start_of_week):
+            dia_da_semana = carregamento.ca_data_inicio.strftime('%A').lower()
+            consumos_diarios_now[dia_da_semana] += carregamento.ca_avg_kwh
+        # Consumos da semana anterior
+        start_of_week_before = start_of_week - timedelta(days=7)
+        for carregamento in carregamentos.filter(ca_data_inicio__gte=start_of_week_before, ca_data_inicio__lt=start_of_week):
+            dia_da_semana = carregamento.ca_data_inicio.strftime('%A').lower()
+            consumos_diarios_before[dia_da_semana] += carregamento.ca_avg_kwh
+
+        return consumos_diarios_now, consumos_diarios_before
+
+    def calcular_maiores_custos_mensais(self):
+        from carregamentos.models import Carregamento
+
+        carregamentos = self.getCarregamentos()
+        custos_mensais = {}
+        #calcular o custo total por mês
+        for carregamento in carregamentos:
+            mes = carregamento.ca_data_inicio.month
+            ano = carregamento.ca_data_inicio.year
+            mes_ano = f"{ano}-{mes:02d}"
+            if mes_ano not in custos_mensais:
+                custos_mensais[mes_ano] = 0
+            custos_mensais[mes_ano] += carregamento.ca_custo
+        # Ordenar os meses por custo total buble sort
+        meses_ordenados = sorted(custos_mensais.items(), reverse=True)
+
+        # Pegar os 3 meses com maiores custos
+        maiores_custos = meses_ordenados[:3]
+
+        return [
+            {
+                'mes': timezone.datetime(year=int(mes.split('-')[0]), month=int(mes.split('-')[1]), day=1, tzinfo=timezone.get_current_timezone()),  # Cria um objeto datetime com timezone
+                'custo': custo
+            } for mes, custo in maiores_custos
+        ]
 
     def __str__(self):
         return self.first_name + " " + self.last_name

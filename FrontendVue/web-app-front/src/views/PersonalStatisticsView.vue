@@ -85,7 +85,7 @@
             <Plus v-if="costDiff > 0" class="w-4 h-4" />
             <Minus v-else class="w-4 h-4" />
           </div>
-          <span>{{ Math.abs(costDiff) }}€ vs {{ period === 'weekly' ? 'semana anterior' : 'mês anterior' }}</span>
+          <span>{{ Math.abs(costDiff.toFixed(3)) }}€ vs {{ period === 'weekly' ? 'semana anterior' : 'mês anterior' }}</span>
         </div>
       </div>
 
@@ -250,6 +250,8 @@ onMounted(async () => {
         carregamentos: response.data.carregamentos,
 
       };
+
+      console.log(response.data)
 
     
       chargingHistory.value = Object.entries(userData.carregamentos).map(([key, charge]) => ({
