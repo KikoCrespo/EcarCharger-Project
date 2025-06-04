@@ -27,7 +27,7 @@ class PostoCarregamentoView(APIView):
         morada = request.data.get('pc_morada')
         data_registo = request.data.get('pc_data_registo')
         intensidade_a = request.data.get('pc_intensidade_a')
-        intensidade_kw = request.data.get('pc_intensidade_kw')
+        potencia_kw = request.data.get('pc_potencia_kw')
         tipo_ligacao = request.data.get('pc_tipo_ligacao')
         preco_kwh = request.data.get('pc_preco_kwh')
         entidade_id = request.data.get('pc_entidade')
@@ -41,7 +41,7 @@ class PostoCarregamentoView(APIView):
                 pc_morada=morada,
                 pc_data_registo=data_registo,
                 pc_intensidade_a=intensidade_a,
-                pc_intensidade_kw=intensidade_kw,
+                pc_potencia_kw=potencia_kw,
                 pc_tipo_ligacao=tipo_ligacao,
                 pc_preco_kwh=preco_kwh,
                 pc_estado= True,

@@ -88,7 +88,7 @@ function initChart() {
       theme: 'light',
       y: {
         formatter: function(val) {
-          return val + ' kWh';
+          return val.toFixed(3) + ' kWh';
         }
       }
     }

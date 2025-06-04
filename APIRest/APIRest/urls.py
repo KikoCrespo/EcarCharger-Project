@@ -26,6 +26,13 @@ from django.conf.urls.static import static
 from utilizadores.views.AuthView import LogoutView, LoginUtilizadorView
 from utilizadores.views.AdminView import AdminView, AlterarUserEstadoView, PromoverUtilizadorView, despromoverUtilizadorView
 from utilizadores.views.UserView import PerfilUtilizadorView, FuncionarioView
+from utilizadores.views import LogoutView
+from utilizadores.views import AdminView
+#from utilizadores.views import UtilizadorView
+from utilizadores.views import LoginUtilizadorView
+from utilizadores.views import PerfilUtilizadorView
+from utilizadores.views import FuncionarioView, CarregamentosUtilizadorView, DashboardView
+
 
 from automoveis.views.RequisicoesView import requisicaoView, RequisicaoUtilizadorView, RequisicoesVeiculoView
 from automoveis.views.VeiculoView import getFrotaEntidade, AddVeiculoEntidadeView, VeiculobyIdView
@@ -65,6 +72,14 @@ urlpatterns = [
 
     path('api/carregamentos/iniciar/', CarregamentosView.as_view(), name='carregamentos'),
     path('api/carregamentos/<int:session_id>/stop/', CarregamentosView.stop_charging_view, name='stop_charging_view'),
+
+
+    path('api/estatisticas/pessoais/', CarregamentosUtilizadorView.as_view(), name='estatisticasPessoais'),
+    path('api/dashboard/', DashboardView.as_view(), name='dashboard'),
+
+    path('api/carregamentos/iniciar/', CarregamentosView.as_view(), name='carregamentos'),
+    #path('api/carregamentos/<int:session_id>/stop/', CarregamentosView.stop_charging_view, name='stop_charging_view'),
+
     path('api/carregamentos/editar/<int:id>/', CarregamentosView.as_view(), name='editarCarregamento'),
 
     path('api/entidade/postos/adicionar/', PostoCarregamentoView.as_view(), name='adicionarPostoCarregamento'),

@@ -21,22 +21,10 @@ class Command(BaseCommand):
         org = "iot_org"
         bucket = "eletricSensor_data"
 
-        influx_client = InfluxDBClient(url="http://localhost:8086", token=token, org=org)
+        influx_client = InfluxDBClient(url="http://85.241.134.65:8086", token=token, org=org)
         write_api = influx_client.write_api()
-        last_message_time = datetime.now()
         channel_layer = get_channel_layer()
         print(get_channel_layer())
-
-
-        def on_timeout():
-            print("⏰ Timeout: Nenhuma mensagem recebida nos últimos 20 segundos.")
-            async_to_sync(channel_layer.group_send)(
-                "sensor_data",
-                {
-                    "type": "send_sensor_data",
-                    "data": None
-                }
-            )
 
         def write_to_influxdb(data):
             try:
@@ -55,29 +43,33 @@ class Command(BaseCommand):
                 print(f"❌ Error writing to InfluxDB: {e}")
 
         def callback(ch, method, properties, body):
-            nonlocal last_message_time
             try:
                 data = json.loads(body)
                 print(f"📥 Received: {data}")
-                if(data['current'] == 0 and data['power'] == 0):
+
+                # Sempre escrever no InfluxDB, independente dos valores
+                write_to_influxdb(data)
+
+                if data['current'] != 0 and data['power'] != 0:
+                    # Enviar dados para o WebSocket apenas para atualização em tempo real
                     async_to_sync(channel_layer.group_send)(
                         "sensor_data",
                         {
                             "type": "send_sensor_data",
-                            "data": None
+                            "data": data
                         }
                     )
+                    print("📡 Sent charging data to WebSocket")
                 else:
-                    write_to_influxdb(data)
+                    # Detectou fim de carregamento - current e power são zero
                     async_to_sync(channel_layer.group_send)(
                         "sensor_data",
                         {
                             "type": "charging_auto_ended",
-                            "data": data
                         }
                     )
-                    print("📡 Sent to WebSocket")
-                last_message_time = datetime.now()
+                    print("🛑 Detected charging end (current=0, power=0), notified WebSocket")
+
             except Exception as e:
                 print(f"❌ Callback error: {e}")
 
@@ -91,10 +83,6 @@ class Command(BaseCommand):
         try:
             while True:
                 connection.process_data_events(time_limit=1)
-                now = datetime.now()
-                if (now - last_message_time) > timedelta(seconds=20):
-                    on_timeout()
-                    last_message_time = now  # resetar para evitar chamadas continuas
         except KeyboardInterrupt:
             print("🛑 Stopped.")
             channel.stop_consuming()

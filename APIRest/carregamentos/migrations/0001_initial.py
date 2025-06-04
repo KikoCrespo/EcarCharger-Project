@@ -12,6 +12,7 @@ class Migration(migrations.Migration):
         ("postosCarregamento", "0001_initial"),
         ("entidades", "0001_initial"),
         ("automoveis", "0001_initial"),
+        ("entidades", "0001_initial"),
     ]
 
     operations = [
@@ -27,8 +28,8 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("ca_data_inicio", models.DateField()),
-                ("ca_data_fim", models.DateField(blank=True, null=True)),
+                ("ca_data_inicio", models.DateTimeField()),
+                ("ca_data_fim", models.DateTimeField(blank=True, null=True)),
                 ("ca_duracao", models.IntegerField(blank=True, null=True)),
                 ("ca_avg_v", models.FloatField(blank=True, null=True)),
                 ("ca_avg_a", models.FloatField(blank=True, null=True)),
@@ -36,12 +37,8 @@ class Migration(migrations.Migration):
                 ("ca_custo", models.FloatField(blank=True, null=True)),
                 (
                     "ca_estado",
-                    models.CharField(
-                        choices=[
-                            ("ACTIVE", "Active"),
-                            ("COMPLETED", "Completed"),
-                            ("ERROR", "Error"),
-                        ],
+                    models.IntegerField(
+                        choices=[("ACTIVE", 1), ("COMPLETED", 2), ("ERROR", 3)],
                         default="ACTIVE",
                         max_length=20,
                     ),

@@ -113,6 +113,7 @@ function updateChart() {
 watch(() => props.expenses, updateChart, { deep: true });
 
 onMounted(() => {
+  console.log('Dados de despesas recebidos:', props.expenses);
   initChart();
 });
 </script>

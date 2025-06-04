@@ -14,6 +14,7 @@ import AddVehiclesView from '@/views/AddVehiclesView.vue';
 import { compile } from 'vue';
 import HomeView from '@/views/HomeView.vue';
 import RequestVehicleAdminView from '@/views/RequestVehicleAdminView.vue';
+import PersonalStatisticsView from '@/views/PersonalStatisticsView.vue';
 
 
 const routes = [
@@ -79,12 +80,11 @@ const routes = [
     component: AddVehiclesView,
     meta: {layout: 'default' }
   },
-
   {
-    path: '/frota/requisicoes',
-    name: 'requisitions',
-    component: RequestVehicleAdminView,
-    meta: {layout: 'default' }
+    path: '/estatisticas/pessoais',
+    name: 'personalstatistics',
+    component: PersonalStatisticsView,
+    meta: { layout: 'default' }
   }
   
 ];
