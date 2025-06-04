@@ -6,20 +6,19 @@
       <div class="relative">
         <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
           <svg class="w-4 h-4 text-gray-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-               viewBox="0 0 20 20">
+            viewBox="0 0 20 20">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
           </svg>
         </div>
         <input v-model="searchQuery" type="text" id="table-search-users"
-               class="block p-2 ps-10 text-sm rounded-lg w-80 bg-transparent duration-300 border-extra-soft-orange hover:border-soft-orange focus:ring-soft-orange placeholder-gray-500 text-gray-900"
-               placeholder="Pesquisar veículos" />
+          class="block p-2 ps-10 text-sm rounded-lg w-80 bg-transparent duration-300 border-extra-soft-orange hover:border-soft-orange focus:ring-soft-orange placeholder-gray-500 text-gray-900"
+          placeholder="Pesquisar veículos" />
       </div>
       <div>
         <button
-            class="bg-extra-soft-orange hover:bg-soft-orange duration-300 text-sm font-semibold text-gray-900 px-4 py-2 rounded-lg flex items-center gap-2"
-            @click="showFilterModal = true"
-        >
+          class="bg-extra-soft-orange hover:bg-soft-orange duration-300 text-sm font-semibold text-gray-900 px-4 py-2 rounded-lg flex items-center gap-2"
+          @click="showFilterModal = true">
           <FilterIcon class="h-5 w-5" />
           <span>Filtrar</span>
         </button>
@@ -29,18 +28,15 @@
 
   <!-- Filtros ativos -->
   <div v-if="activeFilters.length > 0" class="flex flex-wrap gap-2 mb-4">
-    <div
-        v-for="(filter, index) in activeFilters"
-        :key="index"
-        class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm flex items-center gap-1"
-    >
+    <div v-for="(filter, index) in activeFilters" :key="index"
+      class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm flex items-center gap-1">
       {{ filter }}
       <XIcon class="h-4 w-4 cursor-pointer" @click="removeFilter(index)" />
     </div>
   </div>
 
   <!-- v_estado da frota -->
-  <div class="grid grid-cols-4 gap-6 mb-8">
+  <div class="grid grid-cols-5 gap-6 mb-8">
     <div class="bg-white rounded-lg shadow p-4 border border-gray-100">
       <div class="text-gray-500 text-sm mb-1">Total de Veículos</div>
       <div class="text-2xl font-semibold">{{ totalVehicles }}</div>
@@ -51,32 +47,34 @@
     </div>
     <div class="bg-white rounded-lg shadow p-4 border border-gray-100">
       <div class="text-gray-500 text-sm mb-1">Em Uso</div>
-      <div class="text-2xl font-semibold text-orange-500">{{ inUseVehicles }}</div>
+      <div class="text-2xl font-semibold text-blue-500">{{ inUseVehicles }}</div>
     </div>
     <div class="bg-white rounded-lg shadow p-4 border border-gray-100">
       <div class="text-gray-500 text-sm mb-1">Em Manutenção</div>
-      <div class="text-2xl font-semibold text-red-500">{{ maintenanceVehicles }}</div>
+      <div class="text-2xl font-semibold text-orange-500">{{ maintenanceVehicles }}</div>
+    </div>
+    <div class="bg-white rounded-lg shadow p-4 border border-gray-100">
+      <div class="text-gray-500 text-sm mb-1">Avariados</div>
+      <div class="text-2xl font-semibold text-red-500">{{ brokenVehicles }}</div>
     </div>
   </div>
 
   <!-- Lista de veículos -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[63vh] overflow-y-auto">
-    <div
-        v-for="vehicle in filteredVehicles"
-        :key="vehicle.id"
-        class="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
-    >
+    <div v-for="vehicle in filteredVehicles" :key="vehicle.id"
+      class="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
       <div class="relative">
-        <img src="../assets/img/carroteste.png" :alt="vehicle.v_modelo" class="w-full h-48 object-contain bg-gradient-to-t from-extra-soft-orange to-orange-50" />
-        <div
-            class="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-medium"
-            :class="{
-                      'bg-green-100 text-green-800': vehicle.v_estado === 1,
-                      'bg-orange-100 text-orange-800': vehicle.v_estado === 2,
-                      'bg-red-100 text-red-800': vehicle.v_estado === 3
-                    }"
-        >
-          {{ getv_estadoText(vehicle.v_estado) }}
+        <img v-if="vehicle.v_img" :src="vehicle.v_img" :alt="vehicle.v_modelo"
+          class="w-full h-48 object-contain bg-gradient-to-t from-extra-soft-orange to-orange-50" />
+          <img v-else src="../assets/img/carroteste.png" :alt="vehicle.v_modelo"
+          class="w-full h-48 object-contain bg-gradient-to-t from-extra-soft-orange to-orange-50" />
+        <div class="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-medium" :class="{
+          'bg-green-100 text-green-800': vehicle.v_estado === 1,
+          'bg-orange-100 text-orange-800': vehicle.v_estado === 2,
+          'bg-red-100 text-red-800': vehicle.v_estado === 3,
+          'bg-blue-200 text-blue-800': vehicle.v_estado === 4,
+        }">
+          {{ getv_estadoText(vehicle.v_estado_display) }}
         </div>
       </div>
 
@@ -84,12 +82,9 @@
         <div class="flex justify-between items-start mb-2">
           <div>
             <h3 class="font-bold text-lg">{{ vehicle.v_matricula }}</h3>
-            <p class="text-gray-600">{{ vehicle.v_marca }}  {{vehicle.v_modelo}}</p>
+            <p class="text-gray-600">{{ vehicle.v_marca }} {{ vehicle.v_modelo }}</p>
           </div>
-          <button
-              class="text-gray-500 hover:text-gray-700"
-              @click="toggleFavorite(vehicle.id)"
-          >
+          <button class="text-gray-500 hover:text-gray-700" @click="toggleFavorite(vehicle.id)">
             <component :is="vehicle.favorite ? 'HeartIconSolid' : 'HeartIcon'" class="h-5 w-5" />
           </button>
         </div>
@@ -115,18 +110,30 @@
 
         <div class="flex gap-2">
           <button
-              class="flex-1 bg-gray-100 hover:bg-gray-200 duration-300 text-gray-800 py-2 rounded-lg flex items-center justify-center gap-1"
-              @click="vehicleToView = vehicle; showVehicleModal = true">
-              
+            class="flex-1 bg-gray-100 hover:bg-gray-200 duration-300 text-gray-800 py-2 rounded-lg flex items-center justify-center gap-1"
+            @click="vehicleToView = vehicle; showVehicleModal = true">
+
             <EyeIcon class="h-4 w-4" />
             <span>Visualizar</span>
           </button>
           <button
-              class="flex-1 bg-extra-soft-orange hover:bg-soft-orange duration-300  text-gray-900 py-2 rounded-lg flex items-center justify-center gap-1"
-              :disabled="vehicle.v_estado !== 'available'"
-              :class="{ 'opacity-50 cursor-not-allowed': vehicle.v_estado !== 'available' }"
-              @click="openRequestModal(vehicle)"
-          >
+            class="flex-1 bg-extra-soft-orange hover:bg-soft-orange duration-300 text-gray-900 py-2 rounded-lg flex items-center justify-center gap-1"
+            :disabled="vehicle.v_estado_display !== 'Disponivel' ||
+              requests.some(
+                r =>
+                  r.r_utilizador.username === user_data.username &&
+                  r.r_veiculo.v_matricula === vehicle.v_matricula &&
+                  r.r_estado_display === 'Pendente'
+              )
+              "
+            :class="{
+              'opacity-50 cursor-not-allowed': vehicle.v_estado_display !== 'Disponivel' || requests.some(
+                r =>
+                  r.r_utilizador.username === user_data.username &&
+                  r.r_veiculo.v_matricula === vehicle.v_matricula &&
+                  r.r_estado_display === 'Pendente'
+              )}"
+            @click="openRequestModal(vehicle)">
             <CarIcon class="h-4 w-4" />
             <span>Requisição</span>
           </button>
@@ -134,28 +141,15 @@
         </div>
       </div>
     </div>
-    <RequestVehicleModal
-        v-if="selectedVehicle"
-        :show="showRequestModal"
-        :vehicle="selectedVehicle"
-        @update:show="showRequestModal = $event"
-        @submit-request="handleRequest"
-    />
+    
   </div>
+  <RequestVehicleModal v-if="selectedVehicle" :show="showRequestModal" :vehicle="selectedVehicle"
+      @update:show="showRequestModal = $event" @submit-request="handleRequest" />
 
-  <FilterModal
-      :show="showFilterModal"
-      :filters="filters"
-      @update:show="showFilterModal = $event"
-      @apply-filters="applyFilters"
-      @reset-filters="resetFilters"
-  />
+  <FilterModal :show="showFilterModal" :filters="filters" @update:show="showFilterModal = $event"
+    @apply-filters="applyFilters" @reset-filters="resetFilters" />
 
-  <VehicleDetailsModal
-  :show="showVehicleModal"
-  :vehicle="vehicleToView"
-  @update:show="showVehicleModal = $event"
-/>
+  <VehicleDetailsModal :show="showVehicleModal" :vehicle="vehicleToView" @update:show="showVehicleModal = $event" />
 
 </template>
 
@@ -179,7 +173,15 @@ import {
 
 } from 'lucide-vue-next';
 
+const props = defineProps({
+  user_data: {
+    type: Object,
+    required: true
+  }
+});
+
 const vehicles = ref([]);
+const requests = ref([]);
 
 // Estado
 const searchQuery = ref('');
@@ -220,22 +222,32 @@ const activeFilters = ref([]);
 
 onMounted(async () => {
   try {
-    
-      await api.get('/frota/consultar/', {
-        })
-        .then((response) => {
-          console.log('Resposta da API:', response);
-          if (response.data && Array.isArray(response.data.vehicles)) {
-            vehicles.value = response.data.vehicles;
-            console.log('veiculos:', vehicles.value);
-          } else {
-            console.error('Formato de dados inválido recebido da API.');
-          }
-        })
-        .catch((error) => {
-          console.error('Erro ao recuperar dados dos veiculos:', error);
-          state.isAuthenticated = false;
-        });
+
+    await api.get('/frota/consultar/', {
+    })
+      .then((response) => {
+        console.log('Resposta da API:', response);
+        if (response.data && Array.isArray(response.data.vehicles)) {
+          vehicles.value = response.data.vehicles;
+          console.log('veiculos:', vehicles.value);
+          console.log('user', props.user_data);
+        } else {
+          console.error('Formato de dados inválido recebido da API.');
+        }
+      })
+      .catch((error) => {
+        console.error('Erro ao recuperar dados dos veiculos:', error);
+        state.isAuthenticated = false;
+      });
+
+    const Respondrequests = await api.get('/frota/requisicoes/utilizador/listar/')
+    if (Respondrequests.data && Array.isArray(Respondrequests.data.requisicoes)) {
+      requests.value = Respondrequests.data.requisicoes;
+      console.log('Requisições:', requests.value);
+    } else {
+      console.error('Formato de dados inválido recebido da API.');
+    }
+
   } catch (error) {
     console.error('Erro ao comunicar com a base de dados:', error);
   }
@@ -249,11 +261,11 @@ const filteredVehicles = computed(() => {
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase();
     result = result.filter(vehicle =>
-        vehicle.v_matricula.toLowerCase().includes(query) ||
-        vehicle.v_categoria_display.toLowerCase().includes(query) ||
-        vehicle.v_modelo.toLowerCase().includes(query) ||
-        vehicle.v_marca.toLowerCase().includes(query) ||
-        `${vehicle.v_marca} ${vehicle.v_modelo}`.toLowerCase().includes(query)
+      vehicle.v_matricula.toLowerCase().includes(query) ||
+      vehicle.v_categoria_display.toLowerCase().includes(query) ||
+      vehicle.v_modelo.toLowerCase().includes(query) ||
+      vehicle.v_marca.toLowerCase().includes(query) ||
+      `${vehicle.v_marca} ${vehicle.v_modelo}`.toLowerCase().includes(query)
     );
   }
 
@@ -266,11 +278,11 @@ const filteredVehicles = computed(() => {
     result = result.filter(vehicle => {
       const type = vehicle.v_categoria_display;
       return (
-          (filters.value.types.sedan && type === 'Sedan') ||
-          (filters.value.types.citadino && type === 'Citadino') ||
-          (filters.value.types.suv && type === 'SUV') ||
-          (filters.value.types.comercial && type === 'Comercial') ||
-          (filters.value.types.utilitario && type === 'Utilitario')
+        (filters.value.types.sedan && type === 'Sedan') ||
+        (filters.value.types.citadino && type === 'Citadino') ||
+        (filters.value.types.suv && type === 'SUV') ||
+        (filters.value.types.comercial && type === 'Comercial') ||
+        (filters.value.types.utilitario && type === 'Utilitario')
       );
     });
   }
@@ -278,9 +290,9 @@ const filteredVehicles = computed(() => {
   if (hasStateFilters) {
     result = result.filter(vehicle => {
       return (
-          (filters.value.state.available && vehicle.v_estado === 1) ||
-          (filters.value.state.inUse && vehicle.v_estado === 2) ||
-          (filters.value.state.maintenance && vehicle.v_estado === 3)
+        (filters.value.state.available && vehicle.v_estado === 1) ||
+        (filters.value.state.inUse && vehicle.v_estado === 2) ||
+        (filters.value.state.maintenance && vehicle.v_estado === 3)
       );
     });
   }
@@ -288,10 +300,10 @@ const filteredVehicles = computed(() => {
   if (hasSeatsFilters) {
     result = result.filter(vehicle => {
       return (
-          (filters.value.seats.two && vehicle.v_assentos === 2) ||
-          (filters.value.seats.four && vehicle.v_assentos === 4) ||
-          (filters.value.seats.five && vehicle.v_assentos === 5) ||
-          (filters.value.seats.seven && vehicle.v_assentos >= 7)
+        (filters.value.seats.two && vehicle.v_assentos === 2) ||
+        (filters.value.seats.four && vehicle.v_assentos === 4) ||
+        (filters.value.seats.five && vehicle.v_assentos === 5) ||
+        (filters.value.seats.seven && vehicle.v_assentos >= 7)
       );
     });
   }
@@ -304,9 +316,11 @@ const filteredVehicles = computed(() => {
 
 
 const totalVehicles = computed(() => vehicles.value.length);
-const availableVehicles = computed(() => vehicles.value.filter(v => v.v_estado=== 1).length);
-const inUseVehicles = computed(() => vehicles.value.filter(v => v.v_estado === 2).length);
-const maintenanceVehicles = computed(() => vehicles.value.filter(v => v.v_estado === 3).length);
+const availableVehicles = computed(() => vehicles.value.filter(v => v.v_estado === 1).length);
+const maintenanceVehicles = computed(() => vehicles.value.filter(v => v.v_estado === 2).length);
+const brokenVehicles = computed(() => vehicles.value.filter(v => v.v_estado === 3).length);
+const inUseVehicles = computed(() => vehicles.value.filter(v => v.v_estado === 4).length);
+
 
 // Métodos
 function getv_estadoText(v_estado) {
@@ -386,16 +400,40 @@ function resetFilters() {
 
 // Modal de requisição
 const openRequestModal = (vehicle) => {
-  if (vehicle.v_estado !== 'available') return;
+  if (vehicle.v_estado_display !== 'Disponivel') return;
   selectedVehicle.value = vehicle;
   showRequestModal.value = true;
 };
 
-const handleRequest = (requestData) => {
-  console.log('Requisição confirmada:', requestData);
+const handleRequest = async (requestData) => {
+  console.log('Requisição aceite:', requestData);
+
+  const veiculo = requestData.vehicle;
+  const dataInicio = requestData.data.startDate;
+  const dataFim = requestData.data.endDate;
+  const motivo = requestData.reason;
+  const ilimitado = requestData.unlimitedPeriod;
+
+
+  try {
+    const response = await api.post('/frota/requisitar/', {
+      veiculo_id: veiculo.id,
+      data_inicio: dataInicio,
+      data_fim: dataFim,
+      motivo: motivo,
+      ilimitado: ilimitado
+    });
+    console.log('Requisição enviada com sucesso:', response.data);
+  } catch (error) {
+    console.error('Erro ao enviar requisição:', error);
+    alert('Erro ao requisitar veículo. Por favor, tente novamente.');
+    return;
+  }
+
+
   showRequestModal.value = false;
   selectedVehicle.value = null;
-  alert(`Veículo ${requestData.vehicleId} requisitado com sucesso!`);
+  alert(`Veículo ${veiculo.v_matricula} requisitado com sucesso!`);
 };
 
 

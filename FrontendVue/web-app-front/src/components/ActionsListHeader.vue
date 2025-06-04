@@ -29,7 +29,7 @@ onMounted(() => {
           <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
         </svg>
       </div>
-      <input id="datepicker-range-start" datepicker datepicker-buttons datepicker-autoselect-today datepicker-format="dd-mm-yyyy" name="start" type="text" class="bg-background-orange border-0 text-gray-400 text-sm rounded-lg focus:ring-extra-soft-orange focus:border-extra-soft-orange block w-full ps-10 p-2.5 dark:bg-background-orange dark:placeholder-gray-400 dark:text-white dark:focus:ring-extra-soft-orange dark:focus:border-extra-soft-orange" placeholder="Data de início">
+      <input id="datepicker-range-start" datepicker datepicker-buttons datepicker-autoselect-today datepicker-format="dd-mm-yyyy" name="start" type="text" class="bg-transparent border-1 border-soft-orange text-gray-400 text-sm rounded-lg focus:ring-extra-soft-orange focus:border-extra-soft-orange block w-full ps-10 p-2.5 dark:bg-background-orange dark:placeholder-gray-400 dark:text-white dark:focus:ring-extra-soft-orange dark:focus:border-extra-soft-orange" placeholder="Data de início">
     </div>
     <span class="mx-4 text-gray-500">até</span>
     <div class="relative">
@@ -39,7 +39,7 @@ onMounted(() => {
         </svg>
       </div>
       <!-- O atributo datepicker-min-date é bindado com a data atual -->
-      <input id="datepicker-range-end" datepicker datepicker-buttons datepicker-autoselect-today datepicker-format="dd-mm-yyyy" :datepicker-min-date="minDate" name="end" type="text" class="bg-background-orange border-0 text-gray-400 text-sm rounded-lg focus:ring-extra-soft-orange focus:border-extra-soft-orange block w-full ps-10 p-2.5 dark:bg-background-orange dark:placeholder-gray-400 dark:text-white dark:focus:ring-extra-soft-orange dark:focus:border-extra-soft-orange" placeholder="Data de fim">
+      <input id="datepicker-range-end" datepicker datepicker-buttons datepicker-autoselect-today datepicker-format="dd-mm-yyyy" :datepicker-min-date="minDate" name="end" type="text" class="bg-transparent border-1 border-soft-orange text-gray-400 text-sm rounded-lg focus:ring-extra-soft-orange focus:border-extra-soft-orange block w-full ps-10 p-2.5 dark:bg-background-orange dark:placeholder-gray-400 dark:text-white dark:focus:ring-extra-soft-orange dark:focus:border-extra-soft-orange" placeholder="Data de fim">
     </div>
   </div>
 </template>

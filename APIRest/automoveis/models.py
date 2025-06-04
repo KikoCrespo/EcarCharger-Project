@@ -10,16 +10,12 @@ CATEGORIA_CHOICES = (
     (4, 'Comercial'),
     (5, 'Utilitario')
 )
-class VeiculoEntidade(models.Model):
-    veiculo = models.ForeignKey('Veiculo', on_delete=models.CASCADE)
-    entidade = models.ForeignKey(Entidade, on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = 'VeiculoEntidade'
-        unique_together = ('veiculo', 'entidade')
-
-    def __str__(self):
-        return f'{self.veiculo} - {self.entidade}'
+ESTADO_CHOICES = (
+    (1, 'Disponivel'),
+    (2, 'Em Manutencao'),
+    (3, 'Avariado'),
+    (4, 'Em uso')
+)
 
 class Veiculo(models.Model):
     v_modelo = models.CharField(max_length=55, null=True, blank=True)
@@ -29,7 +25,7 @@ class Veiculo(models.Model):
     v_potencia = models.IntegerField()
     v_data_aquisicao = models.DateField()                 
     v_categoria = models.IntegerField(choices=CATEGORIA_CHOICES) #  1=Sedan, 2=Citadino, 3=SUV, 4=Comercial, 5=Utilitário 
-    v_estado = models.IntegerField(choices=((1, 'Disponivel'), (2, 'Em Manutencao'), (3, 'Avariado'), (4, 'Em uso')), default=1) # 1=Disponível, 2=Em Manutenção, 3=Avariado
+    v_estado = models.IntegerField(choices= ESTADO_CHOICES, default=1) # 1=Disponível, 2=Em Manutenção, 3=Avariado
     v_img = models.ImageField(upload_to=caminho_foto_veiculo,max_length=255, blank=True, null=True)
     v_utilizador = models.ManyToManyField(Utilizador, blank=True)
     v_entidade = models.ForeignKey(Entidade, on_delete=models.CASCADE)
@@ -69,3 +65,29 @@ class Anexos(models.Model):
     def __str__(self):
         return self.an_titulo
 
+
+class Requisicao(models.Model):
+    ESTADOS = (
+        (1, 'Pendente'),
+        (2, 'Aprovada'),
+        (3, 'Rejeitada'),
+        (4, 'Terminada'),
+    )
+
+    r_utilizador = models.ForeignKey(Utilizador, on_delete=models.CASCADE, related_name='requisicoes')
+    r_veiculo = models.ForeignKey(Veiculo, on_delete=models.CASCADE, related_name='requisicoes')
+    r_motivo = models.TextField()
+    r_data_inicio = models.DateTimeField()
+    r_data_fim = models.DateTimeField(null=True, blank=True)
+    r_ilimitado = models.BooleanField(default=False)
+    r_estado = models.IntegerField(default=1, choices=ESTADOS)  # 1=Pendente, 2=Aprovada, 3=Rejeitada, 4=Terminada
+    r_motivo_terminacao = models.TextField(null=True, blank=True)
+    r_entidade = models.ForeignKey(Entidade, on_delete=models.CASCADE, related_name='requisicoes')
+
+    def __str__(self):
+        return f"{self.r_utilizador} requisitou {self.r_veiculo}"
+
+    class Meta:
+        db_table = 'Requisicao'
+        ordering = ['-r_data_inicio']
+        unique_together = ('r_utilizador', 'r_veiculo', 'r_data_inicio')

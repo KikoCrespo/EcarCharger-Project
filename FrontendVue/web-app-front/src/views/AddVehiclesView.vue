@@ -103,6 +103,19 @@
               </select>
             </div>
           </div>
+
+          <div class="w-full mt-5">
+            <label
+              class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-soft-orange transition-colors duration-200 relative text-center">
+              <div class="flex flex-col items-center justify-center p-4 mb-5">
+                <UploadIcon class="w-8 h-8 text-gray-400 " />
+                <p class="text-sm text-gray-600">Clique para inserir uma imagem do veículo</p>
+                <p class="text-xs text-gray-400">(JPEG, PNG)</p>
+              </div>
+              <input type="file" accept="image/*" class="hidden" @change="onFileChange" />
+            </label>
+          </div>
+
         </div>
 
         <!-- Informações Adicionais -->
@@ -223,15 +236,15 @@
         </div>
 
 
-        
+
       </form>
       <!-- Botões de Ação -->
-        <div class="flex justify-end gap-3 p-6 bg-gray-50 rounded-b-lg">
-          <button @click="openModalConfirm()"
-            class="px-3 py-2 bg-extra-soft-orange hover:bg-soft-orange duration-300  text-gray-900  rounded-lg flex items-center justify-center gap-1">
-            Registar Veículo
-          </button>
-        </div>
+      <div class="flex justify-end gap-3 p-6 bg-gray-50 rounded-b-lg">
+        <button @click="openModalConfirm()"
+          class="px-3 py-2 bg-extra-soft-orange hover:bg-soft-orange duration-300  text-gray-900  rounded-lg flex items-center justify-center gap-1">
+          Registar Veículo
+        </button>
+      </div>
     </div>
   </div>
 
@@ -259,6 +272,7 @@ const novoFicheiro = ref(null)
 const dataNovoDocumento = ref('')
 const tipoDocumento = ref('')
 const dataValidadeNovoDocumento = ref('')
+const selectedImage = ref(null);
 
 
 const showModal = ref(false);
@@ -301,6 +315,7 @@ const form = ref({
   c_emissoes: '',
   c_potencia: '',
   c_notas: '',
+  c_foto: '',
 });
 
 const camposObrigatorios = [
@@ -371,6 +386,10 @@ const submitForm = async () => {
     isValid = false;
   }
 
+  if(selectedImage.value) {
+    formData.append('c_foto', selectedImage.value);
+  }
+
 
   // Adiciona os campos do formulário
   for (const key in form.value) {
@@ -386,15 +405,17 @@ const submitForm = async () => {
     formData.append(`documentos[${index}][ficheiro]`, doc.ficheiro);
   });
 
+  if (!isValid) {
+   alert('Formulário inválido. Verifique os campos obrigatórios.');
+    return;
+  }
+  
   try {
     const response = await api.post('/frota/adicionar-veiculo/', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-    // Se o envio for bem-sucedido, redireciona ou exibe uma mensagem de sucesso
-    // Redirecionar ou exibir mensagem de sucesso
-
     console.log('Formulário de registo de viatura enviado com sucesso', response.data);
   } catch (error) {
     if (error.response && error.response.data) {
@@ -453,4 +474,20 @@ function fecharModal() {
   novoFicheiro.value = null
   openModal.value = false
 }
+
+const handleFileUpload = (file) => {
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    previewUrl.value = e.target.result
+  }
+  reader.readAsDataURL(file)
+}
+
+const onFileChange = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    selectedImage.value = file;
+    handleFileUpload(file);
+  }
+};
 </script>

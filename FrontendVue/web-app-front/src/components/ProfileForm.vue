@@ -182,7 +182,6 @@ const cancelEdit = () => {
 
 
 const handleSubmit = () => {
-  const token = sessionStorage.getItem('token');
   const formData = new FormData();
 
   formData.append('first_name', form.value.firstName);
@@ -203,8 +202,7 @@ const handleSubmit = () => {
 
   api.put('http://localhost:8000/api/utilizadores/editar/', formData, {
     headers: {
-      'Content-Type': 'multipart/form-data',
-      Authorization: `Bearer ${token}`
+      'Content-Type': 'multipart/form-data'
     }
   })
     .then(response => {

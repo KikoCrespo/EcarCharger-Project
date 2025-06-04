@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 import json
-from .models import Veiculo
+from automoveis.models import Veiculo
 from entidades.models import Entidade
 from rest_framework.decorators import permission_classes
-from .serializer import VeiculoSerializer
+from automoveis.serializer import VeiculoSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -14,10 +14,9 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.http import JsonResponse
-from automoveis.models import Veiculo
+from automoveis.models import Veiculo , Anexos, Requisicao
 from entidades.models import Entidade
-from automoveis.serializer import VeiculoSerializer
-from automoveis.models import Anexos
+from automoveis.serializer import VeiculoSerializer, AnexosSerializer, RequisicaoSerializer
 from django.utils import timezone
 from datetime import datetime
 
@@ -38,7 +37,7 @@ class AddVeiculoEntidadeView(APIView):
             ficheiro = request.FILES.get(f'{prefix}[ficheiro]')
             print(tipo)
             if not any([tipo, titulo, data, ficheiro]):
-                break  # Sai se não houver mais documentos
+                break  
 
             documentos.append({
                 'tipo': tipo,
@@ -68,6 +67,9 @@ class AddVeiculoEntidadeView(APIView):
             data_aquisicao = request.data.get("c_data_aquisicao")
             quilometros = request.data.get("c_quilometros")
             emissoes = request.data.get("c_emissoes")
+            if 'c_foto' in request.FILES:
+                foto = request.FILES['c_foto']
+
             print(marca, modelo, cor, matricula, potencia, lugares, categoria, combustivel, transmissao, c_registo_ano, c_registo_mes, data_aquisicao, quilometros)
 
 
@@ -110,7 +112,8 @@ class AddVeiculoEntidadeView(APIView):
                 v_combustivel=combustivel,
                 v_quilometros=quilometros,
                 v_ano_matricula=ano_matricula,
-                v_emissoes= emissoes
+                v_emissoes= emissoes,
+                v_img=foto if 'c_foto' in request.FILES else None
             )
 
             # Processa documentos
@@ -158,7 +161,7 @@ class getFrotaEntidade(APIView):
         frota = Veiculo.objects.filter(v_entidade=entidade)
         if not frota.exists():
             return JsonResponse({"error": "Não existem Veiculos associados a esta entidade!"}, status=404)
-        serializer = VeiculoSerializer(frota, many=True)
+        serializer = VeiculoSerializer(frota, many=True, context={'request': request})
         print (frota)
 
         return Response({"message": "Lista de veiculos","vehicles": serializer.data}, status=200)
@@ -177,4 +180,17 @@ class  getVeiculosUtilizador(APIView):
         serializer = VeiculoSerializer(Veiculos, many=True)
         print (Veiculos)
         return Response({"user": utilizador, "Veiculos": serializer.data}, status=200)
+    
+class VeiculobyIdView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, veiculo_id):
+        try:
+            veiculo = Veiculo.objects.get(id=veiculo_id)
+            serializer = VeiculoSerializer(veiculo, context={'request': request})
+            return Response({"veiculo": serializer.data}, status=200)
+        except Veiculo.DoesNotExist:
+            return JsonResponse({"error": "Veículo não encontrado!"}, status=404)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
     

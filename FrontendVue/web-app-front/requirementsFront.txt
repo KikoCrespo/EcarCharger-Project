@@ -1,0 +1,16 @@
+web-app-front@0.0.0 /Users/rafaelventura/Documents/projeto/WebApp/FrontendVue/web-app-front
+├── @headlessui/vue@1.7.23
+├── @heroicons/vue@2.2.0
+├── @tailwindcss/vite@4.1.6
+├── @vitejs/plugin-vue@5.2.4
+├── apexcharts@4.7.0
+├── axios@1.9.0
+├── flowbite@3.1.2
+├── lucide-vue-next@0.509.0
+├── tailwindcss@4.1.6
+├── vite-plugin-vue-devtools@7.7.6
+├── vite@6.3.5
+├── vue-router@4.5.1
+├── vue@3.5.13
+└── vue3-apexcharts@1.8.0
+

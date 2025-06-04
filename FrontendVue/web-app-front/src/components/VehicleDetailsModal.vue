@@ -1,14 +1,19 @@
 <template>
-    <div v-if="show" class="fixed inset-0 bg-gray-500/75 transition-opacity flex items-center justify-center z-50">
+    <div v-if="show"
+        class="fixed inset-0 bg-gray-500/50 backdrop-blur-sm transition-opacity flex items-center justify-center z-50 ">
         <div class=" flex flex-col lg:flex-row gap-10 bg-white p-6 rounded-lg shadow-lg w-full max-w-[80vw] relative">
             <button @click="fecharModal">
-                <XMarkIcon class="h-6 w-6 absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors duration-200" />
+                <XMarkIcon
+                    class="h-6 w-6 absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors duration-200" />
             </button>
             <div class=" w-full w-1/2 flex items-center justify-center h-[40vh] mb-4 mt-6">
-                <img src="../assets/img/carroteste.png" :src="vehicle.v_imagem" alt="Imagem do Veículo"
+                <img v-if='vehicle.v_img' :src="vehicle.v_img" alt="Imagem do Veículo"
+                    class="w-full h-full object-cover object-contain bg-gradient-to-t from-extra-soft-orange to-orange-50">
+                <img v-else src="../assets/img/carroteste.png" alt="Imagem do Veículo"
                     class="w-full h-full object-cover object-contain bg-gradient-to-t from-extra-soft-orange to-orange-50">
             </div>
-            <div class=" w-full w-1/2  grid grid-cols-1 md:grid-cols-2 gap-5 mb-3 p-4 mt-6 max-h-[60vh] md:max-h-[70vh] lg:max-h-[60vh]">
+            <div
+                class=" w-full w-1/2  grid grid-cols-1 md:grid-cols-2 gap-5 mb-3 p-4 mt-6 max-h-[60vh] md:max-h-[70vh] lg:max-h-[60vh]">
                 <div class=" mb-2 border-b border-extra-soft-orange">
                     <label for="marca" class="block text-sm text-gray-600 mb-1.5 ">Marca</label>
                     <label for="marca">{{ vehicle.v_marca }}</label>
@@ -26,7 +31,7 @@
 
                 <div class=" mb-2 border-b border-extra-soft-orange">
                     <label for="anoMatricula" class="block text-sm text-gray-600 mb-1.5">Ano de Matrícula</label>
-                    <label for="anoMatricula">{{ vehicle.v_ano_matricula }}</label>
+                    <label for="anoMatricula">{{ vehicle.v_ano_mes_matricula }}</label>
                 </div>
 
                 <div class=" mb-2 border-b border-extra-soft-orange">
@@ -71,6 +76,13 @@
                 <div class=" mb-2 border-b border-extra-soft-orange">
                     <label for="quilometragem" class="block text-sm text-gray-600 mb-1.5">Quilometragem</label>
                     <label for="quilometragem">{{ vehicle.v_quilometros }}</label>
+                </div>
+                <div class=" mt-7 ml-8">
+                    <router-link :to="{ name: 'vehicledetail', params: { id: vehicle.id } }" :vehicle="vehicle">
+                        <span
+                            class="text-soft-orange underline decoration-extra-soft-orange decoration-1 underline-offset-2 hover:decoration-soft-orange hover:text-extra-soft-orange ">Ver
+                            perfil do veiculo</span>
+                    </router-link>
                 </div>
 
             </div>
