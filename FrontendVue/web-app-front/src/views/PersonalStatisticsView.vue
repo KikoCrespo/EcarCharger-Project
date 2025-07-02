@@ -70,7 +70,7 @@
             <ChevronDown v-if="energyTrend < 0 && energyTrend >= -50" class="w-4 h-4" />
             <ChevronsDown v-if="energyTrend < -50" class="w-4 h-4" />
           </div>
-          <span>{{ Math.abs(chargingsTrend) }}% vs {{ period === 'weekly' ? 'semana anterior' : 'mês anterior' }}</span>
+          <span>{{ Math.abs(energyTrend) }}% vs {{ period === 'weekly' ? 'semana anterior' : 'mês anterior' }}</span>
         </div>
       </div>
 
@@ -250,9 +250,6 @@ onMounted(async () => {
         carregamentos: response.data.carregamentos,
 
       };
-
-      console.log(response.data)
-
     
       chargingHistory.value = Object.entries(userData.carregamentos).map(([key, charge]) => ({
         date: new Date(charge.ca_data_inicio),
@@ -282,7 +279,6 @@ onMounted(async () => {
         if(userData.totalQuantidadeSemanal_before !== 0) {
           // Cálculo da tendência de energia
           energyTrend.value = (userData.totalQuantidadeSemanal - userData.totalQuantidadeSemanal_before) / userData.totalQuantidadeSemanal_before * 100;
-
         } else {
           energyTrend.value = userData.totalQuantidadeSemanal > 0 ? 100 : 0; // Se não houver energia antes, mas houver agora, consideramos um aumento de 100%
         }

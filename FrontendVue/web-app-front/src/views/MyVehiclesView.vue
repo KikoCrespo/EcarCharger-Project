@@ -60,7 +60,7 @@
     <div v-for="vehicle in filteredVehicles" :key="vehicle.v_matricula"
       class="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
       <div class="relative">
-        <img src="../assets/img/Veiculoteste.png" :alt="vehicle.v_modelo"
+        <img src="../assets/img/carroteste.png" :alt="vehicle.v_modelo"
           class="w-full h-48 object-contain bg-gradient-to-t from-extra-soft-orange to-orange-50" />
         <div class="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-medium" :class="{
           'bg-green-100 text-green-800': getVehicleRequestStatus(vehicle) === 'Aprovada',

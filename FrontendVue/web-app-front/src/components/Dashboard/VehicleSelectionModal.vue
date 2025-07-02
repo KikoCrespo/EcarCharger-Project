@@ -17,7 +17,7 @@
               type="text"
               v-model="searchQuery"
               placeholder="Pesquisar veículo..."
-              class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+              class="block p-2 ps-10 text-sm rounded-lg w-full bg-transparent border-extra-soft-orange hover:border-soft-orange focus:ring-soft-orange placeholder-gray-500 text-gray-900"
           />
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
             <circle cx="11" cy="11" r="8"></circle>
@@ -30,34 +30,34 @@
           <div
               v-for="vehicle in filteredVehicles"
               :key="vehicle.id"
-              class="flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-200"
+              class="flex items-center p-4  rounded-xl cursor-pointer transition-all duration-200"
               :class="{
-              'border-gray-200 hover:bg-gray-50 hover:border-gray-300': !(selectedVehicle && selectedVehicle.id === vehicle.id),
-              'bg-orange-50 border-orange-500': selectedVehicle && selectedVehicle.id === vehicle.id
+              'border-2 border-gray-200 hover:bg-gray-50 hover:border-gray-300': !(selectedVehicle && selectedVehicle.id === vehicle.id),
+              'bg-extra-soft-orange/50': selectedVehicle && selectedVehicle.id === vehicle.id
             }"
               @click="selectVehicle(vehicle)"
           >
             <!-- Vehicle Image -->
             <div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 mr-5 bg-gray-100">
-              <img :src="vehicle.image" :alt="vehicle.model" class="w-full h-full object-cover" />
+              <img v-if="vehicle.v_img":src="vehicle.v_img" :alt="vehicle.v_modelo" class="w-full h-full object-cover" />
+              <img v-else src="@/assets/img/carroteste.png" alt="Veículo Padrão" class="w-full h-full object-fill" />
             </div>
 
             <!-- Vehicle Info -->
             <div class="flex-1 min-w-0">
-              <div class="font-semibold text-lg text-gray-900 mb-1">{{ vehicle.model }}</div>
-              <div class="text-sm text-gray-600">Placa: {{ vehicle.plate }}</div>
+              <div class="font-semibold text-lg text-gray-900 mb-1">{{ vehicle.v_modelo }}</div>
+              <div class="text-sm text-gray-600">Matrícula: {{ vehicle.v_matricula }}</div>
             </div>
 
             <!-- Status Badge -->
             <div
                 class="px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap"
                 :class="{
-                'bg-green-100 text-green-800': vehicle.status === 'available',
-                'bg-red-100 text-red-800': vehicle.status === 'in-use',
-                'bg-blue-100 text-blue-800': vehicle.status === 'maintenance'
+                'bg-green-100 text-green-800': vehicle.v_estado_display === 'Em uso',
+                'bg-red-100 text-red-800': vehicle.v_estado_display === 'Em Manutencao'
               }"
             >
-              {{ getStatusText(vehicle.status) }}
+              {{ vehicle.v_estado_display }}
             </div>
           </div>
 
@@ -72,18 +72,18 @@
       <!-- Footer -->
       <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50/50">
         <button
-            class="px-6 py-2.5 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            class="inline-flex items-center rounded-md bg-gray-100 px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs hover:bg-gray-300 duration-300"
             @click="closeModal"
         >
           Cancelar
         </button>
         <button
-            class="px-6 py-2.5 rounded-lg font-medium text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+            class="px-6 py-2.5 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
             :class="{
-            'bg-orange-500 hover:bg-orange-600 focus:ring-orange-500': selectedVehicle && selectedVehicle.status === 'available',
-            'bg-gray-400 cursor-not-allowed': !selectedVehicle || selectedVehicle.status !== 'available'
+            'inline-flex items-center rounded-md bg-extra-soft-orange px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs hover:bg-soft-orange duration-300': selectedVehicle && selectedVehicle.v_estado_display === 'Em uso',
+            'inline-flex items-center rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold shadow-xs duration-300 text-white cursor-not-allowed': !selectedVehicle || selectedVehicle.v_estado_display !== 'Em uso'
           }"
-            :disabled="!selectedVehicle || selectedVehicle.status !== 'available'"
+            :disabled="!selectedVehicle ||selectedVehicle.v_estado_display !== 'Em uso'"
             @click="confirmSelection"
         >
           Iniciar Carregamento
@@ -124,23 +124,12 @@ const filteredVehicles = computed(() => {
 
   const query = searchQuery.value.toLowerCase();
   return props.vehicles.filter(vehicle =>
-      vehicle.model.toLowerCase().includes(query) ||
-      vehicle.plate.toLowerCase().includes(query)
+      vehicle.v_modelo.toLowerCase().includes(query) ||
+      vehicle.v_matricula.toLowerCase().includes(query)
   );
 });
 
-function getStatusText(status) {
-  switch (status) {
-    case 'available':
-      return 'Disponível';
-    case 'in-use':
-      return 'Em uso';
-    case 'maintenance':
-      return 'Manutenção';
-    default:
-      return status;
-  }
-}
+
 
 function selectVehicle(vehicle) {
   selectedVehicle.value = vehicle;
@@ -154,7 +143,7 @@ function closeModal() {
 }
 
 function confirmSelection() {
-  if (selectedVehicle.value && selectedVehicle.value.status === 'available') {
+  if (selectedVehicle.value && selectedVehicle.value.v_estado_display === 'Em uso') {
     emit('select-vehicle', {
       vehicle: selectedVehicle.value,
       station: props.selectedStation

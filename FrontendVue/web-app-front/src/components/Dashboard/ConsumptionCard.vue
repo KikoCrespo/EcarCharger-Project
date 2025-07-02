@@ -16,9 +16,6 @@
       <span>{{ Math.abs(trend) }}% vs {{ period === 'weekly' ? 'semana anterior' : 'mês anterior' }}</span>
     </div>
 
-    <div class="text-xs text-gray-500">
-      Dados de hoje, 2023
-    </div>
   </div>
 </template>
 

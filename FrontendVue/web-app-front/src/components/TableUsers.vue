@@ -6,7 +6,6 @@ import api from '@/interceptors/axiosInterceptor'
 
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { ArrowDownTrayIcon, PlusIcon, ChevronDownIcon, UserCircleIcon } from '@heroicons/vue/24/outline'
-//import { c } from 'vite/dist/node/moduleRunnerTransport.d-CXw_Ws6P'
 
 const searchQuery = ref('')
 const selectAll = ref(false)
@@ -292,7 +291,7 @@ function closeModal() {
         </div>
         <input v-model="searchQuery" type="text" id="table-search-users"
           class="block p-2 ps-10 text-sm rounded-lg w-80 bg-transparent border-extra-soft-orange hover:border-soft-orange focus:ring-soft-orange placeholder-gray-500 text-gray-900"
-          placeholder="Search for users" />
+          placeholder="Pesquisar por utilizadores" />
       </div>
 
       <span class="sm:ml-3 p-4">
@@ -404,7 +403,7 @@ function closeModal() {
             <th class="px-6 py-3">Nome</th>
             <th class="px-6 py-3">Departamento</th>
             <th class="px-6 py-3">Data de registo</th>
-            <th class="px-6 py-3">Status</th>
+            <th class="px-6 py-3">Estado</th>
             <th class="px-6 py-3">Ações</th>
           </tr>
         </thead>

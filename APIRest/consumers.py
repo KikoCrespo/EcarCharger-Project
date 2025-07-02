@@ -313,6 +313,7 @@ class SensorDataConsumer(AsyncWebsocketConsumer):
             session.ca_avg_kwh = power
             session.ca_custo = custo
 
+
             # Estado só muda em parada manual
             if not auto_stop:
                 session.ca_estado = 2  # COMPLETED
