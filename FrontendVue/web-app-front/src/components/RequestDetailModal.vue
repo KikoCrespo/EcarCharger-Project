@@ -2,7 +2,7 @@
   <div v-if="show" class="fixed inset-0 bg-gray-500/50 backdrop-blur-sm transition-opacity flex items-center justify-center">
     <div class="bg-white sm:rounded-lg h-full w-full max-w-[40vw] max-h-[90vh] items-center justify-center p-6">
       <div class="flex justify-between items-center mb-4">
-        <h3 class="text-lg font-semibold">Informações de requisitação do Veículo</h3>
+        <h3 class="text-lg font-semibold">Informações da requisição do Veículo</h3>
         <button @click="closeModal" class="text-gray-500 hover:text-gray-700">
           <XIcon class="h-5 w-5" />
         </button>

@@ -56,7 +56,6 @@
             <consumption-card
                 :consumption="totalEnergy"
                 :trend="energyTrend"
-                :period="'last week'"
             />
           </div>
 
@@ -84,7 +83,6 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import ChargingStationsList from '@/components/Dashboard/ChargingStationsList.vue';
-//import GaugeChart from '@/components/Dashboard/GaugeChart.vue';
 import ConsumptionCard from '@/components/Dashboard/ConsumptionCard.vue';
 import LineChart from '@/components/Dashboard/LineChart.vue';
 import ExpensesBubbleChart from '@/components/Dashboard/ExpensesBubbleChart.vue';
@@ -121,6 +119,8 @@ const series = ref([0, 0, 0, 0])
 const shouldReconnect = ref(true) // Nova flag para controlar reconexão
 
 const vehicleId = ref(0);
+const vehicles = ref([]);
+const requests = ref([]); // Requisições de veículos
 const stationId = ref(0);
 const userId = ref(0);
 
@@ -376,105 +376,9 @@ onBeforeUnmount(() => {
   }
 })
 
-/*const chartOptions = ref({
-  chart: {
-    height: 390,
-    type: 'radialBar'
-  },
-  plotOptions: {
-    radialBar: {
-      offsetY: 0,
-      startAngle: 0,
-      endAngle: 270,
-      hollow: {
-        margin: 5,
-        size: '30%',
-        background: 'transparent'
-      },
-      dataLabels: {
-        name: {
-          show: false
-        },
-        value: {
-          show: false
-        }
-      },
-      barLabels: {
-        enabled: true,
-        useSeriesColors: true,
-        offsetX: -8,
-        fontSize: '16px',
-        formatter: function (seriesName, opts) {
-          return seriesName + ': ' + opts.w.globals.series[opts.seriesIndex]
-        }
-      }
-    }
-  },
-  colors: ['#1ab7ea', '#0084ff', '#39539E', '#0077B5'],
-  labels: ['Tensão (V)', 'Corrente (A)', 'Potência (W)', 'Frequência (Hz)'],
-  responsive: [
-    {
-      breakpoint: 480,
-      options: {
-        legend: {
-          show: false
-        }
-      }
-    }
-  ]
-})*/
-
-
-// Dados simulados
 const chargingStations = ref([]);
 
-const vehicles = ref([
-  {
-    id: 1,
-    model: 'Tesla Model 3',
-    plate: 'AA-11-BB',
-    status: 'available',
-    image: 'https://placeholder.svg?height=200&width=300',
-    batteryLevel: 45,
-    range: 180
-  },
-  {
-    id: 2,
-    model: 'Nissan Leaf',
-    plate: 'CC-22-DD',
-    status: 'in-use',
-    image: 'https://placeholder.svg?height=200&width=300',
-    batteryLevel: 78,
-    range: 210
-  },
-  {
-    id: 3,
-    model: 'BMW i3',
-    plate: 'EE-33-FF',
-    status: 'available',
-    image: 'https://placeholder.svg?height=200&width=300',
-    batteryLevel: 32,
-    range: 120
-  },
-  {
-    id: 4,
-    model: 'Renault Zoe',
-    plate: 'GG-44-HH',
-    status: 'maintenance',
-    image: 'https://placeholder.svg?height=200&width=300',
-    batteryLevel: 15,
-    range: 60
-  },
-  {
-    id: 5,
-    model: 'Hyundai Kona Electric',
-    plate: 'II-55-JJ',
-    status: 'available',
-    image: 'https://placeholder.svg?height=200&width=300',
-    batteryLevel: 90,
-    range: 350
-  }
-]);
+
 
 const consumptionSeries = ref([
   {
@@ -539,7 +443,6 @@ function selectStation(station) {
 }
 
 
-
 // Lifecycle hooks
 onMounted(async () =>  {
   // Atualizar a data/hora a cada minuto
@@ -567,7 +470,8 @@ onMounted(async () =>  {
 
   try {
     const response = await api.get('/dashboard/');
-    if (response.data) {
+    const responseVehicles = await api.get('/frota/requisicoes/utilizador/listar/');
+    if (response.data && responseVehicles.data &&Array.isArray(responseVehicles.data.requisicoes)) {
       // Armazena os dados do usuário e os totais
       const userData = {
 
@@ -580,9 +484,17 @@ onMounted(async () =>  {
 
       };
 
+
+      requests.value = responseVehicles.data.requisicoes;
+      vehicles.value = requests.value.filter(req => req.r_estado_display === 'Aprovada').map(req => req.r_veiculo) || [];
+      // Atualizar veículos
+
+
+
       // Atualizar valores principais
       totalEnergy.value = userData.totalQuantidadeSemanal
       console.log(userData.totalQuantidadeSemanal)
+      console.log(userData.totalQuantidadeSemanal_before)
 
         if(userData.totalQuantidadeSemanal_before !== 0) {
           // Cálculo da tendência de energia
@@ -620,6 +532,7 @@ onMounted(async () =>  {
           color: '#bdc3c7'
         }
       ];
+
 
       chargingStations.value = Object.entries(userData.postos).map (([key, station]) => ({
         id: key,

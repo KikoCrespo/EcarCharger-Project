@@ -1,6 +1,22 @@
 <template>
   <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
     <!-- Chart or Date Display -->
+    <div v-if="sessionStartTime || autoEndTime" class="p-2 space-y-2">
+      <div v-if="sessionStartTime" class="flex items-center gap-2 text-sm text-gray-600 px-3 py-2  rounded-md">
+        <svg class="w-4 h-4 flex-shrink-0 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12,6 12,12 16,14"></polyline>
+        </svg>
+        <span>Iniciado: {{ formatDateTimeSecond(sessionStartTime) }}</span>
+      </div>
+      <div v-if="autoEndTime" class="flex items-center gap-2 text-sm text-gray-600 px-3 py-2 rounded-md">
+        <svg class="w-4 h-4 flex-shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12,6 12,12 16,14"></polyline>
+        </svg>
+        <span>Finalizado: {{ formatDateTimeSecond(autoEndTime) }}</span>
+      </div>
+    </div>
     <div class="flex justify-center items-center p-4">
       <div v-if="isConnected && !sessionSummary" class="w-full flex justify-center">
         <apexchart
@@ -22,53 +38,34 @@
     </div>
 
     <!-- Session Info -->
-    <div v-if="sessionStartTime || autoEndTime" class="px-4 pb-2 space-y-2">
-      <div v-if="sessionStartTime" class="flex items-center gap-2 text-sm text-gray-600 px-3 py-2 bg-blue-50 rounded-md">
-        <svg class="w-4 h-4 flex-shrink-0 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="10"></circle>
-          <polyline points="12,6 12,12 16,14"></polyline>
-        </svg>
-        <span>Iniciado: {{ formatDateTimeSecond(sessionStartTime) }}</span>
-      </div>
-      <div v-if="autoEndTime" class="flex items-center gap-2 text-sm text-gray-600 px-3 py-2 bg-red-50 rounded-md">
-        <svg class="w-4 h-4 flex-shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="10"></circle>
-          <polyline points="12,6 12,12 16,14"></polyline>
-        </svg>
-        <span>Finalizado: {{ formatDateTimeSecond(autoEndTime) }}</span>
-      </div>
-    </div>
 
     <!-- Session Summary -->
     <div v-if="sessionSummary" class="px-4 pb-4">
-      <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
-        <h3 class="flex items-center justify-center gap-2 text-base font-semibold text-emerald-800 mb-3">
-          <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M9 12l2 2 4-4"></path>
-            <circle cx="12" cy="12" r="10"></circle>
-          </svg>
+      <div class=" border-2 border-extra-soft-orange rounded-lg p-6">
+        <h3 class="flex items-center justify-center gap-2 text-base font-semibold text-gray-900 mb-3">
+          <BookCheck class="" />
           Resumo do Carregamento
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <div class="flex justify-between items-center px-3 py-2 bg-white rounded border border-emerald-100">
+          <div class="flex justify-between items-center px-3 py-2 bg-white rounded border border-extra-soft-orange">
             <span class="text-xs text-gray-600 font-medium">Duração:</span>
             <span class="text-xs font-semibold text-gray-900">{{ formatDuration(sessionSummary.duration) }}</span>
           </div>
-          <div class="flex justify-between items-center px-3 py-2 bg-white rounded border border-emerald-100">
+          <div class="flex justify-between items-center px-3 py-2 bg-white rounded border border-extra-soft-orange">
             <span class="text-xs text-gray-600 font-medium">Voltagem média:</span>
             <span class="text-xs font-semibold text-gray-900">{{ sessionSummary.avg_voltage.toFixed(1) }} V</span>
           </div>
-          <div class="flex justify-between items-center px-3 py-2 bg-white rounded border border-emerald-100">
+          <div class="flex justify-between items-center px-3 py-2 bg-white rounded border border-extra-soft-orange">
             <span class="text-xs text-gray-600 font-medium">Corrente média:</span>
-            <span class="text-xs font-semibold text-gray-900">{{ sessionSummary.avg_current.toFixed(1) }} A</span>
+            <span class="text-xs font-semibold text-gray-900">{{ sessionSummary.avg_current.toFixed(2) }} A</span>
           </div>
-          <div class="flex justify-between items-center px-3 py-2 bg-white rounded border border-emerald-100">
+          <div class="flex justify-between items-center px-3 py-2 bg-white rounded border border-extra-soft-orange">
             <span class="text-xs text-gray-600 font-medium">Potência média:</span>
             <span class="text-xs font-semibold text-gray-900">{{ sessionSummary.avg_power.toFixed(2) }} kW</span>
           </div>
-          <div class="flex justify-between items-center px-3 py-2 bg-emerald-100 rounded border border-emerald-200 sm:col-span-2">
-            <span class="text-xs text-emerald-700 font-medium">Energia consumida:</span>
-            <span class="text-sm font-bold text-emerald-700">{{ sessionSummary.energy_consumed.toFixed(2) }} kWh</span>
+          <div class="flex justify-between items-center px-3 py-2 bg-extra-soft-orange/40 rounded border border-extra-soft-orange sm:col-span-2">
+            <span class="text-xs text-gray-900 font-medium">Energia consumida:</span>
+            <span class="text-sm font-bold text-gray-900">{{ sessionSummary.energy_consumed.toFixed(2) }} kWh</span>
           </div>
         </div>
       </div>
@@ -80,22 +77,19 @@
         <button
             v-if="!sessionId && !sessionClosed"
             @click="emit('start-charging')"
-            class="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium text-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+            class="inline-flex items-center rounded-md bg-emerald-400 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-emerald-500 duration-300"
         >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <polygon points="5,3 19,12 5,21"></polygon>
-          </svg>
+          <Play class="mr-1.5 -ml-0.5 size-5" aria-hidden="true"/>
           Iniciar Carregamento
         </button>
 
         <button
             v-if="isConnected && sessionId"
             @click="emit('finish-charging')"
-            class="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium text-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+            class="inline-flex items-center rounded-md bg-red-400 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 duration-300"
         >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <rect x="6" y="6" width="12" height="12"></rect>
-          </svg>
+
+          <OctagonMinus class="mr-1.5 -ml-0.5 size-5" />
           Terminar Carregamento
         </button>
 
@@ -113,13 +107,9 @@
         <button
             v-if="sessionSummary"
             @click="emit('reset-session')"
-            class="flex items-center gap-2 px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium text-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+            class="inline-flex items-center rounded-md bg-extra-soft-orange px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs hover:bg-soft-orange duration-300"
         >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <polyline points="23,4 23,10 17,10"></polyline>
-            <polyline points="1,20 1,14 7,14"></polyline>
-            <path d="M20.49,9A9,9,0,0,0,5.64,5.64L1,10m22,4L18.36,18.36A9,9,0,0,1,3.51,15"></path>
-          </svg>
+          <Repeat2 class="mr-1.5 -ml-0.5 size-5" />
           Novo Carregamento
         </button>
       </div>
@@ -129,7 +119,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import {Clock} from 'lucide-vue-next'
+import {Clock, Play, OctagonMinus, Repeat2, BookCheck} from 'lucide-vue-next'
 import electric_car from '@/assets/img/electric_car.png'
 
 

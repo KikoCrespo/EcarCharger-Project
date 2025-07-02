@@ -34,7 +34,7 @@
     </div>
 
     <!-- Resumo da sessão -->
-    <div v-if="sessionSummary" class="mt-4 p-3 bg-gray-50 rounded">
+    <div v-if="sessionSummary" class="mt-4 p-3 bg-orange rounded">
       <h3 class="font-semibold text-center mb-2">Resumo do Carregamento</h3>
       <div class="grid grid-cols-2 gap-2 text-sm">
         <div>Duração:</div>
@@ -55,7 +55,7 @@
       <button
           v-if="!sessionId && !sessionClosed"
           @click="startCharging"
-          class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+          class="inline-flex items-center rounded-md bg-extra-soft-orange px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs hover:bg-soft-orange duration-300"
       >
         Iniciar Carregamento
       </button>
@@ -79,7 +79,7 @@
       <button
           v-if="sessionSummary"
           @click="resetSession"
-          class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+          class="inline-flex items-center rounded-md bg-extra-soft-orange px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs hover:bg-soft-orange duration-300"
       >
         Novo Carregamento
       </button>
@@ -408,15 +408,3 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style scoped>
-button {
-  transition: background-color 0.3s, transform 0.2s;
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  &:active {
-    transform: translateY(0);
-  }
-}
-</style>

@@ -211,13 +211,14 @@ function exportToCSV() {
     charge.cost.toFixed(2)
   ]);
 
-
+  // Formatar conteudo CSV
   const csvContent = [
     headers.join(','),
     ...rows.map(row => row.join(','))
   ].join('\n');
 
-  // Criar blob e link para download -  https://stackoverflow.com/questions/58292771/downloading-a-csv-of-file-using-vue-and-js
+  // Criar blob e link para download
+  // REF: https://stackoverflow.com/questions/58292771/downloading-a-csv-of-file-using-vue-and-js
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');

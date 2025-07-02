@@ -1,5 +1,3 @@
-
-// src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
 import DasboardView from '../views/DashboardView.vue';
 import ListUsers from '@/views/ListUsers.vue';
@@ -86,8 +84,8 @@ const routes = [
     path: '/estatisticas/pessoais',
     name: 'personalstatistics',
     component: PersonalStatisticsView,
-    meta: { layout: 'default' }
-
+    meta: {layout: 'default'}
+  },
 
   {
     path: '/frota/requisicoes',
