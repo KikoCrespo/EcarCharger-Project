@@ -1,6 +1,6 @@
 <template>
-  <div v-if="show" class="fixed inset-0 bg-gray-500/75 transition-opacity flex items-center justify-center z-50">
-    <div class="bg-white sm:rounded-lg h-full w-full max-w-md p-6">
+  <div v-if="show" class="fixed inset-0 bg-gray-500/50 backdrop-blur-sm transition-opacity flex items-center justify-center">
+    <div class="bg-white sm:rounded-lg h-full w-full max-w-[40vw] max-h-[90vh] items-center justify-center p-6">
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-lg font-semibold">Requisitar Veículo</h3>
         <button @click="closeModal" class="text-gray-500 hover:text-gray-700">
@@ -10,14 +10,14 @@
 
       <div class="mb-4">
         <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-lg mb-4">
-          <img :src="vehicle?.image" alt="Vehicle" class="w-20 h-20 object-cover rounded" />
+          <img  src="../assets/img/carroteste.png" alt="Imagem" class="w-40 h-30 object-cover rounded" /> <!-- :src="vehicle?.v_img" -->
           <div>
-            <h4 class="font-medium">{{ vehicle?.plate }}</h4>
-            <p class="text-gray-600 text-sm">{{ vehicle?.type }}</p>
+            <h4 class="font-medium">{{ vehicle?.v_matricula }}</h4>
+            <p class="text-gray-600 text-sm">{{ vehicle?.v_categoria_display }}</p>
           </div>
         </div>
 
-        <div class="space-y-4">
+        <div class="space-y-5">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Data de Início</label>
             <input
@@ -137,15 +137,14 @@ const submitRequest = () => {
   if (!isFormValid.value) return;
 
   const requestData = {
-    vehicleId: props.vehicle.id,
-    reason: form.value.reason,
-    unlimitedPeriod: form.value.unlimitedPeriod
+    vehicle: props.vehicle,
+    reason: form.value.reason,  
+    unlimitedPeriod: form.value.unlimitedPeriod,
+    data: {
+      startDate: form.value.startDate,
+      endDate: form.value.unlimitedPeriod ? null : form.value.endDate
+    }
   };
-
-  if (!form.value.unlimitedPeriod) {
-    requestData.startDate = form.value.startDate;
-    requestData.endDate = form.value.endDate;
-  }
 
   emit('submit-request', requestData);
   closeModal();

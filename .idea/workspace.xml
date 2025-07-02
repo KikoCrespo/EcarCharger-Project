@@ -5,15 +5,47 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="33e13635-1438-4149-9579-adddb6dabdc8" name="Changes" comment="#merge conflict">
-      <change afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/Statistics/ChargingHistoryTable.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/Statistics/EnergyConsumptionCard.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/Statistics/WeeklyCostChart.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/views/PersonalStatisticsView.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIRest/APIRest/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIRest/automoveis/views/RequisicoesView.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIRest/automoveis/views/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIRest/utilizadores/views/AdminView.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIRest/utilizadores/views/AuthView.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIRest/utilizadores/views/UserView.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIRest/utilizadores/views/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/requirementsFront.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/RequestDetailModal.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/TableRequest.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/views/RequestVehicleAdminView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIRest/APIRest/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/APIRest/APIRest/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIRest/APIRest/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/APIRest/APIRest/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIRest/utilizadores/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/APIRest/utilizadores/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIRest/utilizadores/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/APIRest/utilizadores/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIRest/automoveis/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/APIRest/automoveis/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIRest/automoveis/serializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/APIRest/automoveis/serializer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIRest/automoveis/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/APIRest/automoveis/views/VeiculoView.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIRest/postosCarregamento/migrations/0002_rename_pc_intensidade_kw_postocarregamento_pc_potencia_kw_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIRest/utilizadores/migrations/0002_remove_utilizador_u_email_remove_utilizador_u_nome.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIRest/utilizadores/migrations/0003_remove_utilizador_u_data_registo.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIRest/utilizadores/migrations/0004_utilizador_u_departamento.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIRest/utilizadores/migrations/0005_alter_utilizador_u_img_perfil.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIRest/utilizadores/serializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/APIRest/utilizadores/serializer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/ActionsListHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/ActionsListHeader.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/ConfirmModal.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/ConfirmModal.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/EndVehicleRequesitionModal.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/EndVehicleRequesitionModal.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/LoginForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/LoginForm.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/ProfileForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/ProfileForm.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/RequestVehicleModal.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/RequestVehicleModal.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/SideBar.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/SideBar.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/TableUsers.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/TableUsers.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/VehicleDetailsModal.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/components/VehicleDetailsModal.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/layouts/DefaultLayout.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/layouts/DefaultLayout.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/views/AddVehiclesView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/views/AddVehiclesView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/views/ListAllVechilesView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/views/ListAllVechilesView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/views/MyVehiclesView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/views/MyVehiclesView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendVue/web-app-front/src/views/VehicleDetailView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendVue/web-app-front/src/views/VehicleDetailView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,8 +93,8 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "front-end",
-    "last_opened_file_path": "/Users/rafaelventura/Documents/projeto/WebApp/APIRest",
+    "git-widget-placeholder": "Merging front-end",
+    "last_opened_file_path": "/Users/rafaelventura/Documents/projeto/WebApp/APIRest/APIRest",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -198,6 +230,15 @@
       <workItem from="1748209454350" duration="389000" />
       <workItem from="1748342395139" duration="724000" />
       <workItem from="1748356930615" duration="9024000" />
+      <workItem from="1748450996644" duration="8322000" />
+      <workItem from="1748614118988" duration="14690000" />
+      <workItem from="1748703739220" duration="701000" />
+      <workItem from="1748783630348" duration="18277000" />
+      <workItem from="1748864386665" duration="22029000" />
+      <workItem from="1748911264112" duration="66000" />
+      <workItem from="1748959854786" duration="18190000" />
+      <workItem from="1748978594011" duration="7310000" />
+      <workItem from="1749045097984" duration="3157000" />
     </task>
     <task id="LOCAL-00001" summary="merge conflict">
       <option name="closed" value="true" />
@@ -229,16 +270,5 @@
     <MESSAGE value="Merge commit '55b2ff8500f256c1319d0c35faba88a6f16faf58' into front-end&#10;&#10;# Conflicts:&#10;#&#9;APIRest/APIRest/__pycache__/settings.cpython-312.pyc&#10;#&#9;APIRest/APIRest/__pycache__/urls.cpython-312.pyc&#10;#&#9;APIRest/utilizadores/__pycache__/models.cpython-312.pyc&#10;#&#9;APIRest/utilizadores/__pycache__/views.cpython-312.pyc" />
     <MESSAGE value="#merge conflict" />
     <option name="LAST_COMMIT_MESSAGE" value="#merge conflict" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/APIRest/APIRest/urls.py</url>
-          <line>17</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

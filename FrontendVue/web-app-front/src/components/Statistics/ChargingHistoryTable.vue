@@ -56,8 +56,8 @@
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ charge.station }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ charge.vehicle }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ charge.duration }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ charge.energy }} kWh</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ formatCurrency(charge.cost) }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ charge.energy.toFixed(3) }} kWh</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ formatCurrency(charge.cost.toFixed(3)) }}</td>
           </tr>
           <tr v-if="sortedAndFilteredHistory.length === 0">
             <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">
@@ -207,7 +207,7 @@ function exportToCSV() {
     charge.station,
     charge.vehicle,
     charge.duration,
-    charge.energy,
+    charge.energy.toFixed(3),
     charge.cost.toFixed(2)
   ]);
 

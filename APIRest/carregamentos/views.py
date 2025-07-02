@@ -139,30 +139,6 @@ class CarregamentosView(APIView):
         except Exception as e:
                 return Response({'error': str(e)}, status=500)
 
-    @api_view(['POST'])
-    @permission_classes([AllowAny])
-    def stop_charging_view(request, session_id):
-        try:
-            carregamento = Carregamento.objects.get(id=session_id)
-            medias = request.data
-            carregamento.ca_data_fim = datetime.now()
-            carregamento.ca_duracao = carregamento.ca_data_fim - carregamento.ca_data_inicio
-            carregamento.ca_avg_v = medias['voltage']
-            carregamento.ca_avg_a = medias['current']
-            carregamento.ca_avg_kwh = medias['power']
-            potencia_consumida = medias['power'] * carregamento.ca_duracao.total_seconds() / 3600
-            carregamento.ca_custo = potencia_consumida * carregamento.ca_posto.pc_preco_kwh
-            carregamento.ca_estado = 'COMPLETED'
-            carregamento.save()
-
-            # Enviar ordem para o Flask parar a leitura
-            iot_url = carregamento.ca_posto.pc_iot_equipamento.iot_url
-            output_pin = carregamento.ca_posto.pc_iot_equipamento.iot_output
-            requests.post(f"{iot_url}/stop", json={"output_pin": output_pin})
-
-            return Response({"status": "carregamento terminado"})
-        except Exception as e:
-            return Response({"error": str(e)}, status=500)
 def str_to_datetime(date):
     """
     Converte uma string 'YYYY-MM-DD HH:MM:SS' para um objeto datetime.

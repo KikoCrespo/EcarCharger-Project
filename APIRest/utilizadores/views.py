@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import json
 from .models import Entidade, Utilizador
+from postosCarregamento.models import PostoCarregamento
 from rest_framework.decorators import api_view , permission_classes
 from .serializer import UtilizadorSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -361,4 +362,54 @@ class CarregamentosUtilizadorView(APIView):
             }
 
 
+        }, status=200)
+
+
+class DashboardView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        if not user.is_authenticated:
+            return Response({"error": "Utilizador não autenticado!"}, status=401)
+
+        #get postos de carregamento
+        postos = PostoCarregamento.objects.filter(pc_entidade=user.u_entidade)
+        if not postos:
+            return Response({"error": "Não existem postos de carregamento para esta entidade!"}, status=404)
+
+
+        totais_cards = user.calcular_totais()
+        consumos_semanais_now, consumos_semanais_before = user.calcular_kwh_totais_semanais()
+        maiores_custos_mensais = user.calcular_maiores_custos_mensais()
+
+        return Response({
+            'postos': {
+                posto.id: {
+                    'id': posto.id,
+                    'morada': posto.pc_morada,
+                    'estado': posto.pc_estado,
+                } for posto in postos
+            },
+            'consumos_semanais_now': consumos_semanais_now,
+            'consumos_semanais_before': consumos_semanais_before,
+            'maiores_custos_mensais': {
+                custo['mes'].strftime('%B'): {
+                    'custo': custo['custo'],
+                } for custo in maiores_custos_mensais
+            },
+
+
+            'total_carregamentos_mensal': totais_cards['total_carregamentos_mensal'],
+            'total_carregamentos_mensal_before': totais_cards['total_carregamentos_mensal_before'],
+            'total_quantidade_mensal': totais_cards['total_quantidade_mensal'],
+            'total_quantidade_mensal_before': totais_cards['total_quantidade_mensal_before'],
+            'total_custo_mensal': totais_cards['total_custo_mensal'],
+            'total_custo_mensal_before': totais_cards['total_custo_mensal_before'],
+            'total_carregamentos_semanal': totais_cards['total_carregamentos_semanal'],
+            'total_carregamentos_semanal_before': totais_cards['total_carregamentos_semanal_before'],
+            'total_quantidade_semanal': totais_cards['total_quantidade_semanal'],
+            'total_quantidade_semanal_before': totais_cards['total_quantidade_semanal_before'],
+            'total_custo_semanal': totais_cards['total_custo_semanal'],
+            'total_custo_semanal_before': totais_cards['total_custo_semanal_before']
         }, status=200)

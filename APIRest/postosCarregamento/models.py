@@ -44,6 +44,10 @@ class PostoCarregamento(models.Model):
 
     class Meta:
         db_table = 'PostoCarregamento'
+
+    def getPostosCarregamento(self):
+        return PostoCarregamento.objects.filter(pc_entidade=self.pc_entidade)
+
     
     def __str__(self):
         return self.pc_morada

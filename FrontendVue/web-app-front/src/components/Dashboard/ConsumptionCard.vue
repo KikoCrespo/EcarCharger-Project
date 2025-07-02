@@ -1,23 +1,19 @@
 <template>
   <div class="p-4">
     <h3 class="text-base font-medium mb-4">Consumos</h3>
-    <div class="text-3xl font-bold mb-3">{{ consumption }} kWh</div>
+    <div class="text-3xl font-bold mb-3">{{ consumption.toFixed(2) }} kWh</div>
 
     <div
-        class="flex items-center text-sm mb-2"
-        :class="{ 'text-red-600': trend > 0, 'text-green-600': trend < 0 }"
+        class="flex items-center text-sm"
+        :class="trend > 0 ? 'text-red-600' : 'text-green-600'"
     >
       <div class="mr-1">
-        <svg v-if="trend < 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="7 13 12 18 17 13"></polyline>
-          <polyline points="7 6 12 11 17 6"></polyline>
-        </svg>
-        <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="17 11 12 6 7 11"></polyline>
-          <polyline points="17 18 12 13 7 18"></polyline>
-        </svg>
+        <ChevronUp v-if="trend > 0 && trend <=50" class="w-4 h-4" />
+        <ChevronsUp v-if="trend > 50" class="w-4 h-4" />
+        <ChevronDown v-if="trend < 0 && trend >= -50" class="w-4 h-4" />
+        <ChevronsDown v-if="trend < -50" class="w-4 h-4" />
       </div>
-      <span>{{ Math.abs(trend) }}% vs {{ period }}</span>
+      <span>{{ Math.abs(trend) }}% vs {{ period === 'weekly' ? 'semana anterior' : 'mês anterior' }}</span>
     </div>
 
     <div class="text-xs text-gray-500">
@@ -28,6 +24,7 @@
 
 <script setup>
 import { defineProps } from 'vue';
+import { ChevronUp, ChevronsUp, ChevronDown, ChevronsDown } from 'lucide-vue-next';
 
 defineProps({
   consumption: {
@@ -40,7 +37,7 @@ defineProps({
   },
   period: {
     type: String,
-    default: 'last week'
+    default: 'weekly'
   }
 });
 </script>

@@ -7,17 +7,17 @@ from postosCarregamento.models import PostoCarregamento
 # Create your models here.
 class Carregamento(models.Model):
     STATUS_CHOICES = [
-        ('ACTIVE', 1),
-        ('COMPLETED', 2),
-        ('ERROR', 3),
+        (1,'ACTIVE'),
+        (2,'COMPLETED'),
+        (3,'ERROR'),
     ]
 
     ca_data_inicio = models.DateTimeField()
     ca_data_fim = models.DateTimeField(null=True, blank=True)
     ca_duracao = models.IntegerField(null=True, blank=True)
-    ca_avg_v = models.FloatField(null=True, blank=True)
-    ca_avg_a = models.FloatField(null=True, blank=True)
-    ca_avg_kwh = models.FloatField(null=True, blank=True)
+    ca_avg_v = models.FloatField(null=True, blank=True, default=0.0)
+    ca_avg_a = models.FloatField(null=True, blank=True, default=0.0)
+    ca_avg_kwh = models.FloatField(null=True, blank=True, default=0.0)
     ca_custo = models.FloatField(null=True, blank=True)
     ca_utilizador = models.ForeignKey(Utilizador, on_delete=models.CASCADE)
     ca_Veiculo = models.ForeignKey(Veiculo, on_delete=models.CASCADE)
