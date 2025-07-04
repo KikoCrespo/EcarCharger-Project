@@ -4,8 +4,14 @@ FROM python:3.11-slim
 # Diretório de trabalho
 WORKDIR /app
 
-# Instala dependências do sistema (necessárias para psycopg2, cryptography, etc)
-RUN apt-get update && apt-get install -y \
+# Configura fontes de pacotes confiáveis e atualiza cache
+RUN echo "deb http://deb.debian.org/debian bullseye main" > /etc/apt/sources.list && \
+    echo "deb http://deb.debian.org/debian bullseye-updates main" >> /etc/apt/sources.list && \
+    echo "deb http://security.debian.org/debian-security bullseye-security main" >> /etc/apt/sources.list
+
+# Instala dependências do sistema
+RUN apt-get update -o Acquire::Check-Valid-Until=false -o Acquire::AllowInsecureRepositories=true && \
+    apt-get install -y --no-install-recommends \
     gcc \
     libpq-dev \
     build-essential \

@@ -5,11 +5,11 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-COPY .. .
-RUN npm run build
+COPY . .
 
-# Servir diretamente com Vite Preview
-RUN npm install -g serve
-CMD ["serve", "-s", "dist"]
+# Não precisa mais do build, pois estamos em modo de desenvolvimento
+# RUN npm run build
 
-EXPOSE 3000
+EXPOSE 5173
+
+CMD ["npm", "run", "dev"]

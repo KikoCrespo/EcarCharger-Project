@@ -1,0 +1,83 @@
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - frontend
+      - backend
+      - rabbitmq
+      - influxdb
+    networks:
+      - app_network
+
+  frontend:
+    build:
+      context: ./FrontendVue/web-app-front
+      dockerfile: Dockerfile
+    command: npm run dev -- --host 0.0.0.0 --port 5173
+    environment:
+      - VITE_API_BASE_URL=/api
+    volumes:
+      - ./FrontendVue/web-app-front:/app
+      - /app/node_modules
+    networks:
+      - app_network
+
+  backend:
+    build:
+      context: ./APIRest
+      dockerfile: Dockerfile
+    command: daphne -b 0.0.0.0 -p 8000 APIRest.asgi:application
+    environment:
+      - DJANGO_SETTINGS_MODULE=APIRest.settings
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./APIRest:/app
+    depends_on:
+      - rabbitmq
+      - influxdb
+    networks:
+      - app_network
+
+  # Serviço RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: unless-stopped
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin123
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - app_network
+
+  # Serviço InfluxDB
+  influxdb:
+    image: influxdb:2.7
+    container_name: influxdb
+    restart: unless-stopped
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=admin123
+      - DOCKER_INFLUXDB_INIT_ORG=myorg
+      - DOCKER_INFLUXDB_INIT_BUCKET=mybucket
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mytoken
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+    networks:
+      - app_network
+
+volumes:
+  rabbitmq_data:
+  influxdb_data:
+
+networks:
+  app_network:
+    driver: bridge
