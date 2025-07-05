@@ -67,7 +67,7 @@ MIDDLEWARE = [
 
 # Configuração de CORS (para aceitar requisições do frontend)
 CORS_ALLOWED_ORIGINS = [
-    f"http://{HOST_IP}",
+    'http://31.97.177.122',
     "http://localhost",
     "http://localhost:5173",
 ]
