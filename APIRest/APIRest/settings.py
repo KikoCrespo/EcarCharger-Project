@@ -27,11 +27,18 @@ SECRET_KEY = "django-insecure-mq4nvm5)8o(l5g)6-pnj*av*sr-=)rz6$s71u)b)e0^#_ilqqj
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+try:
+    hostname = socket.gethostname()
+    HOST_IP = socket.gethostbyname(hostname)
+except:
+    HOST_IP = '31.97.177.122'  # Seu IP público
 
 ALLOWED_HOSTS = [
-    '31.97.177.122',
-    'backend',
+    HOST_IP,
     'localhost',
+    '127.0.0.1',
+    'backend',
+    '0.0.0.0',
 ]
 
 
@@ -59,27 +66,18 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'corsheaders.middleware.CorsMiddleware',
-
-]
-
-ALLOWED_HOSTS = [
-    '31.97.177.122',  # Seu IP público
-    'localhost',       # Para desenvolvimento local
-    '127.0.0.1',       # Loopback
-    'backend',         # Nome do serviço no Docker
-    '0.0.0.0',         # Aceita qualquer host (cuidado!)
 ]
 
 # Configuração de CORS (para aceitar requisições do frontend)
 CORS_ALLOWED_ORIGINS = [
-    "http://31.97.177.122",  # Seu IP público
+    f"http://{HOST_IP}",
     "http://localhost",
     "http://localhost:5173",
 ]
@@ -93,6 +91,10 @@ CORS_ALLOW_METHODS = [
     'OPTIONS',
     'PATCH',
 ]
+
+# Adicione estas configurações para funcionar com proxy
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ASGI_APPLICATION = "APIRest.asgi.application"
 
