@@ -28,7 +28,11 @@ SECRET_KEY = "django-insecure-mq4nvm5)8o(l5g)6-pnj*av*sr-=)rz6$s71u)b)e0^#_ilqqj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '31.97.177.122',
+    'backend',
+    'localhost',
+]
 
 
 # Application definition
@@ -65,13 +69,20 @@ MIDDLEWARE = [
 
 ]
 
+ALLOWED_HOSTS = [
+    '31.97.177.122',  # Seu IP público
+    'localhost',       # Para desenvolvimento local
+    '127.0.0.1',       # Loopback
+    'backend',         # Nome do serviço no Docker
+    '0.0.0.0',         # Aceita qualquer host (cuidado!)
+]
+
 # Configuração de CORS (para aceitar requisições do frontend)
 CORS_ALLOWED_ORIGINS = [
     "http://31.97.177.122",  # Seu IP público
     "http://localhost",
     "http://localhost:5173",
 ]
-
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_METHODS = [
