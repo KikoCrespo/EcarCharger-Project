@@ -67,8 +67,9 @@ MIDDLEWARE = [
 
 # Configuração de CORS (para aceitar requisições do frontend)
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # adicionar port do frontend
-    "http://localhost:5173", # Vue
+    "http://31.97.177.122",  # Seu IP público
+    "http://localhost",
+    "http://localhost:5173",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
