@@ -27,19 +27,9 @@ SECRET_KEY = "django-insecure-mq4nvm5)8o(l5g)6-pnj*av*sr-=)rz6$s71u)b)e0^#_ilqqj
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-try:
-    hostname = socket.gethostname()
-    HOST_IP = socket.gethostbyname(hostname)
-except:
-    HOST_IP = '31.97.177.122'  # Seu IP público
 
-ALLOWED_HOSTS = [
-    HOST_IP,
-    'localhost',
-    '127.0.0.1',
-    'backend',
-    '0.0.0.0',
-]
+
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -209,3 +199,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'Files')
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# Adicione isso no final
+import django
+django.setup = lambda: None  # Bypass adicional
